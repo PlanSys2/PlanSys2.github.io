@@ -38,7 +38,6 @@
   <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Robots Using" href="robots.html" />
     <link rel="prev" title="ROS2 Planning System" href="../index.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
@@ -96,9 +95,6 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About and Contact</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="robots.html">Robots Using</a></li>
-<li class="toctree-l2"><a class="reference internal" href="related_projects.html">Related Projects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ros1_comparison.html">ROS to ROS 2 Navigation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#contact">Contact</a></li>
 </ul>
@@ -177,31 +173,20 @@
 </div>
 <div class="section" id="id1">
 <h2>About<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Navigation is a community effort to lower the barrier of entry of mobile robotics technology for all.
-This project is one of the flagship projects along with MoveIt that acts as an applications entry point and frameworks for ROS.
-Navigation in ROS 2 builds on the wild success of the original Navigation Stack (Nav Stack) in ROS (1).
-This project has been used by researchers, educators, and industry for over 10 years.
-There are very few projects that have lasted as long or were as successful as ROS (1) Navigation.
-We would like to thank David Lu!! and Mike Ferguson for their tireless over the span of a decade to keep the Nav Stack alive and well.
-Without their hard work, this project would not have been able to happen.
-If you’re interested in a comparison between ROS 1 Navigation and ROS 2 Navigation, see <a class="reference internal" href="ros1_comparison.html#ros1-comparison"><span class="std std-ref">ROS to ROS 2 Navigation</span></a>.
-For a list of robots using Navigation2, see <a class="reference internal" href="robots.html#robots"><span class="std std-ref">Robots Using</span></a>.</p>
-<p>Aslas, as time moves on, so must we.
-ROS (1) had a great run and those of us that build projects using it will remember it fondly(ish).
-With change comes possibilities.
-Navigation2 builds on the success but redesigns the framework to be more flexible and the feedback gathered over 10 years.</p>
+<p>ROS2 Planning System (plansys2 in short) is a project whose objective is to provide Robotics developers with a reliable, simple,
+and efficient PDDL-based planning system. It is implemented in ROS2, applying the latest concepts developed in this currently de-facto standard in Robotics.</p>
 <p>We strive to create an open community and encourage new ROS users and experts alike to collaborate.
 However, that can’t happen without your issues, pull requests, and support.
 Navigation, like all open-source projects, is kept going by a dedicated group of developers, maintainers, users, and collaborators.
 We would like to thank here our current and past contributors and maintainers.</p>
-<p>If you or your organization are interested in sponsoring Navigation or any work around it, please reach out to the current project lead.</p>
+<p>If you or your organization are interested in sponsoring PlanSys2 or any work around it, please reach out to the current project lead.</p>
 <p>Our current leadership team includes:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 24%" />
-<col style="width: 29%" />
-<col style="width: 26%" />
-<col style="width: 21%" />
+<col style="width: 39%" />
+<col style="width: 18%" />
+<col style="width: 19%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -211,60 +196,21 @@ We would like to thank here our current and past contributors and maintainers.</
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Steve Macenski</p></td>
-<td><p>Samsung Research</p></td>
-<td><p><a class="reference external" href="https://github.com/SteveMacenski">SteveMacenski</a></p></td>
+<tr class="row-even"><td><p>Francisco Martín</p></td>
+<td><p>Rey Juan Carlos University</p></td>
+<td><p><a class="reference external" href="https://github.com/fmrico">fmrico</a></p></td>
 <td><p>Project Lead</p></td>
-</tr>
-<tr class="row-odd"><td><p>Carl Delsey</p></td>
-<td><p>Intel Corporation</p></td>
-<td><p><a class="reference external" href="https://github.com/crdelsey">crdelsey</a></p></td>
-<td><p>Maintainer</p></td>
-</tr>
-<tr class="row-even"><td><p>Ruffin White</p></td>
-<td><p>UC San Diego</p></td>
-<td><p><a class="reference external" href="https://github.com/ruffsl">ruffsl</a></p></td>
-<td><p>CI Wizard</p></td>
-</tr>
-</tbody>
-</table>
-<p>Our former leadership team includes:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 26%" />
-<col style="width: 23%" />
-<col style="width: 29%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Name</p></th>
-<th class="head"><p>Organization</p></th>
-<th class="head"><p>GitHub ID</p></th>
-<th class="head"><p>Role</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Matt Hansen</p></td>
-<td><p>Intel Corporation</p></td>
-<td><p><a class="reference external" href="https://github.com/mkhansen-intel">mkhansen</a></p></td>
-<td><p>Former Project Lead</p></td>
-</tr>
-<tr class="row-odd"><td><p>Brian Wilcox</p></td>
-<td><p>Intel Corporation</p></td>
-<td><p><a class="reference external" href="https://github.com/bpwilcox">bpwilcox</a></p></td>
-<td><p>Former Maintainer</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="contact">
 <h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
-<p>If you are interested in contacting someone about Navigation, ROS 2, or related projects, please email the project leader.
+<p>If you are interested in contacting someone about Planning, ROS 2, or related projects, please email the project leader.
 We intentionally make our emails easy to find.
 If your inquiry relates to bugs or open-source feature requests, consider posting a ticket on our GitHub project.
 If your inquiry relates to configuration support or private feature development, reach out and we may be able to connect you with
 independent consultants or contractors that know this project well.</p>
-<p>Check out the Navigation 2 <a class="reference external" href="https://join.slack.com/t/navigation2/shared_invite/zt-g00k4xwx-~ABwlU1rwHU96OGihC0ESA">Slack</a> community.</p>
 </div>
 </div>
 
