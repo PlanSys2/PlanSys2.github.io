@@ -28,5 +28,6 @@ To learn more about this project, such as related projects, robots using, ROS1 c
 
 .. toctree::
    :hidden:
-
+    
+   about/index.rst
    

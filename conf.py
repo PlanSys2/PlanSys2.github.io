@@ -115,6 +115,7 @@ else:
         'logo_only': False,
         'display_version': True,
         'prev_next_buttons_location': 'None',
+        'style_nav_header_background': 'orange',
         # Toc options
         'collapse_navigation': False,
         'sticky_navigation': True,
