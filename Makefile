@@ -44,7 +44,7 @@ clean:
 # along with a README
 
 publish:
-	git clone --reference . git@github.com:IntelligentRoboticsLabs/ros2_planning_system.git $(PUBLISHDIR)
+	git clone --reference . https://github.com/IntelligentRoboticsLabs/ros2_planning_system.github.io.git $(PUBLISHDIR)
 	cd $(PUBLISHDIR) && \
 	git checkout gh-pages && \
 	git config user.email "fmrico@gmail.com" && \
@@ -52,7 +52,7 @@ publish:
 	rm -fr $(PUBLISHDIR)/*
 	cp -r $(BUILDDIR)/html/* $(PUBLISHDIR)
 	cp scripts/.nojekyll $(PUBLISHDIR)/.nojekyll
-	cp scripts/CNAME $(PUBLISHDIR)/CNAME
+	# cp scripts/CNAME $(PUBLISHDIR)/CNAME
 	cd $(PUBLISHDIR) && \
 	git add -A && \
 	git diff-index --quiet HEAD || \
