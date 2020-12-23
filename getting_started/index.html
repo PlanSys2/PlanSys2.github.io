@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/plansys2_48x48.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ROS2 Planning System 2
+          
+
+          
+            
+            <img src="../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#running-the-example">Running the Example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS2 Planning System 2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/ros2_planning_system.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>This document will take you through the process of installing the PlanSys2 binaries
+and and using PlanSys2.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See the <span class="xref std std-ref">build-instructions</span> for other situations such as building from source or
+working with other types of robots.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Install the <a class="reference external" href="https://index.ros.org/doc/ros2/Installation/">ROS 2 binary packages</a> as described in the official docs</p></li>
+<li><p>Install the PlanSys2 packages using your operating system’s package manager:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install ros-&lt;ros2-distro&gt;-plansys2_*
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-example">
+<h2>Running the Example<a class="headerlink" href="#running-the-example" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Clone in your workspace the <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">|PN| examples</a></p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your_workspace&gt;
+git clone -b &lt;ros2-distro&gt;-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+colcon build --symlink-install
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Build the workspace:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p>Open a new terminal and run PlanSys2:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch plansys2_simple_example plansys2_simple_example_launch.py
+</pre></div>
+</div>
+<p>This launch PlanSys2 this <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
+and some processes that implements a fake version of the domain’s actions.</p>
+</li>
+<li><p>Open a new terminal and run the PlanSys2 terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 run plansys2_terminal plansys2_terminal
+</pre></div>
+</div>
+</li>
+<li><p>In the PlanSys2 terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:</p>
+<div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">instance</span> <span class="nv">leia</span> <span class="nv">robot</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">entrance</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">kitchen</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bedroom</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">dinning</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bathroom</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">chargingroom</span> <span class="nb">room</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">entrance</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bathroom</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">bathroom</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">chargingroom</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">chargingroom</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">charging_point_at</span> <span class="nv">chargingroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">battery_low</span> <span class="nv">leia</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">bathroom</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p>In the PlanSys2 terminal shell, get the plan and/or run the plan:</p>
+<div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">plan</span>
+<span class="nv">run</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

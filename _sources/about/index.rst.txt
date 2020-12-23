@@ -3,9 +3,6 @@
 About and Contact
 #################
 
-.. toctree::
-   :hidden:
-
 About
 *****
 
