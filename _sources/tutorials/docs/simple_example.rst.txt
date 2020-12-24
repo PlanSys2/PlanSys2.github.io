@@ -9,11 +9,15 @@ The first planning package
 Overview
 ========
 
-The terminal is an application that allows interacting with PlanSys2 to test or monitor its operation. 
-It is not essential to use PlanSys2 since your application is expected to manage the plans' knowledge and execution automatically. 
-Still, it is useful to know the terminal and convenient in these first tutorials.
+It is common for PlanSys2 to have a package that contains all the elements to plan and execute in a domain:
 
-This tutorial shows how to use the terminal and the main commands and is a good starting point for working with PlanSys2.
+* A PDDL model.
+* A node that implements each action, probably in different executables.
+* A launcher that executes the actions and launches PlanSys2 with the appropriate domain.
+* Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.
+
+
+In this tutorial we are going to analyze the package of the simple example shown in: ref: `getting_started`.
 
 Tutorial Steps
 ==============
@@ -21,250 +25,191 @@ Tutorial Steps
 0- Requisites
 -------------
 
-Follow the same process as in :ref:`getting_started` for installing PlanSys2. 
-
-We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
-* `PDDL 2.1 <https://arxiv.org/pdf/1106.4561.pdf>`_
-* `An Introduction to PDDL <http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf>`_
-* `PDDL by Example <http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf>`_
-
-Download a simple PDDL domain for this tutorial. Later, you could reproduce the steps of this tutorial with your own domain:
+Clone in your workspace and build the |PN| `examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
 
   .. code-block:: bash
 
-      wget -P /tmp https://raw.githubusercontent.com/IntelligentRoboticsLabs/ros2_planning_system_examples/master/plansys2_simple_example/pddl/simple_example.pddl
+      cd <your_workspace>
+      git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+      colcon build --symlink-install
+      rosdep install --from-paths src --ignore-src -r -y
+      colcon build --symlink-install
+
+1- Package structure
+--------------------
+
+Go to ``<your_workspace>/ros2_planning_system_examples/plansys2_simple_example``. This is the ROS2 package that contains the example 
+of this tutorial. The structure is the usual of a ROS2 package, with a ``package.xml`` and a ``CMakeLists.txt`` as usual. Besides, we have the 
+next directories:
+
+* **pddl** The directory with the PDDL file that contains the domain. It is the same of the ref: `terminal_usage`.
+* **launch** It contains the launcher of this example:
+* **src** It contains the implementation of the three actions of the domain.
+
+2- Actions implementation
+-------------------------
+
+The actions in the domain are *move*, *charge* and *ask_charge*. It will contains a "fake" execution. Each action will take some seconds
+to execute, only incrementing a ``progress`` value and displaying it in the terminal. Each action in PlanSys2 is a 
+`managed node <https://design.ros2.org/articles/node_lifecycle.html>`_ , also known as *lifecycle node*. When active, it will iterativelly call 
+a function to perform the job. Let's analyze the code of *move* action in ``src/move_action_node.cpp``:
 
 
-1- Launch PlanSys2
-------------------
+  .. code-block:: c++
+       :linenos:
 
-PlanSys2 can be launched with two different launchers that implement two different execution forms: distributed or monolithic. 
-In distributed form, each component of PlanSys2 runs in a different process, and to launch it, each component's launchers are called 
-in cascade. In monolithic form, all components are released in the same process.
-
-In the first steps with PlanSys2, it is irrelevant how we execute it to choose any of them. Both launchers have a parameter where 
-the PDDL domain file to use is specified.
-
-
-  .. code-block:: bash
-
-      ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:=/tmp/simple_example.PDDL
-
-If all went well, all components of PlanSys2 will have been launched and awaits requests.
-
-2- Execute PlanSys2 terminal
-----------------------------
-
-The PlanSys2 terminal is executed by entering the following command in another terminal:
-
-  .. code-block:: bash
-
-      ros2 run plansys2_terminal plansys2_terminal 
-
-At that moment, an interactive shell will open in which we can enter commands. We can use the up and down arrows to 
-navigate between the commands already entered or use `` Ctrl-R '' as in the shell to search for commands. It also has 
-autocompletion with the `` Tab '' key. You can quit anytime typing "quit" or pressing ``Ctrl-d``.
-
-Take into account that the state of the system is at PlanSys2 components, not in the terminal. You can close and 
-reopen (or even use several terminals), and the system's state persists. If you want to reset the system, press ``Ctrl-c`` in the terminal
-where you launched PlanSys2, and relaunch it.
-
-  .. code-block::
-
-      ROS2 Planning System console. Type "quit" to finish
-      > 
-
-2- Interactive session
-----------------------
-
-1. The first thing is to check the domain that is being used:
-
-  .. code-block::
-
-      > get domain
-
-      ( define ( domain simple )
-      ( :requirements :strips :adl :typing :durative-actions :fluents )
-      ( :types
-      	robot - object
-      	room - object
-      )
-      ( :predicates
-      	( robot_at ?robot0 - robot ?room1 - room )
-      	( connected ?room0 - room ?room1 - room )
-      	( battery_full ?robot0 - robot )
-
-        ...
-
-2. To see what types of instances the model contains, type:
-
-  .. code-block::
-
-      > get model types
-      Types: 2
-	        robot
-	        room
-
-3. Use other variations of ``get model`` to get more information of the domain:
-
-  .. code-block::
-
-      > get model actions
-      Actions: 0
-      	move (durative action)
-      	askcharge (durative action)
-      	charge (durative action)
-      
-      > get model predicates 
-      Predicates: 5
-      	robot_at
-      	connected
-      	battery_full
-      	battery_low
-      	charging_point_at
-
-4. It is also possible to get the details of a predicate or an action:
-
-  .. code-block::
-      
-       > get model predicate robot_at
-       Parameters: 2
-       	robot - ?robot0
-       	room - ?room1
+       class MoveAction : public plansys2::ActionExecutorClient
+       {
+       public:
+         MoveAction()
+         : plansys2::ActionExecutorClient("move", 250ms)
+         {
+           progress_ = 0.0;
+         }
        
-       > get model action move
-       Type: durative-action
-       Parameters: 3
-       	?0 - robot
-       	?1 - room
-       	?2 - room
-       AtStart requirements: (and (connected ?1 ?2)(robot_at ?0 ?1))
-       OverAll requirements: (and (battery_full ?0))
-       AtEnd requirements: 
-       AtStart effect: (and (not (robot_at ?0 ?1)))
-       AtEnd effect: (and (robot_at ?0 ?2))
-
-5. So far, we have seen how to inspect the model, which remains unchanged during the 
-execution of PlanSys2. We could say that it is the static part of the planning ingredients. 
-The other ingredient is the problem, which contains the instances, grounded (not generic as in 
-the domain, but already with instances) predicates, and goals. We will check that it is empty for now.
-
-  .. code-block::
-
-       > get problem instances
-       Instances: 0
+       private:
+         void do_work()
+         {
+           if (progress_ < 1.0) {
+             progress_ += 0.02;
+             send_feedback(progress_, "Move running");
+           } else {
+             finish(true, 1.0, "Move completed");
        
-       > get problem predicates
-       Predicates: 0
+             progress_ = 0.0;
+             std::cout << std::endl;
+           }
        
-       > get problem goal
-       Goal: 
-
-6. First, let's add instances. If you analyze the domain, we want a robot to be able to move between rooms. For 
-this, the robot must have a battery, and the rooms must be connected. Therefore, we need rooms and a robot:
-
-  .. code-block::
-
-       > set instance leia robot
-       > set instance entrance room
-       > set instance kitchen room
-       > set instance bedroom room
-       > set instance dinning room
-       > set instance bathroom room
-       > set instance chargingroom room
-
-If no errros, these instances can be checked by typing:
-
-  .. code-block::
-
-       > get problem instances
-       Instances: 7
-       	leia	robot
-       	entrance	room
-       	kitchen	room
-       	bedroom	room
-       	dinning	room
-       	bathroom	room
-       	chargingroom	room
-
-7. To add predicates, we type:
-
-  .. code-block::
-
-       > set predicate (connected entrance dinning)
-       > set predicate (connected dinning entrance)
-       > 
-       > set predicate (connected dinning kitchen)
-       > set predicate (connected kitchen dinning)
-       > 
-       > set predicate (connected dinning bedroom)
-       > set predicate (connected bedroom dinning)
-       > 
-       > set predicate (connected bathroom bedroom)
-       > set predicate (connected bedroom bathroom)
-       > 
-       > set predicate (connected chargingroom kitchen)
-       > set predicate (connected kitchen chargingroom)
-       > 
-       > set predicate (charging_point_at chargingroom)
-       > set predicate (battery_low leia)
-       > set predicate (robot_at leia entrance)
-
-Let's check it:
-
-  .. code-block::
-
-       > get problem predicates
-       Predicates: 13
-       (connected entrance dinning)
-       (connected dinning entrance)
-       (connected dinning kitchen)
-       (connected kitchen dinning)
-       (connected dinning bedroom)
-       (connected bedroom dinning)
-       (connected bathroom bedroom)
-       (connected bedroom bathroom)
-       (connected chargingroom kitchen)
-       (connected kitchen chargingroom)
-       (charging_point_at chargingroom)
-       (battery_low leia)
-       (robot_at leia entrance)
-
-8. The predicates and instances previously added to the problem are the knowledge used to 
-generate the plan. Also, we need to have an objective of our planning, which is a logic expression 
-to end up being true. It is usually a predicate that we want to add to the knowledge:
-
-  .. code-block::
-
-       > set goal (and(robot_at leia bathroom))
-
-9. At this time we can ask that the plan be calculated to obtain this goal:
-
-  .. code-block::
-
-       > get plan
-       plan: 
-       0	(askcharge leia entrance chargingroom)	5
-       0.001	(charge leia chargingroom)	5
-       5.002	(move leia chargingroom kitchen)	5
-       10.003	(move leia kitchen dinning)	5
-       15.004	(move leia dinning bedroom)	5
-       20.005	(move leia bedroom bathroom)	5
-
-To create the plan, the first thing to do is generate two files: ```/tmp/domain.pddl``` and ```/tmp/problem.pddl```. 
-You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:
-
-  .. code-block::
+           std::cout << "\r\e[K" << std::flush;
+           std::cout << "Moving ... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
+             std::flush;
+         }
        
-       ros2 run popf popf /tmp/domain.pddl /tmp/problem.pddl
+         float progress_;
+       };
+       
+       int main(int argc, char ** argv)
+       {
+         rclcpp::init(argc, argv);
+         auto node = std::make_shared<MoveAction>();
+       
+         node->set_parameter(rclcpp::Parameter("action", "move"));
+         node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+       
+         rclcpp::spin(node->get_node_base_interface());
+       
+         rclcpp::shutdown();
+       
+         return 0;
+       }
 
-10. We can also delete instances, predicates or the goal:
 
-  .. code-block::
+* ``MoveAction`` is a ``plansys2::ActionExecutorClient`` (defined `here <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp>`_), that inherit from ``rclcpp_cascade_lifecycle::CascadeLifecycleNode``. This is, basically, a ``rclcpp_lifecycle::LifecycleNode``, but with an additional property: it can activate in cascade another ``rclcpp_cascade_lifecycle::CascadeLifecycleNode`` when it is active. It's useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See `this repo <https://github.com/fmrico/cascade_lifecycle>`_ for more info.
 
-       > remove instance leia
-       > remove predicate (connected entrance dinning)
-       > remove goal 
+  .. code-block:: c++
+       
+       : plansys2::ActionExecutorClient("move", 250ms)
 
-11. What we will not be able to do is execute the plan (we would do it with the ``run`` command) because there is no node 
-running right now that implements the domain actions. We will see that in the next tutorial.
+This indicates that each 250ms (4Hz) the method ``do_work()`` will be called.
+
+* ``plansys2::ActionExecutorClient`` has an API, with these relevant protected methods for the actions:
+
+  .. code-block:: c++
+       
+       const std::vector<std::string> & get_arguments();
+       void send_feedback(float completion, const std::string & status = "");
+       void finish(bool success, float completion, const std::string & status = "");
+
+``get_arguments()`` returns the list of arguments of an action. For example, when executing ``(move leia chargingroom kitchen)``, it will return 
+this vector of strings: ``{"leia", "chargingroom", "kitchen"}``
+
+This code is sending feedback of its completion. When finished, ``finish`` method indicates that the action has finished, and send back if 
+it succesfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.
+
+  .. code-block:: c++
+
+           if (progress_ < 1.0) {
+             progress_ += 0.02;
+             send_feedback(progress_, "Move running");
+           } else {
+             finish(true, 1.0, "Move completed");
+       
+             progress_ = 0.0;
+             std::cout << std::endl;
+           }
+
+* The action node, once created, must pass to inactive state to be ready to execute.
+
+  .. code-block:: c++
+
+       auto node = std::make_shared<MoveAction>();
+     
+       node->set_parameter(rclcpp::Parameter("action", "move"));
+       node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+     
+       rclcpp::spin(node->get_node_base_interface());
+
+The parameter ``action`` sets what action implements the ``node`` object. 
+
+3- Launcher
+-----------
+
+The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:
+
+  .. code-block:: python
+
+       def generate_launch_description():
+           example_dir = get_package_share_directory('plansys2_simple_example')
+           namespace = LaunchConfiguration('namespace')
+       
+           declare_namespace_cmd = DeclareLaunchArgument(
+               'namespace',
+               default_value='',
+               description='Namespace')
+       
+           plansys2_cmd = IncludeLaunchDescription(
+               PythonLaunchDescriptionSource(os.path.join(
+                   get_package_share_directory('plansys2_bringup'),
+                   'launch',
+                   'plansys2_bringup_launch_monolithic.py')),
+               launch_arguments={
+                 'model_file': example_dir + '/pddl/simple_example.pddl',
+                 'namespace': namespace
+                 }.items())
+       
+           move_cmd = Node(
+               package='plansys2_simple_example',
+               executable='move_action_node',
+               name='move_action_node',
+               namespace=namespace,
+               output='screen',
+               parameters=[])
+       
+           charge_cmd = Node(
+               package='plansys2_simple_example',
+               executable='charge_action_node',
+               name='charge_action_node',
+               namespace=namespace,
+               output='screen',
+               parameters=[])
+       
+           ask_charge_cmd = Node(
+               package='plansys2_simple_example',
+               executable='ask_charge_action_node',
+               name='ask_charge_action_node',
+               namespace=namespace,
+               output='screen',
+               parameters=[])   # Create the launch description and populate
+           ld = LaunchDescription()
+       
+           ld.add_action(declare_namespace_cmd)
+       
+           # Declare the launch options
+           ld.add_action(plansys2_cmd)
+       
+           ld.add_action(move_cmd)
+           ld.add_action(charge_cmd)
+           ld.add_action(ask_charge_cmd)
+       
+           return ld
+

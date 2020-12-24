@@ -116,9 +116,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#launch-plansys2">1- Launch PlanSys2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#package-structure">1- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#actions-implementation">2- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launcher">3- Launcher</a></li>
 </ul>
 </li>
 </ul>
@@ -208,269 +208,247 @@
 </ul>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The terminal is an application that allows interacting with PlanSys2 to test or monitor its operation.
-It is not essential to use PlanSys2 since your application is expected to manage the plans’ knowledge and execution automatically.
-Still, it is useful to know the terminal and convenient in these first tutorials.</p>
-<p>This tutorial shows how to use the terminal and the main commands and is a good starting point for working with PlanSys2.</p>
+<p>It is common for PlanSys2 to have a package that contains all the elements to plan and execute in a domain:</p>
+<ul class="simple">
+<li><p>A PDDL model.</p></li>
+<li><p>A node that implements each action, probably in different executables.</p></li>
+<li><p>A launcher that executes the actions and launches PlanSys2 with the appropriate domain.</p></li>
+<li><p>Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.</p></li>
+</ul>
+<p>In this tutorial we are going to analyze the package of the simple example shown in: ref: <cite>getting_started</cite>.</p>
 </div>
 <div class="section" id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline">¶</a></h3>
-<p>Follow the same process as in <a class="reference internal" href="../../getting_started/index.html#getting-started"><span class="std std-ref">Getting Started</span></a> for installing PlanSys2.</p>
-<p>We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
-* <a class="reference external" href="https://arxiv.org/pdf/1106.4561.pdf">PDDL 2.1</a>
-* <a class="reference external" href="http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf">An Introduction to PDDL</a>
-* <a class="reference external" href="http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf">PDDL by Example</a></p>
-<p>Download a simple PDDL domain for this tutorial. Later, you could reproduce the steps of this tutorial with your own domain:</p>
+<p>Clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget -P /tmp https://raw.githubusercontent.com/IntelligentRoboticsLabs/ros2_planning_system_examples/master/plansys2_simple_example/pddl/simple_example.pddl
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your_workspace&gt;
+git clone -b &lt;ros2-distro&gt;-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+colcon build --symlink-install
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install
 </pre></div>
 </div>
 </div></blockquote>
 </div>
-<div class="section" id="launch-plansys2">
-<h3>1- Launch PlanSys2<a class="headerlink" href="#launch-plansys2" title="Permalink to this headline">¶</a></h3>
-<p>PlanSys2 can be launched with two different launchers that implement two different execution forms: distributed or monolithic.
-In distributed form, each component of PlanSys2 runs in a different process, and to launch it, each component’s launchers are called
-in cascade. In monolithic form, all components are released in the same process.</p>
-<p>In the first steps with PlanSys2, it is irrelevant how we execute it to choose any of them. Both launchers have a parameter where
-the PDDL domain file to use is specified.</p>
+<div class="section" id="package-structure">
+<h3>1- Package structure<a class="headerlink" href="#package-structure" title="Permalink to this headline">¶</a></h3>
+<p>Go to <code class="docutils literal notranslate"><span class="pre">&lt;your_workspace&gt;/ros2_planning_system_examples/plansys2_simple_example</span></code>. This is the ROS2 package that contains the example
+of this tutorial. The structure is the usual of a ROS2 package, with a <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as usual. Besides, we have the
+next directories:</p>
+<ul class="simple">
+<li><p><strong>pddl</strong> The directory with the PDDL file that contains the domain. It is the same of the ref: <cite>terminal_usage</cite>.</p></li>
+<li><p><strong>launch</strong> It contains the launcher of this example:</p></li>
+<li><p><strong>src</strong> It contains the implementation of the three actions of the domain.</p></li>
+</ul>
+</div>
+<div class="section" id="actions-implementation">
+<h3>2- Actions implementation<a class="headerlink" href="#actions-implementation" title="Permalink to this headline">¶</a></h3>
+<p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>ask_charge</em>. It will contains a “fake” execution. Each action will take some seconds
+to execute, only incrementing a <code class="docutils literal notranslate"><span class="pre">progress</span></code> value and displaying it in the terminal. Each action in PlanSys2 is a
+<a class="reference external" href="https://design.ros2.org/articles/node_lifecycle.html">managed node</a> , also known as <em>lifecycle node</em>. When active, it will iterativelly call
+a function to perform the job. Let’s analyze the code of <em>move</em> action in <code class="docutils literal notranslate"><span class="pre">src/move_action_node.cpp</span></code>:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:<span class="o">=</span>/tmp/simple_example.PDDL
-</pre></div>
-</div>
-</div></blockquote>
-<p>If all went well, all components of PlanSys2 will have been launched and awaits requests.</p>
-</div>
-<div class="section" id="execute-plansys2-terminal">
-<h3>2- Execute PlanSys2 terminal<a class="headerlink" href="#execute-plansys2-terminal" title="Permalink to this headline">¶</a></h3>
-<p>The PlanSys2 terminal is executed by entering the following command in another terminal:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 run plansys2_terminal plansys2_terminal
-</pre></div>
-</div>
-</div></blockquote>
-<p>At that moment, an interactive shell will open in which we can enter commands. We can use the up and down arrows to
-navigate between the commands already entered or use `` Ctrl-R ‘’ as in the shell to search for commands. It also has
-autocompletion with the `` Tab ‘’ key. You can quit anytime typing “quit” or pressing <code class="docutils literal notranslate"><span class="pre">Ctrl-d</span></code>.</p>
-<p>Take into account that the state of the system is at PlanSys2 components, not in the terminal. You can close and
-reopen (or even use several terminals), and the system’s state persists. If you want to reset the system, press <code class="docutils literal notranslate"><span class="pre">Ctrl-c</span></code> in the terminal
-where you launched PlanSys2, and relaunch it.</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ROS2</span> <span class="n">Planning</span> <span class="n">System</span> <span class="n">console</span><span class="o">.</span> <span class="n">Type</span> <span class="s2">&quot;quit&quot;</span> <span class="n">to</span> <span class="n">finish</span>
-<span class="o">&gt;</span>
-</pre></div>
-</div>
-</div></blockquote>
-</div>
-<div class="section" id="interactive-session">
-<h3>2- Interactive session<a class="headerlink" href="#interactive-session" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic simple">
-<li><p>The first thing is to check the domain that is being used:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; get domain
+<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MoveAction</span> <span class="o">:</span> <span class="k">public</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="n">MoveAction</span><span class="p">()</span>
+  <span class="o">:</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="n">ms</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="p">}</span>
 
-( define ( domain simple )
-( :requirements :strips :adl :typing :durative-actions :fluents )
-( :types
-  robot - object
-  room - object
-)
-( :predicates
-  ( robot_at ?robot0 - robot ?room1 - room )
-  ( connected ?room0 - room ?room1 - room )
-  ( battery_full ?robot0 - robot )
+<span class="k">private</span><span class="o">:</span>
+  <span class="kt">void</span> <span class="n">do_work</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">progress_</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">progress_</span> <span class="o">+=</span> <span class="mf">0.02</span><span class="p">;</span>
+      <span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span> <span class="s">&quot;Move running&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;Move completed&quot;</span><span class="p">);</span>
 
-  ...
-</pre></div>
-</div>
-</div></blockquote>
-<ol class="arabic simple" start="2">
-<li><p>To see what types of instances the model contains, type:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">model</span> <span class="n">types</span>
-<span class="n">Types</span><span class="p">:</span> <span class="mi">2</span>
-          <span class="n">robot</span>
-          <span class="n">room</span>
-</pre></div>
-</div>
-</div></blockquote>
-<ol class="arabic simple" start="3">
-<li><p>Use other variations of <code class="docutils literal notranslate"><span class="pre">get</span> <span class="pre">model</span></code> to get more information of the domain:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">model</span> <span class="n">actions</span>
-<span class="n">Actions</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="n">move</span> <span class="p">(</span><span class="n">durative</span> <span class="n">action</span><span class="p">)</span>
-  <span class="n">askcharge</span> <span class="p">(</span><span class="n">durative</span> <span class="n">action</span><span class="p">)</span>
-  <span class="n">charge</span> <span class="p">(</span><span class="n">durative</span> <span class="n">action</span><span class="p">)</span>
+      <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
 
-<span class="o">&gt;</span> <span class="n">get</span> <span class="n">model</span> <span class="n">predicates</span>
-<span class="n">Predicates</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="n">robot_at</span>
-  <span class="n">connected</span>
-  <span class="n">battery_full</span>
-  <span class="n">battery_low</span>
-  <span class="n">charging_point_at</span>
-</pre></div>
-</div>
-</div></blockquote>
-<ol class="arabic simple" start="4">
-<li><p>It is also possible to get the details of a predicate or an action:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; get model predicate robot_at
-Parameters: 2
- robot - ?robot0
- room - ?room1
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">\e[K&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Moving ... [&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">progress_</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;%]  &quot;</span> <span class="o">&lt;&lt;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+  <span class="p">}</span>
 
-&gt; get model action move
-Type: durative-action
-Parameters: 3
- ?0 - robot
- ?1 - room
- ?2 - room
-AtStart requirements: (and (connected ?1 ?2)(robot_at ?0 ?1))
-OverAll requirements: (and (battery_full ?0))
-AtEnd requirements:
-AtStart effect: (and (not (robot_at ?0 ?1)))
-AtEnd effect: (and (robot_at ?0 ?2))
-</pre></div>
-</div>
-</div></blockquote>
-<p>5. So far, we have seen how to inspect the model, which remains unchanged during the
-execution of PlanSys2. We could say that it is the static part of the planning ingredients.
-The other ingredient is the problem, which contains the instances, grounded (not generic as in
-the domain, but already with instances) predicates, and goals. We will check that it is empty for now.</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">instances</span>
-<span class="n">Instances</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="kt">float</span> <span class="n">progress_</span><span class="p">;</span>
+<span class="p">};</span>
 
-<span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">predicates</span>
-<span class="n">Predicates</span><span class="p">:</span> <span class="mi">0</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+  <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
 
-<span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">goal</span>
-<span class="n">Goal</span><span class="p">:</span>
+  <span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="s">&quot;move&quot;</span><span class="p">));</span>
+  <span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+
+  <span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+
+  <span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div></blockquote>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MoveAction</span></code> is a <code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> (defined <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp">here</a>), that inherit from <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code>. This is, basically, a <code class="docutils literal notranslate"><span class="pre">rclcpp_lifecycle::LifecycleNode</span></code>, but with an additional property: it can activate in cascade another <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code> when it is active. It’s useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See <a class="reference external" href="https://github.com/fmrico/cascade_lifecycle">this repo</a> for more info.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">:</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="n">ms</span><span class="p">)</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>6. First, let’s add instances. If you analyze the domain, we want a robot to be able to move between rooms. For
-this, the robot must have a battery, and the rooms must be connected. Therefore, we need rooms and a robot:</p>
+</li>
+</ul>
+<p>This indicates that each 250ms (4Hz) the method <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> has an API, with these relevant protected methods for the actions:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">get_arguments</span><span class="p">();</span>
+<span class="kt">void</span> <span class="nf">send_feedback</span><span class="p">(</span><span class="kt">float</span> <span class="n">completion</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">finish</span><span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="kt">float</span> <span class="n">completion</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">get_arguments()</span></code> returns the list of arguments of an action. For example, when executing <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">leia</span> <span class="pre">chargingroom</span> <span class="pre">kitchen)</span></code>, it will return
+this vector of strings: <code class="docutils literal notranslate"><span class="pre">{&quot;leia&quot;,</span> <span class="pre">&quot;chargingroom&quot;,</span> <span class="pre">&quot;kitchen&quot;}</span></code></p>
+<p>This code is sending feedback of its completion. When finished, <code class="docutils literal notranslate"><span class="pre">finish</span></code> method indicates that the action has finished, and send back if
+it succesfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">leia</span> <span class="n">robot</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">entrance</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">kitchen</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">bedroom</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">dinning</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">bathroom</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">chargingroom</span> <span class="n">room</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">progress_</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">progress_</span> <span class="o">+=</span> <span class="mf">0.02</span><span class="p">;</span>
+  <span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span> <span class="s">&quot;Move running&quot;</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;Move completed&quot;</span><span class="p">);</span>
+
+  <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>If no errros, these instances can be checked by typing:</p>
+<ul>
+<li><p>The action node, once created, must pass to inactive state to be ready to execute.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="s">&quot;move&quot;</span><span class="p">));</span>
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+
+<span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">action</span></code> sets what action implements the <code class="docutils literal notranslate"><span class="pre">node</span></code> object.</p>
+</div>
+<div class="section" id="launcher">
+<h3>3- Launcher<a class="headerlink" href="#launcher" title="Permalink to this headline">¶</a></h3>
+<p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">instances</span>
-<span class="n">Instances</span><span class="p">:</span> <span class="mi">7</span>
- <span class="n">leia</span>    <span class="n">robot</span>
- <span class="n">entrance</span>        <span class="n">room</span>
- <span class="n">kitchen</span> <span class="n">room</span>
- <span class="n">bedroom</span> <span class="n">room</span>
- <span class="n">dinning</span> <span class="n">room</span>
- <span class="n">bathroom</span>        <span class="n">room</span>
- <span class="n">chargingroom</span>    <span class="n">room</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_launch_description</span><span class="p">():</span>
+    <span class="n">example_dir</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">)</span>
+    <span class="n">namespace</span> <span class="o">=</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">)</span>
+
+    <span class="n">declare_namespace_cmd</span> <span class="o">=</span> <span class="n">DeclareLaunchArgument</span><span class="p">(</span>
+        <span class="s1">&#39;namespace&#39;</span><span class="p">,</span>
+        <span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Namespace&#39;</span><span class="p">)</span>
+
+    <span class="n">plansys2_cmd</span> <span class="o">=</span> <span class="n">IncludeLaunchDescription</span><span class="p">(</span>
+        <span class="n">PythonLaunchDescriptionSource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">&#39;plansys2_bringup&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;launch&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;plansys2_bringup_launch_monolithic.py&#39;</span><span class="p">)),</span>
+        <span class="n">launch_arguments</span><span class="o">=</span><span class="p">{</span>
+          <span class="s1">&#39;model_file&#39;</span><span class="p">:</span> <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">&#39;/pddl/simple_example.pddl&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;namespace&#39;</span><span class="p">:</span> <span class="n">namespace</span>
+          <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+    <span class="n">move_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+        <span class="n">package</span><span class="o">=</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">,</span>
+        <span class="n">executable</span><span class="o">=</span><span class="s1">&#39;move_action_node&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;move_action_node&#39;</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+        <span class="n">output</span><span class="o">=</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="n">charge_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+        <span class="n">package</span><span class="o">=</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">,</span>
+        <span class="n">executable</span><span class="o">=</span><span class="s1">&#39;charge_action_node&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;charge_action_node&#39;</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+        <span class="n">output</span><span class="o">=</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="n">ask_charge_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+        <span class="n">package</span><span class="o">=</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">,</span>
+        <span class="n">executable</span><span class="o">=</span><span class="s1">&#39;ask_charge_action_node&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ask_charge_action_node&#39;</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+        <span class="n">output</span><span class="o">=</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>   <span class="c1"># Create the launch description and populate</span>
+    <span class="n">ld</span> <span class="o">=</span> <span class="n">LaunchDescription</span><span class="p">()</span>
+
+    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">declare_namespace_cmd</span><span class="p">)</span>
+
+    <span class="c1"># Declare the launch options</span>
+    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">plansys2_cmd</span><span class="p">)</span>
+
+    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">move_cmd</span><span class="p">)</span>
+    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">charge_cmd</span><span class="p">)</span>
+    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">ask_charge_cmd</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ld</span>
 </pre></div>
 </div>
 </div></blockquote>
-<ol class="arabic simple" start="7">
-<li><p>To add predicates, we type:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">entrance</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">entrance</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">bathroom</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">bathroom</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">chargingroom</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">charging_point_at</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">battery_low</span> <span class="n">leia</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">robot_at</span> <span class="n">leia</span> <span class="n">entrance</span><span class="p">)</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>Let’s check it:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">predicates</span>
-<span class="n">Predicates</span><span class="p">:</span> <span class="mi">13</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">entrance</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">entrance</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">bathroom</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">bathroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">chargingroom</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">charging_point_at</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">battery_low</span> <span class="n">leia</span><span class="p">)</span>
-<span class="p">(</span><span class="n">robot_at</span> <span class="n">leia</span> <span class="n">entrance</span><span class="p">)</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>8. The predicates and instances previously added to the problem are the knowledge used to
-generate the plan. Also, we need to have an objective of our planning, which is a logic expression
-to end up being true. It is usually a predicate that we want to add to the knowledge:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nb">set</span> <span class="n">goal</span> <span class="p">(</span><span class="ow">and</span><span class="p">(</span><span class="n">robot_at</span> <span class="n">leia</span> <span class="n">bathroom</span><span class="p">))</span>
-</pre></div>
-</div>
-</div></blockquote>
-<ol class="arabic simple" start="9">
-<li><p>At this time we can ask that the plan be calculated to obtain this goal:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">plan</span>
-<span class="n">plan</span><span class="p">:</span>
-<span class="mi">0</span>        <span class="p">(</span><span class="n">askcharge</span> <span class="n">leia</span> <span class="n">entrance</span> <span class="n">chargingroom</span><span class="p">)</span>  <span class="mi">5</span>
-<span class="mf">0.001</span>    <span class="p">(</span><span class="n">charge</span> <span class="n">leia</span> <span class="n">chargingroom</span><span class="p">)</span>      <span class="mi">5</span>
-<span class="mf">5.002</span>    <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">chargingroom</span> <span class="n">kitchen</span><span class="p">)</span>        <span class="mi">5</span>
-<span class="mf">10.003</span>   <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">kitchen</span> <span class="n">dinning</span><span class="p">)</span>     <span class="mi">5</span>
-<span class="mf">15.004</span>   <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">dinning</span> <span class="n">bedroom</span><span class="p">)</span>     <span class="mi">5</span>
-<span class="mf">20.005</span>   <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">bedroom</span> <span class="n">bathroom</span><span class="p">)</span>    <span class="mi">5</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>To create the plan, the first thing to do is generate two files: <code class="docutils literal notranslate"><span class="pre">`/tmp/domain.pddl`</span></code> and <code class="docutils literal notranslate"><span class="pre">`/tmp/problem.pddl`</span></code>.
-You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ros2</span> <span class="n">run</span> <span class="n">popf</span> <span class="n">popf</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">domain</span><span class="o">.</span><span class="n">pddl</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">problem</span><span class="o">.</span><span class="n">pddl</span>
-</pre></div>
-</div>
-</div></blockquote>
-<ol class="arabic simple" start="10">
-<li><p>We can also delete instances, predicates or the goal:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">remove</span> <span class="n">instance</span> <span class="n">leia</span>
-<span class="o">&gt;</span> <span class="n">remove</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">entrance</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="n">remove</span> <span class="n">goal</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>11. What we will not be able to do is execute the plan (we would do it with the <code class="docutils literal notranslate"><span class="pre">run</span></code> command) because there is no node
-running right now that implements the domain actions. We will see that in the next tutorial.</p>
 </div>
 </div>
 </div>
