@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Terminal Usage &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
+  <title>The first planning package &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
   
 
   
@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="The first planning package" href="simple_example.html" />
-    <link rel="prev" title="Tutorials" href="../index.html" />
+    <link rel="next" title="About and Contact" href="../../about/index.html" />
+    <link rel="prev" title="Terminal Usage" href="terminal_usage.html" />
 
 <link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
 
@@ -101,24 +101,24 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Terminal Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The first planning package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#interactive-session">2- Interactive session</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="simple_example.html">The first planning package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="simple_example.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simple_example.html#tutorial-steps">Tutorial Steps</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="simple_example.html#requisites">0- Requisites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_example.html#launch-plansys2">1- Launch PlanSys2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_example.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_example.html#interactive-session">2- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -183,7 +183,7 @@
         
           <li><a href="../index.html">Tutorials</a> &raquo;</li>
         
-      <li>Terminal Usage</li>
+      <li>The first planning package</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -200,8 +200,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="terminal-usage">
-<span id="id1"></span><h1>Terminal Usage<a class="headerlink" href="#terminal-usage" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="the-first-planning-package">
+<span id="simple-example"></span><h1>The first planning package<a class="headerlink" href="#the-first-planning-package" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="#overview">Overview</a></p></li>
 <li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
@@ -218,12 +218,10 @@ Still, it is useful to know the terminal and convenient in these first tutorials
 <div class="section" id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline">¶</a></h3>
 <p>Follow the same process as in <a class="reference internal" href="../../getting_started/index.html#getting-started"><span class="std std-ref">Getting Started</span></a> for installing PlanSys2.</p>
-<p>We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://arxiv.org/pdf/1106.4561.pdf">PDDL 2.1</a></p></li>
-<li><p><a class="reference external" href="http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf">An Introduction to PDDL</a></p></li>
-<li><p><a class="reference external" href="http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf">PDDL by Example</a></p></li>
-</ul>
+<p>We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
+* <a class="reference external" href="https://arxiv.org/pdf/1106.4561.pdf">PDDL 2.1</a>
+* <a class="reference external" href="http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf">An Introduction to PDDL</a>
+* <a class="reference external" href="http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf">PDDL by Example</a></p>
 <p>Download a simple PDDL domain for this tutorial. Later, you could reproduce the steps of this tutorial with your own domain:</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget -P /tmp https://raw.githubusercontent.com/IntelligentRoboticsLabs/ros2_planning_system_examples/master/plansys2_simple_example/pddl/simple_example.pddl
