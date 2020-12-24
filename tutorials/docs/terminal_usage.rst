@@ -24,9 +24,10 @@ Tutorial Steps
 Follow the same process as in :ref:`getting_started` for installing PlanSys2. 
 
 We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
-- `PDDL 2.1 <https://arxiv.org/pdf/1106.4561.pdf>`_
-- `An Introduction to PDDL <http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf>`_
-- `PDDL by Example <http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf>`_
+
+* `PDDL 2.1 <https://arxiv.org/pdf/1106.4561.pdf>`_
+* `An Introduction to PDDL <http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf>`_
+* `PDDL by Example <http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf>`_
 
 Download a simple PDDL domain for this tutorial. Later, you could reproduce the steps of this tutorial with your own domain:
 
