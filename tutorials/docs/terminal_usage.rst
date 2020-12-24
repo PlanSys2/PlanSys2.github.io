@@ -9,7 +9,11 @@ Terminal Usage
 Overview
 ========
 
-This tutorial 
+The terminal is an application that allows interacting with PlanSys2 to test or monitor its operation. 
+It is not essential to use PlanSys2 since your application is expected to manage the plans' knowledge and execution automatically. 
+Still, it is useful to know the terminal and convenient in these first tutorials.
+
+This tutorial shows how to use the terminal and the main commands and is a good starting point for working with PlanSys2.
 
 Tutorial Steps
 ==============
@@ -17,11 +21,250 @@ Tutorial Steps
 0- Requisites
 -------------
 
-Follow the same process as in :ref:`getting_started` for installing and setting up a robot for hardware testing or simulation, as applicable. Ensure ROS 2, Navigation2, and Gazebo are installed.
+Follow the same process as in :ref:`getting_started` for installing PlanSys2. 
 
-1- Interactive session
+We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
+- `PDDL 2.1 <https://arxiv.org/pdf/1106.4561.pdf>`_
+- `An Introduction to PDDL <http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf>`_
+- `PDDL by Example <http://www.cs.toronto.edu/~sheila/384/w11/Assignments/A3/veloso-PDDL_by_Example.pdf>`_
+
+Download a simple PDDL domain for this tutorial. Later, you could reproduce the steps of this tutorial with your own domain:
+
+  .. code-block:: bash
+
+      wget -P /tmp https://raw.githubusercontent.com/IntelligentRoboticsLabs/ros2_planning_system_examples/master/plansys2_simple_example/pddl/simple_example.pddl
+
+
+1- Launch PlanSys2
+------------------
+
+PlanSys2 can be launched with two different launchers that implement two different execution forms: distributed or monolithic. 
+In distributed form, each component of PlanSys2 runs in a different process, and to launch it, each component's launchers are called 
+in cascade. In monolithic form, all components are released in the same process.
+
+In the first steps with PlanSys2, it is irrelevant how we execute it to choose any of them. Both launchers have a parameter where 
+the PDDL domain file to use is specified.
+
+
+  .. code-block:: bash
+
+      ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:=/tmp/simple_example.PDDL
+
+If all went well, all components of PlanSys2 will have been launched and awaits requests.
+
+2- Execute PlanSys2 terminal
+----------------------------
+
+The PlanSys2 terminal is executed by entering the following command in another terminal:
+
+  .. code-block:: bash
+
+      ros2 run plansys2_terminal plansys2_terminal 
+
+At that moment, an interactive shell will open in which we can enter commands. We can use the up and down arrows to 
+navigate between the commands already entered or use `` Ctrl-R '' as in the shell to search for commands. It also has 
+autocompletion with the `` Tab '' key. You can quit anytime typing "quit" or pressing ``Ctrl-d``.
+
+Take into account that the state of the system is at PlanSys2 components, not in the terminal. You can close and 
+reopen (or even use several terminals), and the system's state persists. If you want to reset the system, press ``Ctrl-c`` in the terminal
+where you launched PlanSys2, and relaunch it.
+
+  .. code-block::
+
+      ROS2 Planning System console. Type "quit" to finish
+      > 
+
+2- Interactive session
 ----------------------
 
-STVL can be installed in ROS 2 via the ROS Build Farm:
+1. The first thing is to check the domain that is being used:
 
-- ``sudo apt install ros-<ros2-distro>-spatio-temporal-voxel-layer``
+  .. code-block::
+
+      > get domain
+
+      ( define ( domain simple )
+      ( :requirements :strips :adl :typing :durative-actions :fluents )
+      ( :types
+      	robot - object
+      	room - object
+      )
+      ( :predicates
+      	( robot_at ?robot0 - robot ?room1 - room )
+      	( connected ?room0 - room ?room1 - room )
+      	( battery_full ?robot0 - robot )
+
+        ...
+
+2. To see what types of instances the model contains, type:
+
+  .. code-block::
+
+      > get model types
+      Types: 2
+	        robot
+	        room
+
+3. Use other variations of ``get model`` to get more information of the domain:
+
+  .. code-block::
+
+      > get model actions
+      Actions: 0
+      	move (durative action)
+      	askcharge (durative action)
+      	charge (durative action)
+      
+      > get model predicates 
+      Predicates: 5
+      	robot_at
+      	connected
+      	battery_full
+      	battery_low
+      	charging_point_at
+
+4. It is also possible to get the details of a predicate or an action:
+
+  .. code-block::
+      
+       > get model predicate robot_at
+       Parameters: 2
+       	robot - ?robot0
+       	room - ?room1
+       
+       > get model action move
+       Type: durative-action
+       Parameters: 3
+       	?0 - robot
+       	?1 - room
+       	?2 - room
+       AtStart requirements: (and (connected ?1 ?2)(robot_at ?0 ?1))
+       OverAll requirements: (and (battery_full ?0))
+       AtEnd requirements: 
+       AtStart effect: (and (not (robot_at ?0 ?1)))
+       AtEnd effect: (and (robot_at ?0 ?2))
+
+5. So far, we have seen how to inspect the model, which remains unchanged during the 
+execution of PlanSys2. We could say that it is the static part of the planning ingredients. 
+The other ingredient is the problem, which contains the instances, grounded (not generic as in 
+the domain, but already with instances) predicates, and goals. We will check that it is empty for now.
+
+  .. code-block::
+
+       > get problem instances
+       Instances: 0
+       
+       > get problem predicates
+       Predicates: 0
+       
+       > get problem goal
+       Goal: 
+
+6. First, let's add instances. If you analyze the domain, we want a robot to be able to move between rooms. For 
+this, the robot must have a battery, and the rooms must be connected. Therefore, we need rooms and a robot:
+
+  .. code-block::
+
+       > set instance leia robot
+       > set instance entrance room
+       > set instance kitchen room
+       > set instance bedroom room
+       > set instance dinning room
+       > set instance bathroom room
+       > set instance chargingroom room
+
+If no errros, these instances can be checked by typing:
+
+  .. code-block::
+
+       > get problem instances
+       Instances: 7
+       	leia	robot
+       	entrance	room
+       	kitchen	room
+       	bedroom	room
+       	dinning	room
+       	bathroom	room
+       	chargingroom	room
+
+7. To add predicates, we type:
+
+  .. code-block::
+
+       > set predicate (connected entrance dinning)
+       > set predicate (connected dinning entrance)
+       > 
+       > set predicate (connected dinning kitchen)
+       > set predicate (connected kitchen dinning)
+       > 
+       > set predicate (connected dinning bedroom)
+       > set predicate (connected bedroom dinning)
+       > 
+       > set predicate (connected bathroom bedroom)
+       > set predicate (connected bedroom bathroom)
+       > 
+       > set predicate (connected chargingroom kitchen)
+       > set predicate (connected kitchen chargingroom)
+       > 
+       > set predicate (charging_point_at chargingroom)
+       > set predicate (battery_low leia)
+       > set predicate (robot_at leia entrance)
+
+Let's check it:
+
+  .. code-block::
+
+       > get problem predicates
+       Predicates: 13
+       (connected entrance dinning)
+       (connected dinning entrance)
+       (connected dinning kitchen)
+       (connected kitchen dinning)
+       (connected dinning bedroom)
+       (connected bedroom dinning)
+       (connected bathroom bedroom)
+       (connected bedroom bathroom)
+       (connected chargingroom kitchen)
+       (connected kitchen chargingroom)
+       (charging_point_at chargingroom)
+       (battery_low leia)
+       (robot_at leia entrance)
+
+8. The predicates and instances previously added to the problem are the knowledge used to 
+generate the plan. Also, we need to have an objective of our planning, which is a logic expression 
+to end up being true. It is usually a predicate that we want to add to the knowledge:
+
+  .. code-block::
+
+       > set goal (and(robot_at leia bathroom))
+
+9. At this time we can ask that the plan be calculated to obtain this goal:
+
+  .. code-block::
+
+       > get plan
+       plan: 
+       0	(askcharge leia entrance chargingroom)	5
+       0.001	(charge leia chargingroom)	5
+       5.002	(move leia chargingroom kitchen)	5
+       10.003	(move leia kitchen dinning)	5
+       15.004	(move leia dinning bedroom)	5
+       20.005	(move leia bedroom bathroom)	5
+
+To create the plan, the first thing to do is generate two files: ```/tmp/domain.pddl``` and ```/tmp/problem.pddl```. 
+You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:
+
+  .. code-block::
+       
+       ros2 run popf popf /tmp/domain.pddl /tmp/problem.pddl
+
+10. We can also delete instances, predicates or the goal:
+
+  .. code-block::
+
+       > remove instance leia
+       > remove predicate (connected entrance dinning)
+       > remove goal 
+
+11. What we will not be able to do is execute the plan (we would do it with the ``run`` command) because there is no node 
+running right now that implements the domain actions. We will see that in the next tutorial.
