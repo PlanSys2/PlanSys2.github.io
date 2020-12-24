@@ -9,4 +9,5 @@ PlanSys2 Tutorials
    :maxdepth: 1
 
    docs/terminal_usage.rst
+   docs/simple_example.rst
 

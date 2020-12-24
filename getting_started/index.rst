@@ -24,7 +24,7 @@ Installation
 Running the Example
 *******************
 
-1. Clone in your workspace the `|PN| examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
+1. Clone in your workspace the |PN| `examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
 
   .. code-block:: bash
 
