@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="About and Contact" href="../../about/index.html" />
+    <link rel="next" title="Using a planning controller" href="controller_example.html" />
     <link rel="prev" title="Terminal Usage" href="terminal_usage.html" />
 
 <link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
@@ -116,9 +116,23 @@
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#package-structure">1- Package structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#actions-implementation">2- Actions implementation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#launcher">3- Launcher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#launcher">4- Launcher</a></li>
 </ul>
 </li>
 </ul>
@@ -215,7 +229,7 @@
 <li><p>A launcher that executes the actions and launches PlanSys2 with the appropriate domain.</p></li>
 <li><p>Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.</p></li>
 </ul>
-<p>In this tutorial we are going to analyze the package of the simple example shown in: ref: <cite>getting_started</cite>.</p>
+<p>In this tutorial we are going to run again and to analyze the package of the simple example shown in: ref: <cite>getting_started</cite>.</p>
 </div>
 <div class="section" id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h2>
@@ -232,8 +246,72 @@ colcon build --symlink-install
 </div>
 </div></blockquote>
 </div>
+<div class="section" id="running-the-example">
+<h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Open a new terminal and run PlanSys2:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch plansys2_simple_example plansys2_simple_example_launch.py
+</pre></div>
+</div>
+<p>This launch PlanSys2 this <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
+and some processes that implements a fake version of the domain’s actions.</p>
+</div></blockquote>
+</li>
+<li><p>Open a new terminal and run the PlanSys2 terminal:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 run plansys2_terminal plansys2_terminal
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In the PlanSys2 terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:</p>
+<blockquote>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">instance</span> <span class="nv">leia</span> <span class="nv">robot</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">entrance</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">kitchen</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bedroom</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">dinning</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bathroom</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">chargingroom</span> <span class="nb">room</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">entrance</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bathroom</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">bathroom</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">chargingroom</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">chargingroom</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">charging_point_at</span> <span class="nv">chargingroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">battery_low</span> <span class="nv">leia</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">bathroom</span><span class="p">))</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In the PlanSys2 terminal shell, run the plan:</p>
+<blockquote>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nv">run</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>In the PlanSys2 terminal you’ll be able to see the plan. In both terminal, you’ll see the current actions executed and its level of completion. As
+soon as the plan execution finished, the terminal will be available again.</p>
+</div>
 <div class="section" id="package-structure">
-<h3>1- Package structure<a class="headerlink" href="#package-structure" title="Permalink to this headline">¶</a></h3>
+<h3>2- Package structure<a class="headerlink" href="#package-structure" title="Permalink to this headline">¶</a></h3>
 <p>Go to <code class="docutils literal notranslate"><span class="pre">&lt;your_workspace&gt;/ros2_planning_system_examples/plansys2_simple_example</span></code>. This is the ROS2 package that contains the example
 of this tutorial. The structure is the usual of a ROS2 package, with a <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as usual. Besides, we have the
 next directories:</p>
@@ -244,8 +322,8 @@ next directories:</p>
 </ul>
 </div>
 <div class="section" id="actions-implementation">
-<h3>2- Actions implementation<a class="headerlink" href="#actions-implementation" title="Permalink to this headline">¶</a></h3>
-<p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>ask_charge</em>. It will contains a “fake” execution. Each action will take some seconds
+<h3>3- Actions implementation<a class="headerlink" href="#actions-implementation" title="Permalink to this headline">¶</a></h3>
+<p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>ask_charge</em>. It will contains a “fake” implementation. Each node that implements an action is called <em>action performer</em>. Each action will take some seconds
 to execute, only incrementing a <code class="docutils literal notranslate"><span class="pre">progress</span></code> value and displaying it in the terminal. Each action in PlanSys2 is a
 <a class="reference external" href="https://design.ros2.org/articles/node_lifecycle.html">managed node</a> , also known as <em>lifecycle node</em>. When active, it will iterativelly call
 a function to perform the job. Let’s analyze the code of <em>move</em> action in <code class="docutils literal notranslate"><span class="pre">src/move_action_node.cpp</span></code>:</p>
@@ -389,10 +467,63 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 <p>The parameter <code class="docutils literal notranslate"><span class="pre">action</span></code> sets what action implements the <code class="docutils literal notranslate"><span class="pre">node</span></code> object.</p>
 </div>
 <div class="section" id="launcher">
-<h3>3- Launcher<a class="headerlink" href="#launcher" title="Permalink to this headline">¶</a></h3>
+<h3>4- Launcher<a class="headerlink" href="#launcher" title="Permalink to this headline">¶</a></h3>
 <p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_launch_description</span><span class="p">():</span>
+<div><div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_launch_description</span><span class="p">():</span>
     <span class="n">example_dir</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">)</span>
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">)</span>
 
@@ -447,7 +578,7 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 
     <span class="k">return</span> <span class="n">ld</span>
 </pre></div>
-</div>
+</td></tr></table></div>
 </div></blockquote>
 </div>
 </div>

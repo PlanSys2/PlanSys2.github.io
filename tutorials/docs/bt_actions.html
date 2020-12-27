@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Implement actions as Behavior Trees &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="About and Contact" href="../../about/index.html" />
+    <link rel="prev" title="Using a planning controller" href="controller_example.html" />
+
+<link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> ROS2 Planning System 2
+          
+
+          
+            
+            <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="simple_example.html">The first planning package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS2 Planning System 2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/ros2_planning_system.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Implement actions as Behavior Trees</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="implement-actions-as-behavior-trees">
+<span id="bt-actions"></span><h1>Implement actions as Behavior Trees<a class="headerlink" href="#implement-actions-as-behavior-trees" title="Permalink to this headline">¶</a></h1>
+<h1 align="center">
+  <div>
+    <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
+      <iframe width="450" height="300" src="https://www.youtube.com/embed/nLp4uzN5NMs?autoplay=1&mute=1&t=12870s" frameborder="1" allowfullscreen></iframe>
+    </div>
+  </div>
+</h1><ul class="simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
+</ul>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)">Behavior Trees</a> are a great way to implement actions. Instead of implementing an action, we specify an xml file with the structure of a behavior
+Tree and implement the tree nodes. This allows you to easily modify the implementation of an action, and reuse the nodes that are part of it in different behavior trees.</p>
+<p>In PlanSys2 we will use the <a class="reference external" href="https://www.behaviortree.dev/">BehaviorTree.CPP</a> package from <a class="reference external" href="https://github.com/facontidavide">Davide Faconti</a>. Read the tutorials there to
+learn more control nodes and so more sohisticated actions.</p>
+<p>In this tutorial we are going to see an example of a car assembly factory. The robots in this factory must transport the parts of a car from the areas where they are stored to the assembly area, in order to assemble a car.</p>
+<a class="reference internal image-reference" href="../../_images/carfactory.png"><img alt="../../_images/carfactory.png" class="align-center" src="../../_images/carfactory.png" style="width: 600px;" /></a>
+<p>You can find the PDDL domain of this tutorial <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_bt_example/pddl/bt_example.pddl">in this file</a>.</p>
+</div>
+<div class="section" id="tutorial-steps">
+<h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requisites">
+<h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline">¶</a></h3>
+<p>If you haven’t done yet, clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your_workspace&gt;
+git clone -b &lt;ros2-distro&gt;-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+colcon build --symlink-install
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="running-the-example">
+<h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Open a new terminal and run PlanSys2:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch plansys2_bt_example plansys2_bt_example_launch.py
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>You have two options: you can use the real Nav2 package with a simulation or using a Nav2 fake node:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch nav2_bringup tb3_simulation_launch.py  <span class="c1"># For real Nav2 and Simulation</span>
+ros2 run plansys2_bt_example nav2_sim_node  <span class="c1"># For fake Nav2 node</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In the PlanSys2 terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:</p>
+<blockquote>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">r2d2</span> <span class="nv">robot</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheels_zone</span> <span class="nv">zone</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheels_zone</span> <span class="nv">zone</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_zone</span> <span class="nv">zone</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">assembly_zone</span> <span class="nv">zone</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_1</span> <span class="nv">piece</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_1</span> <span class="nv">piece</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_1</span> <span class="nv">piece</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_2</span> <span class="nv">piece</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_2</span> <span class="nv">piece</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_2</span> <span class="nv">piece</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_3</span> <span class="nv">piece</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_3</span> <span class="nv">piece</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_3</span> <span class="nv">piece</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_1</span> <span class="nb">car</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_2</span> <span class="nb">car</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_3</span> <span class="nb">car</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">r2d2</span> <span class="nv">wheels_zone</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">is_assembly_zone</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">wheel_1</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">body_car_1</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">steering_wheel_1</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_wheel</span> <span class="nv">wheel_1</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_body_car</span> <span class="nv">body_car_1</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_steering_wheel</span> <span class="nv">steering_wheel_1</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">wheel_1</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">body_car_1</span><span class="p">)</span>
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">steering_wheel_1</span><span class="p">)</span>
+
+<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">car_assembled</span> <span class="nv">car_1</span><span class="p">))</span>
+<span class="nb">&gt;</span> <span class="nv">run</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="using-behavior-trees">
+<h3>2- Using Behavior Trees<a class="headerlink" href="#using-behavior-trees" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="../../_images/demoDiag2.png"><img alt="../../_images/demoDiag2.png" class="align-center" src="../../_images/demoDiag2.png" style="width: 600px;" /></a>
+<p>In the PDDL domain we have three actions: assemble, move and transport. We will implement the assemble action without using BTs, as we have done in the previous tutorials.
+We will implement the other two PDDL actions, <code class="docutils literal notranslate"><span class="pre">Move</span></code> and <code class="docutils literal notranslate"><span class="pre">Transport</span></code>, using BTs. For this, each action will have a BT encoded in an XML file that. This XML file contains
+the control structures (sequences, fallbacks, …) and the nodes that carry out the action. In this tutorial, 4 BT nodes have been implemented (<code class="docutils literal notranslate"><span class="pre">Move</span></code>, <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>,
+<code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code>) that can be included in the BTs of the PDDL actions.</p>
+<p>In PlanSys2 there is a generic executable that any BT can run. This executable is `` bt_action_node` from the package `` plansys2_bt_actions``. To use it, we should add it in
+the launch file, specifying as parametersthe XML file that contains the BT and the PDDL action name:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">move_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+    <span class="n">package</span><span class="o">=</span><span class="s1">&#39;plansys2_bt_actions&#39;</span><span class="p">,</span>
+    <span class="n">executable</span><span class="o">=</span><span class="s1">&#39;bt_action_node&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;move&#39;</span><span class="p">,</span>
+    <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
+      <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">&#39;/config/params.yaml&#39;</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="s1">&#39;action_name&#39;</span><span class="p">:</span> <span class="s1">&#39;move&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bt_xml_file&#39;</span><span class="p">:</span> <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">&#39;/behavior_trees_xml/move.xml&#39;</span>
+      <span class="p">}</span>
+    <span class="p">])</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">params.yaml</span></code> contains the BT nodes that will be used in the BT. As we implement each BT as plugins, it is necessary to specify each custom node used. We can also include
+any parameter needed by the specific BT node. In this case, the coordinates of each room is specified to the BT node <code class="docutils literal notranslate"><span class="pre">move</span></code> using parameters:</p>
+<blockquote>
+<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">move</span><span class="p">:</span>
+  <span class="nt">ros__parameters</span><span class="p">:</span>
+    <span class="nt">plugins</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">plansys2_move_bt_node</span>
+    <span class="nt">waypoints</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;wheels_zone&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;steering_wheels_zone&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;body_car_zone&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;assembly_zone&quot;</span><span class="p p-Indicator">]</span>
+    <span class="nt">waypoint_coords</span><span class="p">:</span>
+      <span class="nt">wheels_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span> <span class="nv">-2.0</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
+      <span class="nt">steering_wheels_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">1.8</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
+      <span class="nt">body_car_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span> <span class="nv">2.0</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
+      <span class="nt">assembly_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">-2.0</span><span class="p p-Indicator">,</span> <span class="nv">-0.4</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="section" id="pddl-action-move">
+<h4>2.1 PDDL Action move<a class="headerlink" href="#pddl-action-move" title="Permalink to this headline">¶</a></h4>
+<p>This is the BT for the <strong>move</strong> action. The sequence is not necessary, but it is mantained in the tutorial to be coherent with the available code.
+It is composed only by one BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code> (do not confuse with PDDL action <code class="docutils literal notranslate"><span class="pre">move</span></code>).</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;root</span> <span class="na">main_tree_to_execute =</span> <span class="s">&quot;MainTree&quot;</span> <span class="nt">&gt;</span>
+    <span class="nt">&lt;BehaviorTree</span> <span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+       <span class="nt">&lt;Sequence</span> <span class="na">name=</span><span class="s">&quot;root_sequence&quot;</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;Move</span>    <span class="na">name=</span><span class="s">&quot;move&quot;</span> <span class="na">goal=</span><span class="s">&quot;${arg2}&quot;</span><span class="nt">/&gt;</span>
+       <span class="nt">&lt;/Sequence&gt;</span>
+    <span class="nt">&lt;/BehaviorTree&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>In PlanSys2, the arguments of the PDDL action are accesible in the XML throught values in the blackboard whise identififiers are <code class="docutils literal notranslate"><span class="pre">arg0</span></code>, <code class="docutils literal notranslate"><span class="pre">arg1</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code>, and so on. If executing the
+PDDL action <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r2d2</span> <span class="pre">corridor</span> <span class="pre">kitchen)</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code> is the destiny room <code class="docutils literal notranslate"><span class="pre">kitchen</span></code>.</p>
+</div>
+<div class="section" id="pddl-action-transport">
+<h4>2.2 PDDL Action transport<a class="headerlink" href="#pddl-action-transport" title="Permalink to this headline">¶</a></h4>
+<p>This is the BT for the <strong>transport</strong> action. It is implemented as a sequence of BT nodes, including reuse the BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code>.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;root</span> <span class="na">main_tree_to_execute =</span> <span class="s">&quot;MainTree&quot;</span> <span class="nt">&gt;</span>
+    <span class="nt">&lt;BehaviorTree</span> <span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+       <span class="nt">&lt;Sequence</span> <span class="na">name=</span><span class="s">&quot;root_sequence&quot;</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;OpenGripper</span>    <span class="na">name=</span><span class="s">&quot;open_gripper&quot;</span><span class="nt">/&gt;</span>
+           <span class="nt">&lt;ApproachObject</span> <span class="na">name=</span><span class="s">&quot;approach_object&quot;</span><span class="nt">/&gt;</span>
+           <span class="nt">&lt;CloseGripper</span>   <span class="na">name=</span><span class="s">&quot;close_gripper&quot;</span><span class="nt">/&gt;</span>
+           <span class="nt">&lt;Move</span>    <span class="na">name=</span><span class="s">&quot;move&quot;</span> <span class="na">goal=</span><span class="s">&quot;${arg3}&quot;</span><span class="nt">/&gt;</span>
+           <span class="nt">&lt;OpenGripper</span>    <span class="na">name=</span><span class="s">&quot;open_gripper&quot;</span><span class="nt">/&gt;</span>
+       <span class="nt">&lt;/Sequence&gt;</span>
+    <span class="nt">&lt;/BehaviorTree&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="bt-nodes">
+<h4>2.3 BT Nodes<a class="headerlink" href="#bt-nodes" title="Permalink to this headline">¶</a></h4>
+<p>We implemented 4 BT nodes for this tutorial. <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code> have a similar implementation, showing only a message in the terminal when executing:</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ApproachObject</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">explicit</span> <span class="n">ApproachObject</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">xml_tag_name</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">);</span>
+
+  <span class="kt">void</span> <span class="nf">halt</span><span class="p">();</span>
+  <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">tick</span><span class="p">();</span>
+
+  <span class="k">static</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span> <span class="n">providedPorts</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="p">({});</span>
+  <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+  <span class="kt">int</span> <span class="n">counter_</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">ApproachObject</span><span class="o">::</span><span class="n">ApproachObject</span><span class="p">(</span>
+  <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">xml_tag_name</span><span class="p">,</span>
+  <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">)</span>
+<span class="o">:</span> <span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span><span class="p">(</span><span class="n">xml_tag_name</span><span class="p">,</span> <span class="n">conf</span><span class="p">),</span> <span class="n">counter_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span>
+<span class="n">ApproachObject</span><span class="o">::</span><span class="n">halt</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ApproachObject halt&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span>
+<span class="n">ApproachObject</span><span class="o">::</span><span class="n">tick</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ApproachObject tick &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">counter_</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">counter_</span><span class="o">++</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">counter_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace plansys2_bt_example</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;behaviortree_cpp_v3/bt_factory.h&quot;</span><span class="cp"></span>
+<span class="n">BT_REGISTER_NODES</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">factory</span><span class="p">.</span><span class="n">registerNodeType</span><span class="o">&lt;</span><span class="n">plansys2_bt_example</span><span class="o">::</span><span class="n">ApproachObject</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;ApproachObject&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For implementing the BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code>, we make it to inherit from <code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> to simplify the implementation when the node calls a ROS2 action. In this case, <code class="docutils literal notranslate"><span class="pre">nav2_msgs::action::NavigateToPose</span></code>.</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Move</span> <span class="o">:</span> <span class="k">public</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">nav2_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">NavigateToPose</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">explicit</span> <span class="n">Move</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">xml_tag_name</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">action_name</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">);</span>
+
+  <span class="kt">void</span> <span class="nf">on_tick</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+  <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">on_success</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="k">static</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span> <span class="n">providedPorts</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">)</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+  <span class="kt">int</span> <span class="n">goal_reached_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span><span class="o">&gt;</span> <span class="n">waypoints_</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> hides all the complexity, and only it is necessary to implement the method <code class="docutils literal notranslate"><span class="pre">on_tick</span></code>, called one when the BT node is ticked for first time. In this BT node, we get the destination id from
+the input <code class="docutils literal notranslate"><span class="pre">goal</span></code> parameter. Remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span>&#160;&#160;&#160; <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;${arg3}&quot;/&gt;</span></code>.</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
+<span class="n">Move</span><span class="o">::</span><span class="n">on_tick</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">goal</span><span class="p">;</span>
+  <span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+
+  <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span> <span class="n">pose2nav</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span> <span class="o">!=</span> <span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">pose2nav</span> <span class="o">=</span> <span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No coordinate for waypoint [&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">goal</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span> <span class="n">goal_pos</span><span class="p">;</span>
+
+  <span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;map&quot;</span><span class="p">;</span>
+  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">tf2</span><span class="o">::</span><span class="n">toMsg</span><span class="p">(</span><span class="n">tf2</span><span class="o">::</span><span class="n">Quaternion</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">theta</span><span class="p">));</span>
+
+  <span class="n">goal_</span><span class="p">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">goal_pos</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>There are also more method that we can implement if needed (<code class="docutils literal notranslate"><span class="pre">on_success</span></code>, <code class="docutils literal notranslate"><span class="pre">on_aborted</span></code>, <code class="docutils literal notranslate"><span class="pre">on_cancelled</span></code>, and so on).</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+
+<script type="text/javascript" src="../../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>
