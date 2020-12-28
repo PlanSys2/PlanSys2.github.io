@@ -1,7 +1,7 @@
 .. _tutorials:
 
 Tutorials
-#################
+#########
 
 PlanSys2 Tutorials
 

@@ -36,6 +36,7 @@ We want to invite you to contribute to this Open Source project !!
    :hidden:
 
    getting_started/index.rst
+   design/index.rst
    tutorials/index.rst
    about/index.rst
    
