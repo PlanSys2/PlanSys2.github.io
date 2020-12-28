@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
+  <title>Build and Install &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
   
 
   
@@ -38,8 +38,6 @@
   <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PlanSys2 design" href="../design/index.html" />
-    <link rel="prev" title="ROS2 Planning System" href="../index.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -94,10 +92,10 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-the-example">Running the Example</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#running-the-example">Running the Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../design/index.html">PlanSys2 design</a><ul>
@@ -242,7 +240,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Getting Started</li>
+      <li>Build and Install</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -259,103 +257,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getting-started">
-<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<p>This document will take you through the process of installing the PlanSys2 binaries
-and and using PlanSys2.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See the <span class="xref std std-ref">build-instructions</span> for other situations such as building from source or
-working with other types of robots.</p>
-</div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p>Install the <a class="reference external" href="https://index.ros.org/doc/ros2/Installation/">ROS 2 binary packages</a> as described in the official docs</p></li>
-<li><p>Install the PlanSys2 packages using your operating system’s package manager:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install ros-&lt;ros2-distro&gt;-plansys2_*
-</pre></div>
-</div>
-</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Packages for Foxy are not yet available. You can install it by sources instead.</p>
-</div>
-</div>
-<div class="section" id="running-the-example">
-<h2>Running the Example<a class="headerlink" href="#running-the-example" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><p>Clone in your workspace the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p></li>
-</ol>
+  <div class="section" id="build-and-install">
+<span id="build-instructions"></span><h1>Build and Install<a class="headerlink" href="#build-and-install" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>PlanSys2 and its dependencies are released as binaries.
+You may install it via the following to get the latest stable released version:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;your_workspace&gt;
-git clone -b &lt;ros2-distro&gt;-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+<div><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">ros-&lt;distro&gt;-plansys2_*</span></code></p>
+</div></blockquote>
+</div>
+<div class="section" id="build">
+<h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="install-ros">
+<h3>Install ROS<a class="headerlink" href="#install-ros" title="Permalink to this headline">¶</a></h3>
+<p>Please install ROS 2 via the usual <a class="reference external" href="https://index.ros.org/doc/ros2/Installation">build instructions</a> for your desired distribution.</p>
+</div>
+<div class="section" id="build-plansys2">
+<h3>Build PlanSys2<a class="headerlink" href="#build-plansys2" title="Permalink to this headline">¶</a></h3>
+<p>Create a new workspace, <code class="docutils literal notranslate"><span class="pre">plansys2_ws</span></code>, and clone PlanSys2 master branch into it and build it.
+Optionally, you can also include the TFD plan solver (you should <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver">install TFD first</a>) and the examples.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir -p ~/plansys2_ws/src
+<span class="nb">cd</span> ~/plansys2_ws/src
+git clone https://github.com/IntelligentRoboticsLabs/ros2_planning_system.git
+
+<span class="c1"># Optional</span>
+git clone https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver.git
+git clone https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git
+
+<span class="nb">cd</span> ~/plansys2_ws
+rosdep install -y -r -q --from-paths src --ignore-src --rosdistro &lt;ros2-distro&gt;
 colcon build --symlink-install
 </pre></div>
 </div>
-</div></blockquote>
-<ol class="arabic simple" start="2">
-<li><p>Build the workspace:</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosdep install --from-paths src --ignore-src -r -y
-colcon build --symlink-install
-</pre></div>
+<ul class="simple">
+<li><p>If you don’t want to use <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, you can use <code class="docutils literal notranslate"><span class="pre">foxy-devel</span></code> branch instead.</p></li>
+<li><p>if your are using <code class="docutils literal notranslate"><span class="pre">eloquent</span></code>, you should clone the <code class="docutils literal notranslate"><span class="pre">eloquent-devel</span></code> of the first two repositories (no TFD available for this distro).</p></li>
+</ul>
 </div>
-</div></blockquote>
-<ol class="arabic" start="3">
-<li><p>Open a new terminal and run PlanSys2:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 launch plansys2_simple_example plansys2_simple_example_launch.py
-</pre></div>
-</div>
-<p>This launch PlanSys2 this <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
-and some processes that implements a fake version of the domain’s actions.</p>
-</li>
-<li><p>Open a new terminal and run the PlanSys2 terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 run plansys2_terminal plansys2_terminal
-</pre></div>
-</div>
-</li>
-<li><p>In the PlanSys2 terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:</p>
-<div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">instance</span> <span class="nv">leia</span> <span class="nv">robot</span>
-<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">entrance</span> <span class="nb">room</span>
-<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">kitchen</span> <span class="nb">room</span>
-<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bedroom</span> <span class="nb">room</span>
-<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">dinning</span> <span class="nb">room</span>
-<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bathroom</span> <span class="nb">room</span>
-<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">chargingroom</span> <span class="nb">room</span>
-
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">entrance</span> <span class="nv">dinning</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">entrance</span><span class="p">)</span>
-
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">kitchen</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">dinning</span><span class="p">)</span>
-
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">bedroom</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">dinning</span><span class="p">)</span>
-
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bathroom</span> <span class="nv">bedroom</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">bathroom</span><span class="p">)</span>
-
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">chargingroom</span> <span class="nv">kitchen</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">chargingroom</span><span class="p">)</span>
-
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">charging_point_at</span> <span class="nv">chargingroom</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">battery_low</span> <span class="nv">leia</span><span class="p">)</span>
-<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">entrance</span><span class="p">)</span>
-
-<span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">bathroom</span><span class="p">))</span>
-</pre></div>
-</div>
-</li>
-<li><p>In the PlanSys2 terminal shell, get the plan and/or run the plan:</p>
-<div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">plan</span>
-<span class="nv">run</span>
-</pre></div>
-</div>
-</li>
-</ol>
 </div>
 </div>
 

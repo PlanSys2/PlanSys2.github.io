@@ -121,7 +121,7 @@ We will implement the other two PDDL actions, ``Move`` and ``Transport``, using 
 the control structures (sequences, fallbacks, ...) and the nodes that carry out the action. In this tutorial, 4 BT nodes have been implemented (``Move``, ``ApproachObject``, 
 ``OpenGripper``, and ``CloseGripper``) that can be included in the BTs of the PDDL actions.
 
-In PlanSys2 there is a generic executable that any BT can run. This executable is `` bt_action_node` from the package `` plansys2_bt_actions``. To use it, we should add it in 
+In PlanSys2 there is a generic executable that any BT can run. This executable is ``bt_action_node`` from the package `` plansys2_bt_actions``. To use it, we should add it in 
 the launch file, specifying as parametersthe XML file that contains the BT and the PDDL action name:
 
   .. code-block:: python

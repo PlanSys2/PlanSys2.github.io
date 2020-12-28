@@ -370,7 +370,7 @@ ros2 run plansys2_bt_example nav2_sim_node  <span class="c1"># For fake Nav2 nod
 We will implement the other two PDDL actions, <code class="docutils literal notranslate"><span class="pre">Move</span></code> and <code class="docutils literal notranslate"><span class="pre">Transport</span></code>, using BTs. For this, each action will have a BT encoded in an XML file that. This XML file contains
 the control structures (sequences, fallbacks, …) and the nodes that carry out the action. In this tutorial, 4 BT nodes have been implemented (<code class="docutils literal notranslate"><span class="pre">Move</span></code>, <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>,
 <code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code>) that can be included in the BTs of the PDDL actions.</p>
-<p>In PlanSys2 there is a generic executable that any BT can run. This executable is `` bt_action_node` from the package `` plansys2_bt_actions``. To use it, we should add it in
+<p>In PlanSys2 there is a generic executable that any BT can run. This executable is <code class="docutils literal notranslate"><span class="pre">bt_action_node</span></code> from the package `` plansys2_bt_actions``. To use it, we should add it in
 the launch file, specifying as parametersthe XML file that contains the BT and the PDDL action name:</p>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">move_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
