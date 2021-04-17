@@ -49,7 +49,7 @@ the PDDL domain file to use is specified.
 
   .. code-block:: bash
 
-      ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:=/tmp/simple_example.PDDL
+      ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:=/tmp/simple_example.pddl
 
 If all went well, all components of PlanSys2 will have been launched and awaits requests.
 
