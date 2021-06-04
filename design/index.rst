@@ -9,10 +9,10 @@ PlanSys2 design
 
 PlanSys2 has a modular design. It is basically composed of 4 nodes:
 
-* **Domain Expert**: Contains the PDDL model information (types, predicates model, and actions). 
-* **Problem Expert**: Contains the current instances, predicates, and goals that compose the model.
+* **Domain Expert**: Contains the PDDL model information (types, predicates and functions model, and actions). 
+* **Problem Expert**: Contains the current instances, predicates, functions, and goals that compose the model.
 * **Planner**: Generates plans (sequence of actions) using the information contained in the Domain and Problem Experts.
-* **Executor**: Takes a plan and executes it by activatin the *action performers* (the ROS2 nodes that implement each action).
+* **Executor**: Takes a plan and executes it by activating the *action performers* (the ROS2 nodes that implement each action).
 
 Each of these nodes exposes its functionality using ROS2 services. Even so, in PlanSys2 we have created a client library that can be used in 
 any application and hides the complexity of using ROS2 services. 
@@ -24,12 +24,12 @@ any application and hides the complexity of using ROS2 services.
 1. Domain Expert
 ****************
 
-The objective of the Model Expert is to read PDDL domains from files and make them available to the rest of the components. It's static (by now).
+The objective of the Domain Expert is to read PDDL domains from files and make them available to the rest of the components. It's static (by now).
 
 Parameters
 ----------
 
-* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This lets to have a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example>`_ for more details.
+* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example>`_ for more details.
 
 Client API
 ----------
@@ -38,25 +38,33 @@ Client API
 
        std::vector<std::string> getTypes()
        
-       std::vector<std::string> getPredicates()
-       boost::optional<plansys2::Predicate> getPredicate(const std::string & predicate)
+       std::vector<plansys2::Predicate> getPredicates()
+       std::optional<plansys2::Predicate> getPredicate(const std::string & predicate)
+
+       std::vector<plansys2::Function> getFunctions()
+       std::optional<plansys2::Function> getFunction(const std::string & function)
        
        std::vector<std::string> getActions()
-       boost::optional<plansys2::Action> getAction(const std::string & action)
+       plansys2_msgs::msg::Action::SharedPtr getAction(const std::string & action)
        
        std::vector<std::string> getDurativeActions()
-       boost::optional<plansys2::DurativeAction> getDurativeAction(const std::string & action)
+       plansys2_msgs::msg::DurativeAction::SharedPtr getDurativeAction(const std::string & action)
 
        std::string getDomain()
 
 Services
 --------
 
+* ``domain_expert/get_domain`` [plansys2_msgs::srv::GetDomain]: Get the domain.
 * ``domain_expert/get_domain_types`` [plansys2_msgs::srv::GetDomainTypes]: Get the valid types.
 * ``domain_expert/get_domain_actions`` [plansys2_msgs::srv::GetDomainActions]: Get the available actions.
 * ``domain_expert/get_domain_action_details`` [plansys2_msgs::srv::GetDomainActionDetails]: Get the details of a specific action.
+* ``domain_expert/get_domain_durative_actions`` [plansys2_msgs::srv::GetDomainDurativeActions]: Get the available durative actions.
+* ``domain_expert/get_domain_durative_action_details`` [plansys2_msgs::srv::GetDomainDurativeActionDetails]: Get the details of a specific durative action.
 * ``domain_expert/get_domain_predicates`` [plansys2_msgs::srv::GetDomainPredicates]: Get the valid predicates.
 * ``domain_expert/get_domain_predicate_details`` [plansys2_msgs::srv::GetDomainPredicateDetails]: Get the details of a specific predicate.
+* ``domain_expert/get_domain_functions`` [plansys2_msgs::srv::GetDomainFunctions]: Get the valid functions.
+* ``domain_expert/get_domain_function_details`` [plansys2_msgs::srv::GetDomainFunctionDetails]: Get the details of a specific function.
 * ``domain_expert/get_domain`` [plansys2_msgs::srv::GetDomain]: Set the domain as a string.
 
 Publishers / Subscriber
@@ -67,73 +75,90 @@ None
 2. Problem Expert
 *****************
 
-Contains the knowledge of the system: instances, grounded predicates, and goals.
+Contains the knowledge of the system: instances, grounded predicates and functions, and goals.
 
 Parameters
 ----------
 
-* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This lets to have a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example>`_ for more details. It must have the same value as in Domain Expert.
+* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example>`_ for more details.
 
 Client API
 ----------
 
   .. code-block:: c++
 
-         std::vector<Instance> getInstances()
-         bool addInstance(const Instance & instance)
-         bool removeInstance(const std::string & name)
-         boost::optional<Instance> getInstance(const std::string & name)
-       
-         std::vector<Predicate> getPredicates()
-         bool addPredicate(const Predicate & predicate)
-         bool removePredicate(const Predicate & predicate)
-         bool existPredicate(const Predicate & predicate)
-       
-         bool addAssignment(const Assignment & assignment)
-       
-         Goal getGoal()
-         bool setGoal(const Goal & goal)
-         bool clearGoal()
-       
-         std::string getProblem()
+         std::vector<plansys2::Instance> getInstances();
+         bool addInstance(const plansys2::Instance & instance);
+         bool removeInstance(const plansys2::Instance & instance);
+         std::optional<plansys2::Instance> getInstance(const std::string & name);
+
+         std::vector<plansys2::Predicate> getPredicates();
+         bool addPredicate(const plansys2::Predicate & predicate);
+         bool removePredicate(const plansys2::Predicate & predicate);
+         bool existPredicate(const plansys2::Predicate & predicate);
+         std::optional<plansys2::Predicate> getPredicate(const std::string & predicate);
+
+         std::vector<plansys2::Function> getFunctions();
+         bool addFunction(const plansys2::Function & function);
+         bool removeFunction(const plansys2::Function & function);
+         bool existFunction(const plansys2::Function & function);
+         bool updateFunction(const plansys2::Function & function);
+         std::optional<plansys2::Function> getFunction(const std::string & function);
+
+         plansys2::Goal getGoal();
+         bool setGoal(const plansys2::Goal & goal);
+         bool isGoalSatisfied(const plansys2::Goal & goal);
+
+         bool clearGoal();
+         bool clearKnowledge();
+
+         std::string getProblem();
 
 Services
 --------
 
 * ``problem_expert/add_problem_goal`` [plansys2_msgs::srv::AddProblemGoal]: Replace the goal.
-* ``problem_expert/add_problem_assignment`` [plansys2_msgs::srv::AddProblemAssignment]: Add an assignment.
-* ``problem_expert/add_problem_instance`` [plansys2_msgs::srv::AddProblemInstance]: Add an instance.
-* ``problem_expert/add_problem_predicate`` [plansys2_msgs::srv::AddProblemPredicate]: Add a predicate.
+* ``problem_expert/add_problem_instance`` [plansys2_msgs::srv::AffectParam]: Add an instance.
+* ``problem_expert/add_problem_predicate`` [plansys2_msgs::srv::AffectNode]: Add a predicate.
+* ``problem_expert/add_problem_function`` [plansys2_msgs::srv::AffectNode]: Add a function.
 * ``problem_expert/get_problem_goal`` [plansys2_msgs::srv::GetProblemGoal]: Get the current goal.
-* ``problem_expert/get_problem_instance_details`` [plansys2_msgs::srv::GetProblemInstanceDetails]: Get the details of an instance.
+* ``problem_expert/get_problem_instance`` [plansys2_msgs::srv::GetProblemInstanceDetails]: Get the details of an instance.
 * ``problem_expert/get_problem_instances`` [plansys2_msgs::srv::GetProblemInstances]: Get all the instances.
-* ``problem_expert/get_problem_predicate_details =`` [plansys2_msgs::srv::GetProblemPredicateDetails]: Get the details of a predicate. 
-* ``problem_expert/get_problem_predicates`` [plansys2_msgs::srv::GetProblemPredicates]: Get all the predicates.
+* ``problem_expert/get_problem_predicate =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate. 
+* ``problem_expert/get_problem_predicates`` [plansys2_msgs::srv::GetStates]: Get all the predicates.
+* ``problem_expert/get_problem_function =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function. 
+* ``problem_expert/get_problem_functions`` [plansys2_msgs::srv::GetStates]: Get all the functions.
 * ``problem_expert/get_problem`` [plansys2_msgs::srv::GetProblem]: Get the PDDL problem as a string.
 * ``problem_expert/remove_problem_goal`` [plansys2_msgs::srv::RemoveProblemGoal]: Remove the current goal.
-* ``problem_expert/remove_problem_instance`` [plansys2_msgs::srv::RemoveProblemInstance]: Remove an instance.
-* ``problem_expert/remove_problem_predicate`` [plansys2_msgs::srv::RemoveProblemPredicate]: remove a predicate.
-* ``problem_expert/exist_problem_predicate`` [plansys2_msgs::srv::ExistProblemPredicate]: Check if a predicate exists.
+* ``problem_expert/remove_problem_instance`` [plansys2_msgs::srv::AffectParam]: Remove an instance.
+* ``problem_expert/remove_problem_predicate`` [plansys2_msgs::srv::AffectNode]: Remove a predicate.
+* ``problem_expert/remove_problem_function`` [plansys2_msgs::srv::AffectNode]: Remove a function.
+* ``problem_expert/clear_problem_predicate`` [plansys2_msgs::srv::ClearProblemKnowledge]: Clears the instances, predicates, and functions.
+* ``problem_expert/exist_problem_predicate`` [plansys2_msgs::srv::ExistNode]: Check if a predicate exists.
+* ``problem_expert/exist_problem_function`` [plansys2_msgs::srv::ExistNode]: Check if a function exists.
+* ``problem_expert/update_problem_function`` [plansys2_msgs::srv::AffectNode]: Update a function value.
+* ``problem_expert/is_problem_goal_satisfied`` [plansys2_msgs::srv::IsProblemGoalSatisfied]: Check if a goal is satisfied.
 
 Publishers / Subscriber
 -----------------------
 
-* ``problem_expert/update_notify`` [std_msgs::msg::Empty] {Publisher: rclcpp::QoS(100)}: A message is published in this topic when any element of the problem changes.
+* ``problem_expert/update_notify`` [std_msgs::msg::Empty] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.
+* ``problem_expert/knowledge`` [plansys2_msgs::msg::Knowledge] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.
 
 3. Planner
 **********
 
 This component calculates the plan to obtain a goal. 
 
-1. When requested for a plan, the Planner asks the Planner Expert the domain, and the Problem Expert the problem.
-2. The domain is stored in ``/tmp/<node namespace>/domain.pddl``. This lets to have several PlanSys2 instances in the same machine, useful for simulating multiple robots in the same machine.
+1. A plan may be requested by providing a domain acquired from the Domain Expert and a problem acquired from the Problem expert.
+2. The domain is stored in ``/tmp/<node namespace>/domain.pddl``. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.
 3. The problem is stored in ``/tmp/<node namespace>/problem.pddl``.
 4. Run the PDDL Solver, storing the output in ``tmp/<node namespace>/plan.pddl``.
 5. Parse ``tmp/<node namespace>/plan.pddl`` to get the sequence of actions as a vector of string.
 6. Return the result.
 
-Each PDDL solver in PlanSys2 is a plugin. By default PlanSys2 uses `POPF <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily. Right now it is available
-`Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ also.
+Each PDDL solver in PlanSys2 is a plugin. By default PlanSys2 uses `POPF <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily. Currently, the
+`Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ is also available.
 
 .. image:: images/plansys2_planner.png
     :width: 300px
@@ -150,12 +175,12 @@ Client API
 
   .. code-block:: c++
 
-       boost::optional<Plan> getPlan()
+       boost::optional<plansys2_msgs::msg::Plan> getPlan(const std::string & domain, const std::string & problem)
 
 Services
 --------
 
-* ``planner/get_plan`` [plansys2_msgs::srv::GetPlan]: Get a plan with the current info in Domain/Problem Expert.
+* ``planner/get_plan`` [plansys2_msgs::srv::GetPlan]: Get a plan that will satisfy the provided domain and problem.
 
 Publishers / Subscriber
 -----------------------
@@ -165,11 +190,11 @@ None
 4. Executor
 ***********
 
-This component is responsible for requesting a plan and executing it. It is, by far, the most complex component since you must request a plan and execute it by activating the action performers. This task is carried out with the following characteristics:
+This component is responsible for executing a provided plan. It is, by far, the most complex component since the execution involves activating the action performers. This task is carried out with the following characteristics:
 
 * It optimizes its execution, parallelizing the actions when possible.
-* Check if the requirements are met at runtime.
-* Allow more than one action performer for each action, supporting multirobot execution.
+* It checks if the requirements are met at runtime.
+* It allows more than one action performer for each action, supporting multirobot execution.
 
 .. image:: images/plansys2_arch2.png
     :width: 600px
@@ -178,7 +203,15 @@ This component is responsible for requesting a plan and executing it. It is, by 
 Parameters
 ----------
 
-None
+* ``action_timeouts.actions`` [vector<string>]: List of actions with enabled duration timeout capability. When the duration timeout capability is enabled for a given action, the action will halt after exceeding the action duration by more than a specified percentage. Duration timeouts are not enabled by default. To enable duration timeouts, the user must provide a custom action execution XML behavior tree template that includes the CheckTimeout BT node. Additionally, this parameter must specify the actions for which duration timeouts are enabled. Finally, the duration overrun percentage must be specified for each action.
+* ``action_timeouts.<action_name>.duration_overrun_percentage`` [double]: When action duration timeouts are enabled (see explanation above), the duration overrun percentage specifies the amount of time an action is allowed to overrun its duration before halting. The overrun time is defined as a percentage of the action duration specified by the domain.
+* ``default_action_bt_xml_filename`` [string]: Filepath to a user provided custom action execution XML behavior tree template. The user can use this template to specify a different XML behavior tree template than the one provided in the plansy2_executor package. Currently the only available BT node not used by the default behavior tree template is the CheckTimeout node.
+* ``enable_dotgraph_legend``
+* ``print_graph``
+* ``publisher_port``
+* ``server_port``
+* ``max_msgs_per_second``
+* ``enable_groot_moitoring``
 
 Client API
 ----------
