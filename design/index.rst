@@ -9,7 +9,7 @@ PlanSys2 design
 
 PlanSys2 has a modular design. It is basically composed of 4 nodes:
 
-* **Domain Expert**: Contains the PDDL model information (types, predicates and functions model, and actions). 
+* **Domain Expert**: Contains the PDDL model information (types, predicates, functions, and actions). 
 * **Problem Expert**: Contains the current instances, predicates, functions, and goals that compose the model.
 * **Planner**: Generates plans (sequence of actions) using the information contained in the Domain and Problem Experts.
 * **Executor**: Takes a plan and executes it by activating the *action performers* (the ROS2 nodes that implement each action).
@@ -124,9 +124,9 @@ Services
 * ``problem_expert/get_problem_goal`` [plansys2_msgs::srv::GetProblemGoal]: Get the current goal.
 * ``problem_expert/get_problem_instance`` [plansys2_msgs::srv::GetProblemInstanceDetails]: Get the details of an instance.
 * ``problem_expert/get_problem_instances`` [plansys2_msgs::srv::GetProblemInstances]: Get all the instances.
-* ``problem_expert/get_problem_predicate =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate. 
+* ``problem_expert/get_problem_predicate =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate.
 * ``problem_expert/get_problem_predicates`` [plansys2_msgs::srv::GetStates]: Get all the predicates.
-* ``problem_expert/get_problem_function =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function. 
+* ``problem_expert/get_problem_function =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function.
 * ``problem_expert/get_problem_functions`` [plansys2_msgs::srv::GetStates]: Get all the functions.
 * ``problem_expert/get_problem`` [plansys2_msgs::srv::GetProblem]: Get the PDDL problem as a string.
 * ``problem_expert/remove_problem_goal`` [plansys2_msgs::srv::RemoveProblemGoal]: Remove the current goal.
@@ -206,34 +206,37 @@ Parameters
 * ``action_timeouts.actions`` [vector<string>]: List of actions with enabled duration timeout capability. When the duration timeout capability is enabled for a given action, the action will halt after exceeding the action duration by more than a specified percentage. Duration timeouts are not enabled by default. To enable duration timeouts, the user must provide a custom action execution XML behavior tree template that includes the CheckTimeout BT node. Additionally, this parameter must specify the actions for which duration timeouts are enabled. Finally, the duration overrun percentage must be specified for each action.
 * ``action_timeouts.<action_name>.duration_overrun_percentage`` [double]: When action duration timeouts are enabled (see explanation above), the duration overrun percentage specifies the amount of time an action is allowed to overrun its duration before halting. The overrun time is defined as a percentage of the action duration specified by the domain.
 * ``default_action_bt_xml_filename`` [string]: Filepath to a user provided custom action execution XML behavior tree template. The user can use this template to specify a different XML behavior tree template than the one provided in the plansy2_executor package. Currently the only available BT node not used by the default behavior tree template is the CheckTimeout node.
-* ``enable_dotgraph_legend``
-* ``print_graph``
-* ``publisher_port``
-* ``server_port``
-* ``max_msgs_per_second``
-* ``enable_groot_moitoring``
+* ``enable_dotgraph_legend`` [bool]: Enable legend with planning graph in DOT graph plan viewer.
+* ``print_graph`` [bool]: Print planning graph to terminal.
+* ``enable_groot_monitoring`` [bool]: Enable visualizing the plan's behavior tree inside `Groot <https://github.com/BehaviorTree/Groot>`_.
+* ``publisher_port`` [unsigned int]: ZeroMQ publisher port for `Groot <https://github.com/BehaviorTree/Groot>`_.
+* ``server_port`` [unsigned int]: ZeroMQ server port for `Groot <https://github.com/BehaviorTree/Groot>`_.
+* ``max_msgs_per_second`` [unsigned int]: Maximum number of ZeroMQ messages sent per second to `Groot <https://github.com/BehaviorTree/Groot>`_.
 
 Client API
 ----------
 
   .. code-block:: c++
 
-       bool executePlan();
-     
-       ExecutePlan::Feedback getFeedBack();
-       boost::optional<ExecutePlan::Result> getResult();
+       bool start_plan_execution(const plansys2_msgs::msg::Plan & plan);
+       bool execute_and_check_plan();
+       void cancel_plan_execution();
+       std::vector<plansys2_msgs::msg::Tree> getOrderedSubGoals();
+       std::optional<plansys2_msgs::msg::Plan> getPlan();
 
+       ExecutePlan::Feedback getFeedBack() {return feedback_;}
+       std::optional<ExecutePlan::Result> getResult();
 
 Actions
 --------
 
-* ``execute_plan`` [plansys2_msgs::action::ExecutePlan]: Execute the plan with the current info in Domain/Problem Expert.
+* ``execute_plan`` [plansys2_msgs::action::ExecutePlan]: Execute the provided plan.
 
 Publishers / Subscriber
 -----------------------
 
-None
-
+* ``dot_graph`` [std_msgs::msg::String] {Publisher: rclcpp::QoS(1)}: Publishes the planning DOT graph.
+* ``/action_execution_info`` [plansys2_msgs::msg::ActionExecutionInfo] {Publisher: rclcpp::QoS(100)}: Publishes the action execution information. Note that the action execution information is also provided to the ExecutePlan action client via the feedback and result channels.
 
 Behavior Tree builder
 *********************
@@ -244,7 +247,7 @@ Once a plan is obtained, the Executor converts it to a Behavior Tree to execute 
     :width: 400px
     :align: center
 
-The first step is building a planning graph that encondes the action dependencies that define the execution order. This is made 
+The first step is building a planning graph that encodes the action dependencies that define the execution order. This is made
 by pairing the effects of an action with a requirement of a posterior action. We take as reference the time of the calculated plan:
 
 .. image:: images/action_deps.png
@@ -267,23 +270,23 @@ From the red flow, for example, we get:
     :width: 400px
     :align: center
 
-Each flow is executed in paralell. There is no problem if flows overlap because the BT that executes an action is implemented following a Singleton-like approach.
+Each flow is executed in parallel. There is no problem if flows overlap because the BT that executes an action is implemented following a Singleton-like approach.
 
 Action delivery protocol
 ************************
 
 In the first implementations of PlanSys2, the delivery of actions was done using ROS2 actions. This approach has currently been discarded as it is not flexible enough. 
-Instead, a bidding-based delivery protocol has been developed in the ``plansys2_msgs::msg::ActionExecution``,  and classes ``ActionExecutor`` and ``ActionExecutoClient``. 
+Instead, a bidding-based delivery protocol has been developed in the ``ActionExecutor`` and ``ActionExecutorClient`` classes that uses the ``plansys2_msgs::msg::ActionExecution`` message.
 
 When the Executor must execute an action, it requests which action performer can execute it. Those who can 
 reply to this request. The Executor confirms one of them (the first to answer), rejecting the rest. If none are found, repeat the request every second until you give up, aborting the 
-execution of the plan. This protocol uses the topic ``/action_hub``, where you can monitorize teh execution of the system.
+execution of the plan. This protocol uses the topic ``/action_hub``, where you can monitor the execution of the system.
 
 .. image:: images/protocol.png
     :width: 500px
     :align: center
 
-All the action performers inherit from ``ActionExecutoClient``, that is a ROS2 Node with the next information:
+All the action performers inherit from ``ActionExecutorClient``, that is a ROS2 Node with the next information:
 
 Parameters
 ----------
