@@ -22,13 +22,13 @@ Overview
 In the previous examples, we have started the knowledge of PlanSys2, and we have calculated and executed plans interactively using the terminal. Obviously, when PlanSys2 is embedded in an application, interactive execution is not convenient.
 
 A *planning controller* is a program that:
-* Initiate, consult, and update knowledge.
-* Set goals.
-* Make requests to execute the plan.
+* Initiates, consults, and updates knowledge.
+* Sets goals.
+* Makes requests to execute the plan.
 
-This program controls the robot's mission. It is usually implemented as finite state machines and decides what the next goal to be achieved is.
+This program controls the robot's mission. It is usually implemented as a finite state machine and decides what the next goal to be achieved is.
 
-In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: ``wp_control``, ``wp_1``, ``wp_2``, ``wp_3``, add ``wp_4``. Each one has different coordinates.
+In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: ``wp_control``, ``wp_1``, ``wp_2``, ``wp_3``, and ``wp_4``. Each one has different coordinates.
 
 * ``wp_control`` is the junction to which all other waypoints are connected. A patrol always goes through wp_control, since the waypoints are not connected to each other.
 * Patrolling a waypoint consists of moving to the waypoint and, once there, rotating for a few seconds to perceive the environment.
@@ -165,7 +165,7 @@ or declares that the action has already finished (line 56).
 3- Move action performer
 ------------------------
 
-The action ``move`` (``ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp``) contains the actions sends navigation requests to Nav2 using the ROS2 action ``navigate_to_pose``. This
+The action ``move`` (``ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp``) contains the actions that sends navigation requests to Nav2 using the ROS2 action ``navigate_to_pose``. This
 example is quite complex if you are not familiar with `ROS2 actions <https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/>`_, so we will not enter in details here, only selected pieces of code.
 
 
@@ -247,24 +247,28 @@ The coordinates of each waypoint are initialized and inserted in ``waypoints_``.
 
 * If we execute the action ``(move leia wp_control wp_1)``, the third argument (``get_arguments()[2]``) is the waypoint to navigate, ``wp_1``. We use this id to get the coordinate from ``waypoints_`` for sending it in the Nav2 action.
 * When receiving feedback from the Nav2 ROS2 action, we send feedback about the execution of the ``move`` action.
-* When Nav2 consider the navigation complete, we call ``finish`` to finalize the execution of ``move`` action.
+* When Nav2 considers the navigation complete, we call ``finish`` to finalize the execution of ``move`` action.
 
 3- Mission controller
 ---------------------
 
-The mission controller (``ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp``) init the knowledge in PlanSys2, and implements a FSM to run patrolling plans. It uses 
-two PlanSys2 clients to interact with PlanSys2:
+The mission controller (``ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp``) initializes the knowledge in PlanSys2 and implements a FSM to run patrolling plans. It uses
+four PlanSys2 clients to interact with PlanSys2:
 
   .. code-block:: c++
          
          void init()
            {
+             domain_expert_ = std::make_shared<plansys2::DomainExpertClient>(shared_from_this());
+             planner_client_ = std::make_shared<plansys2::PlannerClient>(shared_from_this());
              problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>(shared_from_this());
              executor_client_ = std::make_shared<plansys2::ExecutorClient>(shared_from_this());
              init_knowledge();
            }
 
-         private: 
+         private:
+           std::shared_ptr<plansys2::DomainExpertClient> domain_expert_;
+           std::shared_ptr<plansys2::PlannerClient> planner_client_;
            std::shared_ptr<plansys2::ProblemExpertClient> problem_expert_;
            std::shared_ptr<plansys2::ExecutorClient> executor_client_;
 
@@ -306,20 +310,26 @@ In the ``step`` method (called at 5Hz) there is the implementation of the FSM. E
                action_feedback.completion * 100.0 << "%]";
            }
 
-* The condition to transitate to other state, and the code executed before start the new state. The important part here is how we set the new goal for the new state (using ``setGoal``), and how we call the executor to calculate and execute a plan to achieve it (using the non-blocking call ``executePlan``):
+* The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using ``setGoal``), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call ``executePlan``):
 
   .. code-block:: c++
 
        if (executor_client_->getResult().value().success) {
          std::cout << "Plan successful finished " << std::endl;
-         
+
          // Cleanning up
          problem_expert_->removePredicate(plansys2::Predicate("(patrolled wp1)"));
-         
-         // Set the goal for next state, and execute plan
-         
+
+         // Set the goal for next state
          problem_expert_->setGoal(plansys2::Goal("(and(patrolled wp2))"));
-         if (executor_client_->executePlan()) {
+
+         // Compute the plan
+         auto domain = domain_expert_->getDomain();
+         auto problem = problem_expert_->getProblem();
+         auto plan = planner_client_->getPlan(domain, problem);
+
+         // Execute the plan
+         if (executor_client_->executePlan(plan.value())) {
            state_ = PATROL_WP2;
          }
        } else {
