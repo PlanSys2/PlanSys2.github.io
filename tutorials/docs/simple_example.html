@@ -100,6 +100,52 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#build">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../build_instructions/index.html#install-ros">Install ROS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../build_instructions/index.html#build-plansys2">Build PlanSys2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#domain-expert">1. Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#client-api">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#publishers-subscriber">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">2. Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">3. Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id9">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#executor">4. Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id10">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id14">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#actions">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#behavior-tree-builder">Behavior Tree builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#action-delivery-protocol">Action delivery protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id16">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id17">Publishers / Subscriber</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
@@ -130,9 +176,19 @@
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#package-structure">2- Package structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#actions-implementation">3- Actions implementation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#launcher">4- Launcher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
 </ul>
 </li>
 </ul>

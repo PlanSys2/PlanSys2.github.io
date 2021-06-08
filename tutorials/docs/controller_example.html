@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="The first planning package" href="bt_actions.html" />
+    <link rel="next" title="Implement actions as Behavior Trees" href="bt_actions.html" />
     <link rel="prev" title="The first planning package" href="simple_example.html" />
 
 <link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
@@ -100,6 +100,52 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#build">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../build_instructions/index.html#install-ros">Install ROS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../build_instructions/index.html#build-plansys2">Build PlanSys2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#domain-expert">1. Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#client-api">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#publishers-subscriber">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">2. Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">3. Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id9">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#executor">4. Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id10">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id14">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#actions">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#behavior-tree-builder">Behavior Tree builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#action-delivery-protocol">Action delivery protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id16">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id17">Publishers / Subscriber</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
@@ -137,14 +183,12 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">The first planning package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">Implement actions as Behavior Trees</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bt_actions.html#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#package-structure">2- Package structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#actions-implementation">3- Actions implementation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#launcher">4- Launcher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
 </ul>
 </li>
 </ul>
@@ -242,11 +286,11 @@
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In the previous examples, we have started the knowledge of PlanSys2, and we have calculated and executed plans interactively using the terminal. Obviously, when PlanSys2 is embedded in an application, interactive execution is not convenient.</p>
 <p>A <em>planning controller</em> is a program that:
-* Initiate, consult, and update knowledge.
-* Set goals.
-* Make requests to execute the plan.</p>
-<p>This program controls the robot’s mission. It is usually implemented as finite state machines and decides what the next goal to be achieved is.</p>
-<p>In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: <code class="docutils literal notranslate"><span class="pre">wp_control</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_1</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_2</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_3</span></code>, add <code class="docutils literal notranslate"><span class="pre">wp_4</span></code>. Each one has different coordinates.</p>
+* Initiates, consults, and updates knowledge.
+* Sets goals.
+* Makes requests to execute the plan.</p>
+<p>This program controls the robot’s mission. It is usually implemented as a finite state machine and decides what the next goal to be achieved is.</p>
+<p>In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: <code class="docutils literal notranslate"><span class="pre">wp_control</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_1</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_2</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_3</span></code>, and <code class="docutils literal notranslate"><span class="pre">wp_4</span></code>. Each one has different coordinates.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">wp_control</span></code> is the junction to which all other waypoints are connected. A patrol always goes through wp_control, since the waypoints are not connected to each other.</p></li>
 <li><p>Patrolling a waypoint consists of moving to the waypoint and, once there, rotating for a few seconds to perceive the environment.</p></li>
@@ -458,7 +502,7 @@ or declares that the action has already finished (line 56).</p>
 </div>
 <div class="section" id="move-action-performer">
 <h3>3- Move action performer<a class="headerlink" href="#move-action-performer" title="Permalink to this headline">¶</a></h3>
-<p>The action <code class="docutils literal notranslate"><span class="pre">move</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp</span></code>) contains the actions sends navigation requests to Nav2 using the ROS2 action <code class="docutils literal notranslate"><span class="pre">navigate_to_pose</span></code>. This
+<p>The action <code class="docutils literal notranslate"><span class="pre">move</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp</span></code>) contains the actions that sends navigation requests to Nav2 using the ROS2 action <code class="docutils literal notranslate"><span class="pre">navigate_to_pose</span></code>. This
 example is quite complex if you are not familiar with <a class="reference external" href="https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/">ROS2 actions</a>, so we will not enter in details here, only selected pieces of code.</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -600,22 +644,26 @@ example is quite complex if you are not familiar with <a class="reference extern
 <ul class="simple">
 <li><p>If we execute the action <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">leia</span> <span class="pre">wp_control</span> <span class="pre">wp_1)</span></code>, the third argument (<code class="docutils literal notranslate"><span class="pre">get_arguments()[2]</span></code>) is the waypoint to navigate, <code class="docutils literal notranslate"><span class="pre">wp_1</span></code>. We use this id to get the coordinate from <code class="docutils literal notranslate"><span class="pre">waypoints_</span></code> for sending it in the Nav2 action.</p></li>
 <li><p>When receiving feedback from the Nav2 ROS2 action, we send feedback about the execution of the <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
-<li><p>When Nav2 consider the navigation complete, we call <code class="docutils literal notranslate"><span class="pre">finish</span></code> to finalize the execution of <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
+<li><p>When Nav2 considers the navigation complete, we call <code class="docutils literal notranslate"><span class="pre">finish</span></code> to finalize the execution of <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
 </ul>
 </div>
 <div class="section" id="mission-controller">
 <h3>3- Mission controller<a class="headerlink" href="#mission-controller" title="Permalink to this headline">¶</a></h3>
-<p>The mission controller (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp</span></code>) init the knowledge in PlanSys2, and implements a FSM to run patrolling plans. It uses
-two PlanSys2 clients to interact with PlanSys2:</p>
+<p>The mission controller (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp</span></code>) initializes the knowledge in PlanSys2 and implements a FSM to run patrolling plans. It uses
+four PlanSys2 clients to interact with PlanSys2:</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">init</span><span class="p">()</span>
   <span class="p">{</span>
+    <span class="n">domain_expert_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
+    <span class="n">planner_client_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
     <span class="n">problem_expert_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
     <span class="n">executor_client_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
     <span class="n">init_knowledge</span><span class="p">();</span>
   <span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span> <span class="n">domain_expert_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span> <span class="n">planner_client_</span><span class="p">;</span>
   <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span> <span class="n">problem_expert_</span><span class="p">;</span>
   <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span> <span class="n">executor_client_</span><span class="p">;</span>
 </pre></div>
@@ -660,17 +708,23 @@ two PlanSys2 clients to interact with PlanSys2:</p>
 </div>
 </div></blockquote>
 <ul>
-<li><p>The condition to transitate to other state, and the code executed before start the new state. The important part here is how we set the new goal for the new state (using <code class="docutils literal notranslate"><span class="pre">setGoal</span></code>), and how we call the executor to calculate and execute a plan to achieve it (using the non-blocking call <code class="docutils literal notranslate"><span class="pre">executePlan</span></code>):</p>
+<li><p>The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using <code class="docutils literal notranslate"><span class="pre">setGoal</span></code>), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call <code class="docutils literal notranslate"><span class="pre">executePlan</span></code>):</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Plan successful finished &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
   <span class="c1">// Cleanning up</span>
   <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">removePredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(patrolled wp1)&quot;</span><span class="p">));</span>
 
-  <span class="c1">// Set the goal for next state, and execute plan</span>
-
+  <span class="c1">// Set the goal for next state</span>
   <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">setGoal</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Goal</span><span class="p">(</span><span class="s">&quot;(and(patrolled wp2))&quot;</span><span class="p">));</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">executePlan</span><span class="p">())</span> <span class="p">{</span>
+
+  <span class="c1">// Compute the plan</span>
+  <span class="k">auto</span> <span class="n">domain</span> <span class="o">=</span> <span class="n">domain_expert_</span><span class="o">-&gt;</span><span class="n">getDomain</span><span class="p">();</span>
+  <span class="k">auto</span> <span class="n">problem</span> <span class="o">=</span> <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">getProblem</span><span class="p">();</span>
+  <span class="k">auto</span> <span class="n">plan</span> <span class="o">=</span> <span class="n">planner_client_</span><span class="o">-&gt;</span><span class="n">getPlan</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">problem</span><span class="p">);</span>
+
+  <span class="c1">// Execute the plan</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">executePlan</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span> <span class="p">{</span>
     <span class="n">state_</span> <span class="o">=</span> <span class="n">PATROL_WP2</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
