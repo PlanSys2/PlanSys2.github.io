@@ -68,46 +68,46 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
 * In the |PN| terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:
 
    .. code-block:: lisp
+   
+      set instance r2d2 robot
+      
+      set instance wheels_zone zone
+      set instance steering_wheels_zone zone
+      set instance body_car_zone zone
+      set instance assembly_zone zone
+      
+      set instance wheel_1 piece
+      set instance body_car_1 piece
+      set instance steering_wheel_1 piece
+      
+      set instance wheel_2 piece
+      set instance body_car_2 piece
+      set instance steering_wheel_2 piece
+       
+      set instance wheel_3 piece
+      set instance body_car_3 piece
+      set instance steering_wheel_3 piece
+       
+      set instance car_1 car
+      set instance car_2 car
+      set instance car_3 car
 
-       > set instance r2d2 robot
-       
-       > set instance wheels_zone zone
-       > set instance steering_wheels_zone zone
-       > set instance body_car_zone zone
-       > set instance assembly_zone zone
-       
-       > set instance wheel_1 piece
-       > set instance body_car_1 piece
-       > set instance steering_wheel_1 piece
-       
-       > set instance wheel_2 piece
-       > set instance body_car_2 piece
-       > set instance steering_wheel_2 piece
-       
-       > set instance wheel_3 piece
-       > set instance body_car_3 piece
-       > set instance steering_wheel_3 piece
-       
-       > set instance car_1 car
-       > set instance car_2 car
-       > set instance car_3 car
-       
-       > set predicate (robot_at r2d2 wheels_zone)
-       > set predicate (is_assembly_zone assembly_zone)
+      set predicate (robot_at r2d2 wheels_zone)
+      set predicate (is_assembly_zone assembly_zone)
               
-       > set predicate (piece_at wheel_1 assembly_zone)
-       > set predicate (piece_at body_car_1 assembly_zone)
-       > set predicate (piece_at steering_wheel_1 assembly_zone)
+      set predicate (piece_at wheel_1 assembly_zone)
+      set predicate (piece_at body_car_1 assembly_zone)
+      set predicate (piece_at steering_wheel_1 assembly_zone)
        
-       > set predicate (piece_is_wheel wheel_1)
-       > set predicate (piece_is_body_car body_car_1)
-       > set predicate (piece_is_steering_wheel steering_wheel_1)
-       > set predicate (piece_not_used wheel_1)
-       > set predicate (piece_not_used body_car_1)
-       > set predicate (piece_not_used steering_wheel_1)
+      set predicate (piece_is_wheel wheel_1)
+      set predicate (piece_is_body_car body_car_1)
+      set predicate (piece_is_steering_wheel steering_wheel_1)
+      set predicate (piece_not_used wheel_1)
+      set predicate (piece_not_used body_car_1)
+      set predicate (piece_not_used steering_wheel_1)
        
-       > set goal (and(car_assembled car_1))
-       > run
+      set goal (and(car_assembled car_1))
+      run
 
 2- Using Behavior Trees
 -----------------------
