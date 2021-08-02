@@ -75,6 +75,7 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
       set instance steering_wheels_zone zone
       set instance body_car_zone zone
       set instance assembly_zone zone
+      set instance recharge_zone zone
       
       set instance wheel_1 piece
       set instance body_car_1 piece
@@ -92,8 +93,10 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
       set instance car_2 car
       set instance car_3 car
 
+      set predicate (robot_available r2d2)
       set predicate (robot_at r2d2 wheels_zone)
       set predicate (is_assembly_zone assembly_zone)
+      set predicate (is_recharge_zone recharge_zone)
               
       set predicate (piece_at wheel_1 assembly_zone)
       set predicate (piece_at body_car_1 assembly_zone)
