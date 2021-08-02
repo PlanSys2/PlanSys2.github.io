@@ -98,9 +98,9 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
       set predicate (is_assembly_zone assembly_zone)
       set predicate (is_recharge_zone recharge_zone)
               
-      set predicate (piece_at wheel_1 assembly_zone)
-      set predicate (piece_at body_car_1 assembly_zone)
-      set predicate (piece_at steering_wheel_1 assembly_zone)
+      set predicate (piece_at wheel_1 wheels_zone)
+      set predicate (piece_at body_car_1 body_car_zone)
+      set predicate (piece_at steering_wheel_1 steering_wheels_zone)
        
       set predicate (piece_is_wheel wheel_1)
       set predicate (piece_is_body_car body_car_1)
