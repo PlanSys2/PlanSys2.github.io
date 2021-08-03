@@ -327,45 +327,48 @@ ros2 run plansys2_bt_example nav2_sim_node  <span class="c1"># For fake Nav2 nod
 </li>
 <li><p>In the PlanSys2 terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:</p>
 <blockquote>
-<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">r2d2</span> <span class="nv">robot</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">instance</span> <span class="nv">r2d2</span> <span class="nv">robot</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheels_zone</span> <span class="nv">zone</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheels_zone</span> <span class="nv">zone</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_zone</span> <span class="nv">zone</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">assembly_zone</span> <span class="nv">zone</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheels_zone</span> <span class="nv">zone</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheels_zone</span> <span class="nv">zone</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_zone</span> <span class="nv">zone</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">assembly_zone</span> <span class="nv">zone</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">recharge_zone</span> <span class="nv">zone</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_1</span> <span class="nv">piece</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_1</span> <span class="nv">piece</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_1</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_1</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_1</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_1</span> <span class="nv">piece</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_2</span> <span class="nv">piece</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_2</span> <span class="nv">piece</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_2</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_2</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_2</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_2</span> <span class="nv">piece</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_3</span> <span class="nv">piece</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_3</span> <span class="nv">piece</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_3</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">wheel_3</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">body_car_3</span> <span class="nv">piece</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">steering_wheel_3</span> <span class="nv">piece</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_1</span> <span class="nb">car</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_2</span> <span class="nb">car</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_3</span> <span class="nb">car</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_1</span> <span class="nb">car</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_2</span> <span class="nb">car</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">car_3</span> <span class="nb">car</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">r2d2</span> <span class="nv">wheels_zone</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">is_assembly_zone</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_available</span> <span class="nv">r2d2</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">r2d2</span> <span class="nv">wheels_zone</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">is_assembly_zone</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">is_recharge_zone</span> <span class="nv">recharge_zone</span><span class="p">)</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">wheel_1</span> <span class="nv">assembly_zone</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">body_car_1</span> <span class="nv">assembly_zone</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">steering_wheel_1</span> <span class="nv">assembly_zone</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">wheel_1</span> <span class="nv">wheels_zone</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">body_car_1</span> <span class="nv">body_car_zone</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_at</span> <span class="nv">steering_wheel_1</span> <span class="nv">steering_wheels_zone</span><span class="p">)</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_wheel</span> <span class="nv">wheel_1</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_body_car</span> <span class="nv">body_car_1</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_steering_wheel</span> <span class="nv">steering_wheel_1</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">wheel_1</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">body_car_1</span><span class="p">)</span>
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">steering_wheel_1</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_wheel</span> <span class="nv">wheel_1</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_body_car</span> <span class="nv">body_car_1</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_is_steering_wheel</span> <span class="nv">steering_wheel_1</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">wheel_1</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">body_car_1</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">piece_not_used</span> <span class="nv">steering_wheel_1</span><span class="p">)</span>
 
-<span class="nb">&gt;</span> <span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">car_assembled</span> <span class="nv">car_1</span><span class="p">))</span>
-<span class="nb">&gt;</span> <span class="nv">run</span>
+<span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">car_assembled</span> <span class="nv">car_1</span><span class="p">))</span>
+<span class="nv">run</span>
 </pre></div>
 </div>
 </div></blockquote>

@@ -278,17 +278,17 @@
 </ul>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The terminal is an application that allows interacting with PlanSys2 to test or monitor its operation.
+<p>The terminal is an application that allows the interaction with PlanSys2 to test or monitor its operation.
 It is not essential to use PlanSys2 since your application is expected to manage the plans’ knowledge and execution automatically.
-Still, it is useful to know the terminal and convenient in these first tutorials.</p>
-<p>This tutorial shows how to use the terminal and the main commands and is a good starting point for working with PlanSys2.</p>
+Still, it is useful and convenient to get to know the terminal in these first tutorials.</p>
+<p>This tutorial shows how to use the terminal and the main commands and is also a good starting point for working with PlanSys2.</p>
 </div>
 <div class="section" id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline">¶</a></h3>
 <p>Follow the same process as in <a class="reference internal" href="../../getting_started/index.html#getting-started"><span class="std std-ref">Getting Started</span></a> for installing PlanSys2.</p>
-<p>We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:</p>
+<p>We will use a test PDDL domain. If you do not know what PDDL is, it is recommended to take a look at one of these links first:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://arxiv.org/pdf/1106.4561.pdf">PDDL 2.1</a></p></li>
 <li><p><a class="reference external" href="http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf">An Introduction to PDDL</a></p></li>
@@ -324,14 +324,14 @@ the PDDL domain file to use is specified.</p>
 </div>
 </div></blockquote>
 <p>At that moment, an interactive shell will open in which we can enter commands. We can use the up and down arrows to
-navigate between the commands already entered or use `` Ctrl-R ‘’ as in the shell to search for commands. It also has
-autocompletion with the `` Tab ‘’ key. You can quit anytime typing “quit” or pressing <code class="docutils literal notranslate"><span class="pre">Ctrl-d</span></code>.</p>
-<p>Take into account that the state of the system is at PlanSys2 components, not in the terminal. You can close and
-reopen (or even use several terminals), and the system’s state persists. If you want to reset the system, press <code class="docutils literal notranslate"><span class="pre">Ctrl-c</span></code> in the terminal
+navigate between the commands already entered or use <code class="docutils literal notranslate"><span class="pre">Ctrl-R</span></code> as in the shell to search for commands. It also has
+autocompletion with the <code class="docutils literal notranslate"><span class="pre">Tab</span></code> key. You can quit anytime typing “quit” or pressing <code class="docutils literal notranslate"><span class="pre">Ctrl-D</span></code>.</p>
+<p>It should be noted that the state of the system is at PlanSys2 components, not in the terminal. You can close and
+reopen (or even use several terminals), and the system’s state persists. If you want to reset the system, press <code class="docutils literal notranslate"><span class="pre">Ctrl-C</span></code> in the terminal
 where you launched PlanSys2, and relaunch it.</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ROS2</span> <span class="n">Planning</span> <span class="n">System</span> <span class="n">console</span><span class="o">.</span> <span class="n">Type</span> <span class="s2">&quot;quit&quot;</span> <span class="n">to</span> <span class="n">finish</span>
-<span class="o">&gt;</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nv">ROS2</span> <span class="nv">Planning</span> <span class="nv">System</span> <span class="nv">console.</span> <span class="nv">Type</span> <span class="s">&quot;quit&quot;</span> <span class="nv">to</span> <span class="nv">finish</span>
+<span class="nb">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -339,23 +339,23 @@ where you launched PlanSys2, and relaunch it.</p>
 <div class="section" id="interactive-session">
 <h3>2- Interactive session<a class="headerlink" href="#interactive-session" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li><p>The first thing is to check the domain that is being used:</p></li>
+<li><p>The first thing is to check the domain that is being used. In the PlanSys2 terminal window type:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; get domain
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">domain</span>
 
-( define ( domain simple )
-( :requirements :strips :adl :typing :durative-actions :fluents )
-( :types
-  robot - object
-  room - object
-)
-( :predicates
-  ( robot_at ?robot0 - robot ?room1 - room )
-  ( connected ?room0 - room ?room1 - room )
-  ( battery_full ?robot0 - robot )
+<span class="p">(</span> <span class="nv">define</span> <span class="p">(</span> <span class="nv">domain</span> <span class="nv">simple</span> <span class="p">)</span>
+<span class="p">(</span> <span class="ss">:requirements</span> <span class="ss">:strips</span> <span class="ss">:adl</span> <span class="ss">:typing</span> <span class="ss">:durative-actions</span> <span class="ss">:fluents</span> <span class="p">)</span>
+<span class="p">(</span> <span class="ss">:types</span>
+  <span class="nv">robot</span> <span class="nb">-</span> <span class="nv">object</span>
+  <span class="nb">room</span> <span class="nb">-</span> <span class="nv">object</span>
+<span class="p">)</span>
+<span class="p">(</span> <span class="ss">:predicates</span>
+  <span class="p">(</span> <span class="nv">robot_at</span> <span class="nv">?robot0</span> <span class="nb">-</span> <span class="nv">robot</span> <span class="nv">?room1</span> <span class="nb">-</span> <span class="nb">room</span> <span class="p">)</span>
+  <span class="p">(</span> <span class="nv">connected</span> <span class="nv">?room0</span> <span class="nb">-</span> <span class="nb">room</span> <span class="nv">?room1</span> <span class="nb">-</span> <span class="nb">room</span> <span class="p">)</span>
+  <span class="p">(</span> <span class="nv">battery_full</span> <span class="nv">?robot0</span> <span class="nb">-</span> <span class="nv">robot</span> <span class="p">)</span>
 
-  ...
+  <span class="o">...</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -363,10 +363,10 @@ where you launched PlanSys2, and relaunch it.</p>
 <li><p>To see what types of instances the model contains, type:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">model</span> <span class="n">types</span>
-<span class="n">Types</span><span class="p">:</span> <span class="mi">2</span>
-          <span class="n">robot</span>
-          <span class="n">room</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">model</span> <span class="nv">types</span>
+<span class="nv">Types:</span> <span class="mi">2</span>
+          <span class="nv">robot</span>
+          <span class="nb">room</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -374,19 +374,19 @@ where you launched PlanSys2, and relaunch it.</p>
 <li><p>Use other variations of <code class="docutils literal notranslate"><span class="pre">get</span> <span class="pre">model</span></code> to get more information of the domain:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">model</span> <span class="n">actions</span>
-<span class="n">Actions</span><span class="p">:</span> <span class="mi">0</span>
-  <span class="n">move</span> <span class="p">(</span><span class="n">durative</span> <span class="n">action</span><span class="p">)</span>
-  <span class="n">askcharge</span> <span class="p">(</span><span class="n">durative</span> <span class="n">action</span><span class="p">)</span>
-  <span class="n">charge</span> <span class="p">(</span><span class="n">durative</span> <span class="n">action</span><span class="p">)</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">model</span> <span class="nv">actions</span>
+<span class="nv">Actions:</span> <span class="mi">0</span>
+  <span class="nv">move</span> <span class="p">(</span><span class="nv">durative</span> <span class="nv">action</span><span class="p">)</span>
+  <span class="nv">askcharge</span> <span class="p">(</span><span class="nv">durative</span> <span class="nv">action</span><span class="p">)</span>
+  <span class="nv">charge</span> <span class="p">(</span><span class="nv">durative</span> <span class="nv">action</span><span class="p">)</span>
 
-<span class="o">&gt;</span> <span class="n">get</span> <span class="n">model</span> <span class="n">predicates</span>
-<span class="n">Predicates</span><span class="p">:</span> <span class="mi">5</span>
-  <span class="n">robot_at</span>
-  <span class="n">connected</span>
-  <span class="n">battery_full</span>
-  <span class="n">battery_low</span>
-  <span class="n">charging_point_at</span>
+<span class="nb">get</span> <span class="nv">model</span> <span class="nv">predicates</span>
+<span class="nv">Predicates:</span> <span class="mi">5</span>
+  <span class="nv">robot_at</span>
+  <span class="nv">connected</span>
+  <span class="nv">battery_full</span>
+  <span class="nv">battery_low</span>
+  <span class="nv">charging_point_at</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -394,22 +394,22 @@ where you launched PlanSys2, and relaunch it.</p>
 <li><p>It is also possible to get the details of a predicate or an action:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; get model predicate robot_at
-Parameters: 2
- robot - ?robot0
- room - ?room1
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">model</span> <span class="nv">predicate</span> <span class="nv">robot_at</span>
+<span class="nv">Parameters:</span> <span class="mi">2</span>
+ <span class="nv">robot</span> <span class="nb">-</span> <span class="nv">?robot0</span>
+ <span class="nb">room</span> <span class="nb">-</span> <span class="nv">?room1</span>
 
-&gt; get model action move
-Type: durative-action
-Parameters: 3
- ?0 - robot
- ?1 - room
- ?2 - room
-AtStart requirements: (and (connected ?1 ?2)(robot_at ?0 ?1))
-OverAll requirements: (and (battery_full ?0))
-AtEnd requirements:
-AtStart effect: (and (not (robot_at ?0 ?1)))
-AtEnd effect: (and (robot_at ?0 ?2))
+<span class="nb">get</span> <span class="nv">model</span> <span class="nv">action</span> <span class="nv">move</span>
+<span class="nv">Type:</span> <span class="nv">durative-action</span>
+<span class="nv">Parameters:</span> <span class="mi">3</span>
+ <span class="nv">?0</span> <span class="nb">-</span> <span class="nv">robot</span>
+ <span class="nv">?1</span> <span class="nb">-</span> <span class="nb">room</span>
+ <span class="nv">?2</span> <span class="nb">-</span> <span class="nb">room</span>
+<span class="nv">AtStart</span> <span class="nv">requirements:</span> <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">?1</span> <span class="nv">?2</span><span class="p">)(</span><span class="nv">robot_at</span> <span class="nv">?0</span> <span class="nv">?1</span><span class="p">))</span>
+<span class="nv">OverAll</span> <span class="nv">requirements:</span> <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nv">battery_full</span> <span class="nv">?0</span><span class="p">))</span>
+<span class="nv">AtEnd</span> <span class="nv">requirements:</span>
+<span class="nv">AtStart</span> <span class="nv">effect:</span> <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">?0</span> <span class="nv">?1</span><span class="p">)))</span>
+<span class="nv">AtEnd</span> <span class="nv">effect:</span> <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">?0</span> <span class="nv">?2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -418,41 +418,41 @@ execution of PlanSys2. We could say that it is the static part of the planning i
 The other ingredient is the problem, which contains the instances, grounded (not generic as in
 the domain, but already with instances) predicates, and goals. We will check that it is empty for now.</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">instances</span>
-<span class="n">Instances</span><span class="p">:</span> <span class="mi">0</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">problem</span> <span class="nv">instances</span>
+<span class="nv">Instances:</span> <span class="mi">0</span>
 
-<span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">predicates</span>
-<span class="n">Predicates</span><span class="p">:</span> <span class="mi">0</span>
+<span class="nb">get</span> <span class="nv">problem</span> <span class="nv">predicates</span>
+<span class="nv">Predicates:</span> <span class="mi">0</span>
 
-<span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">goal</span>
-<span class="n">Goal</span><span class="p">:</span>
+<span class="nb">get</span> <span class="nv">problem</span> <span class="nv">goal</span>
+<span class="nv">Goal:</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>6. First, let’s add instances. If you analyze the domain, we want a robot to be able to move between rooms. For
 this, the robot must have a battery, and the rooms must be connected. Therefore, we need rooms and a robot:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">leia</span> <span class="n">robot</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">entrance</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">kitchen</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">bedroom</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">dinning</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">bathroom</span> <span class="n">room</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">instance</span> <span class="n">chargingroom</span> <span class="n">room</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">instance</span> <span class="nv">leia</span> <span class="nv">robot</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">entrance</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">kitchen</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bedroom</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">dinning</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">bathroom</span> <span class="nb">room</span>
+<span class="nb">set</span> <span class="nv">instance</span> <span class="nv">chargingroom</span> <span class="nb">room</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>If no errros, these instances can be checked by typing:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">instances</span>
-<span class="n">Instances</span><span class="p">:</span> <span class="mi">7</span>
- <span class="n">leia</span>    <span class="n">robot</span>
- <span class="n">entrance</span>        <span class="n">room</span>
- <span class="n">kitchen</span> <span class="n">room</span>
- <span class="n">bedroom</span> <span class="n">room</span>
- <span class="n">dinning</span> <span class="n">room</span>
- <span class="n">bathroom</span>        <span class="n">room</span>
- <span class="n">chargingroom</span>    <span class="n">room</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">problem</span> <span class="nv">instances</span>
+<span class="nv">Instances:</span> <span class="mi">7</span>
+ <span class="nv">leia</span>    <span class="nv">robot</span>
+ <span class="nv">entrance</span>        <span class="nb">room</span>
+ <span class="nv">kitchen</span> <span class="nb">room</span>
+ <span class="nv">bedroom</span> <span class="nb">room</span>
+ <span class="nv">dinning</span> <span class="nb">room</span>
+ <span class="nv">bathroom</span>        <span class="nb">room</span>
+ <span class="nv">chargingroom</span>    <span class="nb">room</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -460,44 +460,44 @@ this, the robot must have a battery, and the rooms must be connected. Therefore,
 <li><p>To add predicates, we type:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">entrance</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">entrance</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">bathroom</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">bathroom</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">chargingroom</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">charging_point_at</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">battery_low</span> <span class="n">leia</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="nb">set</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">robot_at</span> <span class="n">leia</span> <span class="n">entrance</span><span class="p">)</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">entrance</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bathroom</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">bathroom</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">chargingroom</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">chargingroom</span><span class="p">)</span>
+
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">charging_point_at</span> <span class="nv">chargingroom</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">battery_low</span> <span class="nv">leia</span><span class="p">)</span>
+<span class="nb">set</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">entrance</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>Let’s check it:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">problem</span> <span class="n">predicates</span>
-<span class="n">Predicates</span><span class="p">:</span> <span class="mi">13</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">entrance</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">entrance</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">dinning</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">bathroom</span> <span class="n">bedroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">bedroom</span> <span class="n">bathroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">chargingroom</span> <span class="n">kitchen</span><span class="p">)</span>
-<span class="p">(</span><span class="n">connected</span> <span class="n">kitchen</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">charging_point_at</span> <span class="n">chargingroom</span><span class="p">)</span>
-<span class="p">(</span><span class="n">battery_low</span> <span class="n">leia</span><span class="p">)</span>
-<span class="p">(</span><span class="n">robot_at</span> <span class="n">leia</span> <span class="n">entrance</span><span class="p">)</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">problem</span> <span class="nv">predicates</span>
+<span class="nv">Predicates:</span> <span class="mi">13</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">entrance</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">entrance</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">dinning</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">bathroom</span> <span class="nv">bedroom</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">bedroom</span> <span class="nv">bathroom</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">chargingroom</span> <span class="nv">kitchen</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span> <span class="nv">kitchen</span> <span class="nv">chargingroom</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">charging_point_at</span> <span class="nv">chargingroom</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">battery_low</span> <span class="nv">leia</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">entrance</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -505,7 +505,7 @@ this, the robot must have a battery, and the rooms must be connected. Therefore,
 generate the plan. Also, we need to have an objective of our planning, which is a logic expression
 to end up being true. It is usually a predicate that we want to add to the knowledge:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nb">set</span> <span class="n">goal</span> <span class="p">(</span><span class="ow">and</span><span class="p">(</span><span class="n">robot_at</span> <span class="n">leia</span> <span class="n">bathroom</span><span class="p">))</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="nv">goal</span> <span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">robot_at</span> <span class="nv">leia</span> <span class="nv">bathroom</span><span class="p">))</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -513,21 +513,21 @@ to end up being true. It is usually a predicate that we want to add to the knowl
 <li><p>At this time we can ask that the plan be calculated to obtain this goal:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get</span> <span class="n">plan</span>
-<span class="n">plan</span><span class="p">:</span>
-<span class="mi">0</span>        <span class="p">(</span><span class="n">askcharge</span> <span class="n">leia</span> <span class="n">entrance</span> <span class="n">chargingroom</span><span class="p">)</span>  <span class="mi">5</span>
-<span class="mf">0.001</span>    <span class="p">(</span><span class="n">charge</span> <span class="n">leia</span> <span class="n">chargingroom</span><span class="p">)</span>      <span class="mi">5</span>
-<span class="mf">5.002</span>    <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">chargingroom</span> <span class="n">kitchen</span><span class="p">)</span>        <span class="mi">5</span>
-<span class="mf">10.003</span>   <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">kitchen</span> <span class="n">dinning</span><span class="p">)</span>     <span class="mi">5</span>
-<span class="mf">15.004</span>   <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">dinning</span> <span class="n">bedroom</span><span class="p">)</span>     <span class="mi">5</span>
-<span class="mf">20.005</span>   <span class="p">(</span><span class="n">move</span> <span class="n">leia</span> <span class="n">bedroom</span> <span class="n">bathroom</span><span class="p">)</span>    <span class="mi">5</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span> <span class="nv">plan</span>
+<span class="nv">plan:</span>
+<span class="mi">0</span>        <span class="p">(</span><span class="nv">askcharge</span> <span class="nv">leia</span> <span class="nv">entrance</span> <span class="nv">chargingroom</span><span class="p">)</span>  <span class="mi">5</span>
+<span class="mf">0.001</span>    <span class="p">(</span><span class="nv">charge</span> <span class="nv">leia</span> <span class="nv">chargingroom</span><span class="p">)</span>      <span class="mi">5</span>
+<span class="mf">5.002</span>    <span class="p">(</span><span class="nv">move</span> <span class="nv">leia</span> <span class="nv">chargingroom</span> <span class="nv">kitchen</span><span class="p">)</span>        <span class="mi">5</span>
+<span class="mf">10.003</span>   <span class="p">(</span><span class="nv">move</span> <span class="nv">leia</span> <span class="nv">kitchen</span> <span class="nv">dinning</span><span class="p">)</span>     <span class="mi">5</span>
+<span class="mf">15.004</span>   <span class="p">(</span><span class="nv">move</span> <span class="nv">leia</span> <span class="nv">dinning</span> <span class="nv">bedroom</span><span class="p">)</span>     <span class="mi">5</span>
+<span class="mf">20.005</span>   <span class="p">(</span><span class="nv">move</span> <span class="nv">leia</span> <span class="nv">bedroom</span> <span class="nv">bathroom</span><span class="p">)</span>    <span class="mi">5</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>To create the plan, the first thing to do is generate two files: <code class="docutils literal notranslate"><span class="pre">`/tmp/domain.pddl`</span></code> and <code class="docutils literal notranslate"><span class="pre">`/tmp/problem.pddl`</span></code>.
 You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ros2</span> <span class="n">run</span> <span class="n">popf</span> <span class="n">popf</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">domain</span><span class="o">.</span><span class="n">pddl</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">problem</span><span class="o">.</span><span class="n">pddl</span>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2 run popf popf /tmp/domain.pddl /tmp/problem.pddl
 </pre></div>
 </div>
 </div></blockquote>
@@ -535,9 +535,9 @@ You can check that they are there from the last planning. In fact, we can run th
 <li><p>We can also delete instances, predicates or the goal:</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">remove</span> <span class="n">instance</span> <span class="n">leia</span>
-<span class="o">&gt;</span> <span class="n">remove</span> <span class="n">predicate</span> <span class="p">(</span><span class="n">connected</span> <span class="n">entrance</span> <span class="n">dinning</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="n">remove</span> <span class="n">goal</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">remove</span> <span class="nv">instance</span> <span class="nv">leia</span>
+<span class="nb">remove</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nv">connected</span> <span class="nv">entrance</span> <span class="nv">dinning</span><span class="p">)</span>
+<span class="nb">remove</span> <span class="nv">goal</span>
 </pre></div>
 </div>
 </div></blockquote>

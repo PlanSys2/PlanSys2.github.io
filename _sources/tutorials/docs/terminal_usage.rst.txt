@@ -9,11 +9,11 @@ Terminal Usage
 Overview
 ========
 
-The terminal is an application that allows interacting with PlanSys2 to test or monitor its operation. 
+The terminal is an application that allows the interaction with PlanSys2 to test or monitor its operation. 
 It is not essential to use PlanSys2 since your application is expected to manage the plans' knowledge and execution automatically. 
-Still, it is useful to know the terminal and convenient in these first tutorials.
+Still, it is useful and convenient to get to know the terminal in these first tutorials.
 
-This tutorial shows how to use the terminal and the main commands and is a good starting point for working with PlanSys2.
+This tutorial shows how to use the terminal and the main commands and is also a good starting point for working with PlanSys2.
 
 Tutorial Steps
 ==============
@@ -23,7 +23,7 @@ Tutorial Steps
 
 Follow the same process as in :ref:`getting_started` for installing PlanSys2. 
 
-We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
+We will use a test PDDL domain. If you do not know what PDDL is, it is recommended to take a look at one of these links first:
 
 * `PDDL 2.1 <https://arxiv.org/pdf/1106.4561.pdf>`_
 * `An Introduction to PDDL <http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf>`_
@@ -63,14 +63,14 @@ The PlanSys2 terminal is executed by entering the following command in another t
       ros2 run plansys2_terminal plansys2_terminal 
 
 At that moment, an interactive shell will open in which we can enter commands. We can use the up and down arrows to 
-navigate between the commands already entered or use `` Ctrl-R '' as in the shell to search for commands. It also has 
-autocompletion with the `` Tab '' key. You can quit anytime typing "quit" or pressing ``Ctrl-d``.
+navigate between the commands already entered or use ``Ctrl-R`` as in the shell to search for commands. It also has 
+autocompletion with the ``Tab`` key. You can quit anytime typing "quit" or pressing ``Ctrl-D``.
 
-Take into account that the state of the system is at PlanSys2 components, not in the terminal. You can close and 
-reopen (or even use several terminals), and the system's state persists. If you want to reset the system, press ``Ctrl-c`` in the terminal
+It should be noted that the state of the system is at PlanSys2 components, not in the terminal. You can close and 
+reopen (or even use several terminals), and the system's state persists. If you want to reset the system, press ``Ctrl-C`` in the terminal
 where you launched PlanSys2, and relaunch it.
 
-  .. code-block::
+  .. code-block:: lisp
 
       ROS2 Planning System console. Type "quit" to finish
       > 
@@ -78,11 +78,11 @@ where you launched PlanSys2, and relaunch it.
 2- Interactive session
 ----------------------
 
-1. The first thing is to check the domain that is being used:
+1. The first thing is to check the domain that is being used. In the PlanSys2 terminal window type:
 
-  .. code-block::
+  .. code-block:: lisp
 
-      > get domain
+      get domain
 
       ( define ( domain simple )
       ( :requirements :strips :adl :typing :durative-actions :fluents )
@@ -99,24 +99,24 @@ where you launched PlanSys2, and relaunch it.
 
 2. To see what types of instances the model contains, type:
 
-  .. code-block::
+  .. code-block:: lisp
 
-      > get model types
+      get model types
       Types: 2
 	        robot
 	        room
 
 3. Use other variations of ``get model`` to get more information of the domain:
 
-  .. code-block::
+  .. code-block:: lisp
 
-      > get model actions
+      get model actions
       Actions: 0
       	move (durative action)
       	askcharge (durative action)
       	charge (durative action)
       
-      > get model predicates 
+      get model predicates 
       Predicates: 5
       	robot_at
       	connected
@@ -126,14 +126,14 @@ where you launched PlanSys2, and relaunch it.
 
 4. It is also possible to get the details of a predicate or an action:
 
-  .. code-block::
+  .. code-block:: lisp
       
-       > get model predicate robot_at
+       get model predicate robot_at
        Parameters: 2
        	robot - ?robot0
        	room - ?room1
        
-       > get model action move
+       get model action move
        Type: durative-action
        Parameters: 3
        	?0 - robot
@@ -150,35 +150,35 @@ execution of PlanSys2. We could say that it is the static part of the planning i
 The other ingredient is the problem, which contains the instances, grounded (not generic as in 
 the domain, but already with instances) predicates, and goals. We will check that it is empty for now.
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > get problem instances
+       get problem instances
        Instances: 0
        
-       > get problem predicates
+       get problem predicates
        Predicates: 0
        
-       > get problem goal
+       get problem goal
        Goal: 
 
 6. First, let's add instances. If you analyze the domain, we want a robot to be able to move between rooms. For 
 this, the robot must have a battery, and the rooms must be connected. Therefore, we need rooms and a robot:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > set instance leia robot
-       > set instance entrance room
-       > set instance kitchen room
-       > set instance bedroom room
-       > set instance dinning room
-       > set instance bathroom room
-       > set instance chargingroom room
+       set instance leia robot
+       set instance entrance room
+       set instance kitchen room
+       set instance bedroom room
+       set instance dinning room
+       set instance bathroom room
+       set instance chargingroom room
 
 If no errros, these instances can be checked by typing:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > get problem instances
+       get problem instances
        Instances: 7
        	leia	robot
        	entrance	room
@@ -190,32 +190,32 @@ If no errros, these instances can be checked by typing:
 
 7. To add predicates, we type:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > set predicate (connected entrance dinning)
-       > set predicate (connected dinning entrance)
-       > 
-       > set predicate (connected dinning kitchen)
-       > set predicate (connected kitchen dinning)
-       > 
-       > set predicate (connected dinning bedroom)
-       > set predicate (connected bedroom dinning)
-       > 
-       > set predicate (connected bathroom bedroom)
-       > set predicate (connected bedroom bathroom)
-       > 
-       > set predicate (connected chargingroom kitchen)
-       > set predicate (connected kitchen chargingroom)
-       > 
-       > set predicate (charging_point_at chargingroom)
-       > set predicate (battery_low leia)
-       > set predicate (robot_at leia entrance)
+       set predicate (connected entrance dinning)
+       set predicate (connected dinning entrance)
+       
+       set predicate (connected dinning kitchen)
+       set predicate (connected kitchen dinning)
+       
+       set predicate (connected dinning bedroom)
+       set predicate (connected bedroom dinning)
+       
+       set predicate (connected bathroom bedroom)
+       set predicate (connected bedroom bathroom)
+       
+       set predicate (connected chargingroom kitchen)
+       set predicate (connected kitchen chargingroom)
+       
+       set predicate (charging_point_at chargingroom)
+       set predicate (battery_low leia)
+       set predicate (robot_at leia entrance)
 
 Let's check it:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > get problem predicates
+       get problem predicates
        Predicates: 13
        (connected entrance dinning)
        (connected dinning entrance)
@@ -235,15 +235,15 @@ Let's check it:
 generate the plan. Also, we need to have an objective of our planning, which is a logic expression 
 to end up being true. It is usually a predicate that we want to add to the knowledge:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > set goal (and(robot_at leia bathroom))
+       set goal (and(robot_at leia bathroom))
 
 9. At this time we can ask that the plan be calculated to obtain this goal:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > get plan
+       get plan
        plan: 
        0	(askcharge leia entrance chargingroom)	5
        0.001	(charge leia chargingroom)	5
@@ -255,17 +255,17 @@ to end up being true. It is usually a predicate that we want to add to the knowl
 To create the plan, the first thing to do is generate two files: ```/tmp/domain.pddl``` and ```/tmp/problem.pddl```. 
 You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:
 
-  .. code-block::
+  .. code-block:: bash
        
        ros2 run popf popf /tmp/domain.pddl /tmp/problem.pddl
 
 10. We can also delete instances, predicates or the goal:
 
-  .. code-block::
+  .. code-block:: lisp
 
-       > remove instance leia
-       > remove predicate (connected entrance dinning)
-       > remove goal 
+       remove instance leia
+       remove predicate (connected entrance dinning)
+       remove goal 
 
 11. What we will not be able to do is execute the plan (we would do it with the ``run`` command) because there is no node 
 running right now that implements the domain actions. We will see that in the next tutorial.
