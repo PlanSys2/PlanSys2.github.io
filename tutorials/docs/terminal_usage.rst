@@ -9,11 +9,11 @@ Terminal Usage
 Overview
 ========
 
-The terminal is an application that allows interacting with PlanSys2 to test or monitor its operation. 
+The terminal is an application that allows the interaction with PlanSys2 to test or monitor its operation. 
 It is not essential to use PlanSys2 since your application is expected to manage the plans' knowledge and execution automatically. 
-Still, it is useful to know the terminal and convenient in these first tutorials.
+Still, it is useful and convenient to get to know the terminal in these first tutorials.
 
-This tutorial shows how to use the terminal and the main commands and is a good starting point for working with PlanSys2.
+This tutorial shows how to use the terminal and the main commands and is also a good starting point for working with PlanSys2.
 
 Tutorial Steps
 ==============
@@ -23,7 +23,7 @@ Tutorial Steps
 
 Follow the same process as in :ref:`getting_started` for installing PlanSys2. 
 
-We will use a test PDDL domain. If you do not know what PDDL is, you had better take a look at one of these links first:
+We will use a test PDDL domain. If you do not know what PDDL is, it is recommended to take a look at one of these links first:
 
 * `PDDL 2.1 <https://arxiv.org/pdf/1106.4561.pdf>`_
 * `An Introduction to PDDL <http://www.cs.toronto.edu/~sheila/2542/w09/A1/introtopddl2.pdf>`_
@@ -63,11 +63,11 @@ The PlanSys2 terminal is executed by entering the following command in another t
       ros2 run plansys2_terminal plansys2_terminal 
 
 At that moment, an interactive shell will open in which we can enter commands. We can use the up and down arrows to 
-navigate between the commands already entered or use `` Ctrl-R '' as in the shell to search for commands. It also has 
-autocompletion with the `` Tab '' key. You can quit anytime typing "quit" or pressing ``Ctrl-d``.
+navigate between the commands already entered or use ``Ctrl-R`` as in the shell to search for commands. It also has 
+autocompletion with the ``Tab`` key. You can quit anytime typing "quit" or pressing ``Ctrl-D``.
 
-Take into account that the state of the system is at PlanSys2 components, not in the terminal. You can close and 
-reopen (or even use several terminals), and the system's state persists. If you want to reset the system, press ``Ctrl-c`` in the terminal
+It should be noted that the state of the system is at PlanSys2 components, not in the terminal. You can close and 
+reopen (or even use several terminals), and the system's state persists. If you want to reset the system, press ``Ctrl-C`` in the terminal
 where you launched PlanSys2, and relaunch it.
 
   .. code-block:: lisp
@@ -78,7 +78,7 @@ where you launched PlanSys2, and relaunch it.
 2- Interactive session
 ----------------------
 
-1. The first thing is to check the domain that is being used:
+1. The first thing is to check the domain that is being used. In the PlanSys2 terminal window type:
 
   .. code-block:: lisp
 
