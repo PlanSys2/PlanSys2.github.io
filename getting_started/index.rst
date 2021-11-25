@@ -31,9 +31,7 @@ Running the Example
       cd <your_workspace>
       git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
       colcon build --symlink-install
-
-.. note::  Packages for Foxy are not yet available. You can install it by sources instead.
-
+  
 2. Build the workspace:
 
   .. code-block:: bash
