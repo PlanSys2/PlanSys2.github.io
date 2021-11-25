@@ -21,8 +21,6 @@ Installation
 
       sudo apt install ros-<ros2-distro>-plansys2_*
 
-.. note::  Packages for Foxy are not yet available. You can install it by sources instead.
-
 Running the Example
 *******************
 
@@ -33,8 +31,7 @@ Running the Example
       cd <your_workspace>
       git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
       colcon build --symlink-install
-
-
+  
 2. Build the workspace:
 
   .. code-block:: bash
