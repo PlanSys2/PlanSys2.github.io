@@ -8,7 +8,7 @@ Implement actions as Behavior Trees
     <h1 align="center">
       <div>
         <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
-          <iframe width="450" height="300" src="https://www.youtube.com/embed/_oCcIq-TN_0?autoplay=1&mute=1" frameborder="1" allowfullscreen></iframe>
+          <iframe width="450" height="300" src="https://www.youtube.com/embed/_oCcIq-TN_0" frameborder="1" allowfullscreen></iframe>
         </div>
       </div>
     </h1>
@@ -273,7 +273,7 @@ For implementing the BT node ``Move``, we make it to inherit from ``BtActionNode
            const std::string & action_name,
            const BT::NodeConfiguration & conf);
        
-         void on_tick() override;
+         BT::NodeStatus on_tick() override;
          BT::NodeStatus on_success() override;
        
          static BT::PortsList providedPorts()
@@ -289,33 +289,41 @@ For implementing the BT node ``Move``, we make it to inherit from ``BtActionNode
        };
 
 
-``BtActionNode<>`` hides all the complexity, and only it is necessary to implement the method ``on_tick``, called one when the BT node is ticked for first time. In this BT node, we get the destination id from 
+``BtActionNode<>`` hides all the complexity, and only it is necessary to implement the method ``on_tick``, called each time the BT node is ticked. In this BT node, we get the destination id from 
 the input ``goal`` parameter. Remember the line in the XML ``<Move    name="move" goal="${arg3}"/>``.
 
   .. code-block:: c++
 
-       void
+       BT::NodeStatus
        Move::on_tick()
        {
-         std::string goal;
-         getInput<std::string>("goal", goal);
+         if (status() == BT::NodeStatus::IDLE) {
+           rclcpp::Node::SharedPtr node;
+           config().blackboard->get("node", node);
        
-         geometry_msgs::msg::Pose2D pose2nav;
-         if (waypoints_.find(goal) != waypoints_.end()) {
-           pose2nav = waypoints_[goal];
-         } else {
-           std::cerr << "No coordinate for waypoint [" << goal << "]" << std::endl;
+           std::string goal;
+           getInput<std::string>("goal", goal);
+       
+           geometry_msgs::msg::Pose2D pose2nav;
+           if (waypoints_.find(goal) != waypoints_.end()) {
+             pose2nav = waypoints_[goal];
+           } else {
+             std::cerr << "No coordinate for waypoint [" << goal << "]" << std::endl;
+           }
+       
+           geometry_msgs::msg::PoseStamped goal_pos;
+       
+           goal_pos.header.frame_id = "map";
+           goal_pos.header.stamp = node->now();
+           goal_pos.pose.position.x = pose2nav.x;
+           goal_pos.pose.position.y = pose2nav.y;
+           goal_pos.pose.position.z = 0;
+           goal_pos.pose.orientation = tf2::toMsg(tf2::Quaternion({0.0, 0.0, 1.0}, pose2nav.theta));
+       
+           goal_.pose = goal_pos;
          }
        
-         geometry_msgs::msg::PoseStamped goal_pos;
-       
-         goal_pos.header.frame_id = "map";
-         goal_pos.pose.position.x = pose2nav.x;
-         goal_pos.pose.position.y = pose2nav.y;
-         goal_pos.pose.position.z = 0;
-         goal_pos.pose.orientation = tf2::toMsg(tf2::Quaternion({0.0, 0.0, 1.0}, pose2nav.theta));
-       
-         goal_.pose = goal_pos;
+         return BT::NodeStatus::RUNNING;
        }
 
 There are also more method that we can implement if needed (``on_success``, ``on_aborted``, ``on_cancelled``, and so on).

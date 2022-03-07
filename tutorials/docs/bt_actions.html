@@ -275,7 +275,7 @@
 <h1 align="center">
   <div>
     <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
-      <iframe width="450" height="300" src="https://www.youtube.com/embed/_oCcIq-TN_0?autoplay=1&mute=1" frameborder="1" allowfullscreen></iframe>
+      <iframe width="450" height="300" src="https://www.youtube.com/embed/_oCcIq-TN_0" frameborder="1" allowfullscreen></iframe>
     </div>
   </div>
 </h1><ul class="simple">
@@ -524,7 +524,7 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
     <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">action_name</span><span class="p">,</span>
     <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">);</span>
 
-  <span class="kt">void</span> <span class="nf">on_tick</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+  <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">on_tick</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
   <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">on_success</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
   <span class="k">static</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span> <span class="n">providedPorts</span><span class="p">()</span>
@@ -541,31 +541,39 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 </pre></div>
 </div>
 </div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> hides all the complexity, and only it is necessary to implement the method <code class="docutils literal notranslate"><span class="pre">on_tick</span></code>, called one when the BT node is ticked for first time. In this BT node, we get the destination id from
+<p><code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> hides all the complexity, and only it is necessary to implement the method <code class="docutils literal notranslate"><span class="pre">on_tick</span></code>, called each time the BT node is ticked. In this BT node, we get the destination id from
 the input <code class="docutils literal notranslate"><span class="pre">goal</span></code> parameter. Remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span>&#160;&#160;&#160; <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;${arg3}&quot;/&gt;</span></code>.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span>
 <span class="n">Move</span><span class="o">::</span><span class="n">on_tick</span><span class="p">()</span>
 <span class="p">{</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">goal</span><span class="p">;</span>
-  <span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">()</span> <span class="o">==</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">IDLE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="o">::</span><span class="n">SharedPtr</span> <span class="n">node</span><span class="p">;</span>
+    <span class="n">config</span><span class="p">().</span><span class="n">blackboard</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;node&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">);</span>
 
-  <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span> <span class="n">pose2nav</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span> <span class="o">!=</span> <span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
-    <span class="n">pose2nav</span> <span class="o">=</span> <span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No coordinate for waypoint [&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">goal</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">goal</span><span class="p">;</span>
+    <span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+
+    <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span> <span class="n">pose2nav</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span> <span class="o">!=</span> <span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+      <span class="n">pose2nav</span> <span class="o">=</span> <span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No coordinate for waypoint [&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">goal</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span> <span class="n">goal_pos</span><span class="p">;</span>
+
+    <span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;map&quot;</span><span class="p">;</span>
+    <span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
+    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">tf2</span><span class="o">::</span><span class="n">toMsg</span><span class="p">(</span><span class="n">tf2</span><span class="o">::</span><span class="n">Quaternion</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">theta</span><span class="p">));</span>
+
+    <span class="n">goal_</span><span class="p">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">goal_pos</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span> <span class="n">goal_pos</span><span class="p">;</span>
-
-  <span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;map&quot;</span><span class="p">;</span>
-  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">tf2</span><span class="o">::</span><span class="n">toMsg</span><span class="p">(</span><span class="n">tf2</span><span class="o">::</span><span class="n">Quaternion</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">theta</span><span class="p">));</span>
-
-  <span class="n">goal_</span><span class="p">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">goal_pos</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
