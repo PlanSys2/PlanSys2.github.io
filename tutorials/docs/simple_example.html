@@ -384,99 +384,99 @@ to execute, only incrementing a <code class="docutils literal notranslate"><span
 <a class="reference external" href="https://design.ros2.org/articles/node_lifecycle.html">managed node</a> , also known as <em>lifecycle node</em>. When active, it will iterativelly call
 a function to perform the job. Let’s analyze the code of <em>move</em> action in <code class="docutils literal notranslate"><span class="pre">src/move_action_node.cpp</span></code>:</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MoveAction</span> <span class="o">:</span> <span class="k">public</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-  <span class="n">MoveAction</span><span class="p">()</span>
-  <span class="o">:</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="n">ms</span><span class="p">)</span>
-  <span class="p">{</span>
-    <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-  <span class="p">}</span>
+<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MoveAction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">MoveAction</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="n">ms</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-<span class="k">private</span><span class="o">:</span>
-  <span class="kt">void</span> <span class="n">do_work</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">progress_</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">progress_</span> <span class="o">+=</span> <span class="mf">0.02</span><span class="p">;</span>
-      <span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span> <span class="s">&quot;Move running&quot;</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;Move completed&quot;</span><span class="p">);</span>
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">do_work</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Move running&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Move completed&quot;</span><span class="p">);</span><span class="w"></span>
 
-      <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">\e[K&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Moving ... [&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">progress_</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;%]  &quot;</span> <span class="o">&lt;&lt;</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
-  <span class="p">}</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\r</span><span class="s">\e[K&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Moving ... [&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="n">progress_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;%]  &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-  <span class="kt">float</span> <span class="n">progress_</span><span class="p">;</span>
-<span class="p">};</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-  <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
 
-  <span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="s">&quot;move&quot;</span><span class="p">));</span>
-  <span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+<span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;move&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span><span class="w"></span>
 
-  <span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span><span class="w"></span>
 
-  <span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span><span class="w"></span>
 
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </td></tr></table></div>
 </div></blockquote>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">MoveAction</span></code> is a <code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> (defined <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp">here</a>), that inherit from <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code>. This is, basically, a <code class="docutils literal notranslate"><span class="pre">rclcpp_lifecycle::LifecycleNode</span></code>, but with an additional property: it can activate in cascade another <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code> when it is active. It’s useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See <a class="reference external" href="https://github.com/fmrico/cascade_lifecycle">this repo</a> for more info.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">:</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="n">ms</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="n">ms</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -484,9 +484,9 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 <p>This indicates that each 250ms (4Hz) the method <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> has an API, with these relevant protected methods for the actions:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">get_arguments</span><span class="p">();</span>
-<span class="kt">void</span> <span class="nf">send_feedback</span><span class="p">(</span><span class="kt">float</span> <span class="n">completion</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
-<span class="kt">void</span> <span class="nf">finish</span><span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="kt">float</span> <span class="n">completion</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">();</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">send_feedback</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">finish</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -496,26 +496,26 @@ this vector of strings: <code class="docutils literal notranslate"><span class="
 <p>This code is sending feedback of its completion. When finished, <code class="docutils literal notranslate"><span class="pre">finish</span></code> method indicates that the action has finished, and send back if
 it succesfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">progress_</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">progress_</span> <span class="o">+=</span> <span class="mf">0.02</span><span class="p">;</span>
-  <span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span> <span class="s">&quot;Move running&quot;</span><span class="p">);</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;Move completed&quot;</span><span class="p">);</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Move running&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Move completed&quot;</span><span class="p">);</span><span class="w"></span>
 
-  <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
 <ul>
 <li><p>The action node, once created, must pass to inactive state to be ready to execute.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
 
-<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="s">&quot;move&quot;</span><span class="p">));</span>
-<span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;move&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span><span class="w"></span>
 
-<span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+<span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -526,60 +526,60 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 <h3>4- Launcher<a class="headerlink" href="#launcher" title="Permalink to this headline">¶</a></h3>
 <p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_launch_description</span><span class="p">():</span>
+<div><div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_launch_description</span><span class="p">():</span>
     <span class="n">example_dir</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">)</span>
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">)</span>
 

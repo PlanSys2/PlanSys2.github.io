@@ -404,16 +404,16 @@ the launch file, specifying as parametersthe XML file that contains the BT and t
 <p>The <code class="docutils literal notranslate"><span class="pre">params.yaml</span></code> contains the BT nodes that will be used in the BT. As we implement each BT as plugins, it is necessary to specify each custom node used. We can also include
 any parameter needed by the specific BT node. In this case, the coordinates of each room is specified to the BT node <code class="docutils literal notranslate"><span class="pre">move</span></code> using parameters:</p>
 <blockquote>
-<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">move</span><span class="p">:</span>
-  <span class="nt">ros__parameters</span><span class="p">:</span>
-    <span class="nt">plugins</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">plansys2_move_bt_node</span>
-    <span class="nt">waypoints</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;wheels_zone&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;steering_wheels_zone&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;body_car_zone&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;assembly_zone&quot;</span><span class="p p-Indicator">]</span>
-    <span class="nt">waypoint_coords</span><span class="p">:</span>
-      <span class="nt">wheels_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span> <span class="nv">-2.0</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
-      <span class="nt">steering_wheels_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">1.8</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
-      <span class="nt">body_car_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span> <span class="nv">2.0</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
-      <span class="nt">assembly_zone</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">-2.0</span><span class="p p-Indicator">,</span> <span class="nv">-0.4</span><span class="p p-Indicator">,</span> <span class="nv">0.0</span><span class="p p-Indicator">]</span>
+<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">move</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">plugins</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_move_bt_node</span><span class="w"></span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;wheels_zone&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;steering_wheels_zone&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;body_car_zone&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;assembly_zone&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">waypoint_coords</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">wheels_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">      </span><span class="nt">steering_wheels_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1.8</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">      </span><span class="nt">body_car_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">      </span><span class="nt">assembly_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -458,123 +458,123 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 <h4>2.3 BT Nodes<a class="headerlink" href="#bt-nodes" title="Permalink to this headline">¶</a></h4>
 <p>We implemented 4 BT nodes for this tutorial. <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code> have a similar implementation, showing only a message in the terminal when executing:</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ApproachObject</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-  <span class="k">explicit</span> <span class="n">ApproachObject</span><span class="p">(</span>
-    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">xml_tag_name</span><span class="p">,</span>
-    <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">);</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ApproachObject</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">ApproachObject</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">xml_tag_name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">conf</span><span class="p">);</span><span class="w"></span>
 
-  <span class="kt">void</span> <span class="nf">halt</span><span class="p">();</span>
-  <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">tick</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">halt</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">tick</span><span class="p">();</span><span class="w"></span>
 
-  <span class="k">static</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span> <span class="n">providedPorts</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="p">({});</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="w"> </span><span class="nf">providedPorts</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="p">({});</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-<span class="k">private</span><span class="o">:</span>
-  <span class="kt">int</span> <span class="n">counter_</span><span class="p">;</span>
-<span class="p">};</span>
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">counter_</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">ApproachObject</span><span class="o">::</span><span class="n">ApproachObject</span><span class="p">(</span>
-  <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">xml_tag_name</span><span class="p">,</span>
-  <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">)</span>
-<span class="o">:</span> <span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span><span class="p">(</span><span class="n">xml_tag_name</span><span class="p">,</span> <span class="n">conf</span><span class="p">),</span> <span class="n">counter_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="p">}</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">ApproachObject</span><span class="o">::</span><span class="n">ApproachObject</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">xml_tag_name</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">conf</span><span class="p">)</span><span class="w"></span>
+<span class="o">:</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span><span class="p">(</span><span class="n">xml_tag_name</span><span class="p">,</span><span class="w"> </span><span class="n">conf</span><span class="p">),</span><span class="w"> </span><span class="n">counter_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="kt">void</span>
-<span class="n">ApproachObject</span><span class="o">::</span><span class="n">halt</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ApproachObject halt&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"></span>
+<span class="n">ApproachObject</span><span class="o">::</span><span class="n">halt</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ApproachObject halt&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span>
-<span class="n">ApproachObject</span><span class="o">::</span><span class="n">tick</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ApproachObject tick &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">counter_</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"></span>
+<span class="n">ApproachObject</span><span class="o">::</span><span class="n">tick</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ApproachObject tick &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">counter_</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="n">counter_</span><span class="o">++</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="n">counter_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">counter_</span><span class="o">++</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">counter_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="p">}</span>  <span class="c1">// namespace plansys2_bt_example</span>
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace plansys2_bt_example</span>
 
-<span class="cp">#include</span> <span class="cpf">&quot;behaviortree_cpp_v3/bt_factory.h&quot;</span><span class="cp"></span>
-<span class="n">BT_REGISTER_NODES</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">factory</span><span class="p">.</span><span class="n">registerNodeType</span><span class="o">&lt;</span><span class="n">plansys2_bt_example</span><span class="o">::</span><span class="n">ApproachObject</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;ApproachObject&quot;</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;behaviortree_cpp_v3/bt_factory.h&quot;</span><span class="cp"></span>
+<span class="n">BT_REGISTER_NODES</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">factory</span><span class="p">.</span><span class="n">registerNodeType</span><span class="o">&lt;</span><span class="n">plansys2_bt_example</span><span class="o">::</span><span class="n">ApproachObject</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;ApproachObject&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>For implementing the BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code>, we make it to inherit from <code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> to simplify the implementation when the node calls a ROS2 action. In this case, <code class="docutils literal notranslate"><span class="pre">nav2_msgs::action::NavigateToPose</span></code>.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Move</span> <span class="o">:</span> <span class="k">public</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">nav2_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">NavigateToPose</span><span class="o">&gt;</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-  <span class="k">explicit</span> <span class="n">Move</span><span class="p">(</span>
-    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">xml_tag_name</span><span class="p">,</span>
-    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span> <span class="n">action_name</span><span class="p">,</span>
-    <span class="k">const</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span> <span class="o">&amp;</span> <span class="n">conf</span><span class="p">);</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Move</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">nav2_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">NavigateToPose</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">Move</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">xml_tag_name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action_name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">conf</span><span class="p">);</span><span class="w"></span>
 
-  <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">on_tick</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
-  <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span> <span class="n">on_success</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">on_success</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span><span class="w"></span>
 
-  <span class="k">static</span> <span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span> <span class="n">providedPorts</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">)</span>
-    <span class="p">};</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="w"> </span><span class="nf">providedPorts</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-<span class="k">private</span><span class="o">:</span>
-  <span class="kt">int</span> <span class="n">goal_reached_</span><span class="p">;</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span><span class="o">&gt;</span> <span class="n">waypoints_</span><span class="p">;</span>
-<span class="p">};</span>
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">goal_reached_</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span><span class="o">&gt;</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> hides all the complexity, and only it is necessary to implement the method <code class="docutils literal notranslate"><span class="pre">on_tick</span></code>, called each time the BT node is ticked. In this BT node, we get the destination id from
 the input <code class="docutils literal notranslate"><span class="pre">goal</span></code> parameter. Remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span>&#160;&#160;&#160; <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;${arg3}&quot;/&gt;</span></code>.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span>
-<span class="n">Move</span><span class="o">::</span><span class="n">on_tick</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">()</span> <span class="o">==</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">IDLE</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="o">::</span><span class="n">SharedPtr</span> <span class="n">node</span><span class="p">;</span>
-    <span class="n">config</span><span class="p">().</span><span class="n">blackboard</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;node&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">);</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"></span>
+<span class="nf">Move::on_tick</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">IDLE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">node</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">config</span><span class="p">().</span><span class="n">blackboard</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;node&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p">);</span><span class="w"></span>
 
-    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">goal</span><span class="p">;</span>
-    <span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">goal</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goal&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">);</span><span class="w"></span>
 
-    <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span> <span class="n">pose2nav</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span> <span class="o">!=</span> <span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
-      <span class="n">pose2nav</span> <span class="o">=</span> <span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No coordinate for waypoint [&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">goal</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">pose2nav</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;No coordinate for waypoint [&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">goal</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span> <span class="n">goal_pos</span><span class="p">;</span>
+<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">goal_pos</span><span class="p">;</span><span class="w"></span>
 
-    <span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;map&quot;</span><span class="p">;</span>
-    <span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
-    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">tf2</span><span class="o">::</span><span class="n">toMsg</span><span class="p">(</span><span class="n">tf2</span><span class="o">::</span><span class="n">Quaternion</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">},</span> <span class="n">pose2nav</span><span class="p">.</span><span class="n">theta</span><span class="p">));</span>
+<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;map&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tf2</span><span class="o">::</span><span class="n">toMsg</span><span class="p">(</span><span class="n">tf2</span><span class="o">::</span><span class="n">Quaternion</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">},</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">.</span><span class="n">theta</span><span class="p">));</span><span class="w"></span>
 
-    <span class="n">goal_</span><span class="p">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">goal_pos</span><span class="p">;</span>
-  <span class="p">}</span>
+<span class="w">    </span><span class="n">goal_</span><span class="p">.</span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">goal_pos</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-  <span class="k">return</span> <span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>

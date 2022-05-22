@@ -338,161 +338,161 @@ colcon build --symlink-install
 <h3>2- Patrol action performer<a class="headerlink" href="#patrol-action-performer" title="Permalink to this headline">¶</a></h3>
 <p>The action <code class="docutils literal notranslate"><span class="pre">patrol</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrol_action_node.cpp</span></code>) contains the actions that makes the robot spin.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78</pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">Patrol</span> <span class="o">:</span> <span class="k">public</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
- <span class="p">{</span>
- <span class="k">public</span><span class="o">:</span>
-   <span class="n">Patrol</span><span class="p">()</span>
-   <span class="o">:</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;patrol&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="n">s</span><span class="p">)</span>
-   <span class="p">{</span>
-   <span class="p">}</span>
+<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Patrol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="w"></span>
+<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">   </span><span class="n">Patrol</span><span class="p">()</span><span class="w"></span>
+<span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;patrol&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
 
-   <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
-   <span class="n">on_activate</span><span class="p">(</span><span class="k">const</span> <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span> <span class="o">&amp;</span> <span class="n">previous_state</span><span class="p">)</span>
-   <span class="p">{</span>
-     <span class="n">progress_</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="w">   </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span><span class="w"></span>
+<span class="w">   </span><span class="n">on_activate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
 
-     <span class="n">cmd_vel_pub_</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;/cmd_vel&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-     <span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_activate</span><span class="p">();</span>
+<span class="w">     </span><span class="n">cmd_vel_pub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;/cmd_vel&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_activate</span><span class="p">();</span><span class="w"></span>
 
-     <span class="k">return</span> <span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_activate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span>
-   <span class="p">}</span>
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_activate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
 
-   <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
-   <span class="n">on_deactivate</span><span class="p">(</span><span class="k">const</span> <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span> <span class="o">&amp;</span> <span class="n">previous_state</span><span class="p">)</span>
-   <span class="p">{</span>
-     <span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_deactivate</span><span class="p">();</span>
+<span class="w">   </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span><span class="w"></span>
+<span class="w">   </span><span class="n">on_deactivate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_deactivate</span><span class="p">();</span><span class="w"></span>
 
-     <span class="k">return</span> <span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_deactivate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span>
-   <span class="p">}</span>
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_deactivate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
 
- <span class="k">private</span><span class="o">:</span>
-   <span class="kt">void</span> <span class="n">do_work</span><span class="p">()</span>
-   <span class="p">{</span>
-     <span class="k">if</span> <span class="p">(</span><span class="n">progress_</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
-       <span class="n">progress_</span> <span class="o">+=</span> <span class="mf">0.1</span><span class="p">;</span>
+<span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="n">do_work</span><span class="p">()</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">       </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w"></span>
 
-       <span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span> <span class="s">&quot;Patrol running&quot;</span><span class="p">);</span>
+<span class="w">       </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Patrol running&quot;</span><span class="p">);</span><span class="w"></span>
 
-       <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span> <span class="n">cmd</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+<span class="w">       </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w"></span>
 
-       <span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
-     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-       <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span> <span class="n">cmd</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-       <span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="w">       </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">       </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
 
-       <span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+<span class="w">       </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span><span class="w"></span>
 
-       <span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;Patrol completed&quot;</span><span class="p">);</span>
-     <span class="p">}</span>
-   <span class="p">}</span>
+<span class="w">       </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Patrol completed&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
 
-   <span class="kt">float</span> <span class="n">progress_</span><span class="p">;</span>
+<span class="w">   </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span><span class="w"></span>
 
-   <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">LifecyclePublisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;::</span><span class="n">SharedPtr</span> <span class="n">cmd_vel_pub_</span><span class="p">;</span>
- <span class="p">};</span>
+<span class="w">   </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">LifecyclePublisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">cmd_vel_pub_</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="p">};</span><span class="w"></span>
 
- <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
- <span class="p">{</span>
-   <span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-   <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Patrol</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Patrol</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
 
-   <span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="s">&quot;patrol&quot;</span><span class="p">));</span>
-   <span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+<span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;patrol&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span><span class="w"></span>
 
-   <span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+<span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span><span class="w"></span>
 
-   <span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+<span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span><span class="w"></span>
 
-   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
- <span class="p">}</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </td></tr></table></div>
 </div></blockquote>
@@ -505,139 +505,139 @@ or declares that the action has already finished (line 56).</p>
 <p>The action <code class="docutils literal notranslate"><span class="pre">move</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp</span></code>) contains the actions that sends navigation requests to Nav2 using the ROS2 action <code class="docutils literal notranslate"><span class="pre">navigate_to_pose</span></code>. This
 example is quite complex if you are not familiar with <a class="reference external" href="https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/">ROS2 actions</a>, so we will not enter in details here, only selected pieces of code.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40</pre></div></td><td class="code"><div class="highlight"><pre><span></span>  <span class="n">MoveAction</span><span class="p">()</span>
-  <span class="o">:</span> <span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="n">ms</span><span class="p">)</span>
-  <span class="p">{</span>
-    <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span> <span class="n">wp</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;/map&quot;</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-    <span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">;</span>
+<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="w">  </span><span class="n">MoveAction</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="n">ms</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/map&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-2.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp1&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span><span class="w"></span>
 
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.8</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.8</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp2&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span><span class="w"></span>
 
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span>
-    <span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp3&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span><span class="w"></span>
 
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">;</span>
-    <span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-0.5</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-0.5</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp4&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span><span class="w"></span>
 
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">;</span>
-    <span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">;</span>
-    <span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp_control&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-2.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-0.4</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">&quot;wp_control&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span><span class="w"></span>
 
-    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="o">::</span><span class="n">placeholders</span><span class="p">;</span>
-    <span class="n">pos_sub_</span> <span class="o">=</span> <span class="n">create_subscription</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseWithCovarianceStamped</span><span class="o">&gt;</span><span class="p">(</span>
-      <span class="s">&quot;/amcl_pose&quot;</span><span class="p">,</span>
-      <span class="mi">10</span><span class="p">,</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MoveAction</span><span class="o">::</span><span class="n">current_pos_callback</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">_1</span><span class="p">));</span>
-  <span class="p">}</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="o">::</span><span class="nn">placeholders</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pos_sub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_subscription</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseWithCovarianceStamped</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;/amcl_pose&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="mi">10</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MoveAction</span><span class="o">::</span><span class="n">current_pos_callback</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">_1</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-  <span class="p">...</span>
-  <span class="k">private</span><span class="o">:</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="o">&gt;</span> <span class="n">waypoints_</span><span class="p">;</span>
+<span class="w">  </span><span class="p">...</span><span class="w"></span>
+<span class="w">  </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="o">&gt;</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </td></tr></table></div>
 </div></blockquote>
 <p>The coordinates of each waypoint are initialized and inserted in <code class="docutils literal notranslate"><span class="pre">waypoints_</span></code>.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25</pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
- <span class="n">on_activate</span><span class="p">(</span><span class="k">const</span> <span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span> <span class="o">&amp;</span> <span class="n">previous_state</span><span class="p">)</span>
- <span class="p">{</span>
-   <span class="p">...</span>
+<div><div class="highlight-c++ notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span><span class="w"></span>
+<span class="w"> </span><span class="nf">on_activate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="p">...</span><span class="w"></span>
 
-   <span class="k">auto</span> <span class="n">wp_to_navigate</span> <span class="o">=</span> <span class="n">get_arguments</span><span class="p">()[</span><span class="mi">2</span><span class="p">];</span>
-   <span class="n">goal_pos_</span> <span class="o">=</span> <span class="n">waypoints_</span><span class="p">[</span><span class="n">wp_to_navigate</span><span class="p">];</span>
-   <span class="n">navigation_goal_</span><span class="p">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">goal_pos_</span><span class="p">;</span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">wp_to_navigate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">()[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="w">   </span><span class="n">goal_pos_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">[</span><span class="n">wp_to_navigate</span><span class="p">];</span><span class="w"></span>
+<span class="w">   </span><span class="n">navigation_goal_</span><span class="p">.</span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">goal_pos_</span><span class="p">;</span><span class="w"></span>
 
-   <span class="p">...</span>
+<span class="w">   </span><span class="p">...</span><span class="w"></span>
 
-   <span class="n">send_goal_options</span><span class="p">.</span><span class="n">feedback_callback</span> <span class="o">=</span> <span class="p">[</span><span class="k">this</span><span class="p">](</span>
-     <span class="n">NavigationGoalHandle</span><span class="o">::</span><span class="n">SharedPtr</span><span class="p">,</span>
-     <span class="n">NavigationFeedback</span> <span class="n">feedback</span><span class="p">)</span> <span class="p">{</span>
-       <span class="n">send_feedback</span><span class="p">(</span>
-         <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">feedback</span><span class="o">-&gt;</span><span class="n">distance_remaining</span> <span class="o">/</span> <span class="n">dist_to_move</span><span class="p">))),</span>
-         <span class="s">&quot;Move running&quot;</span><span class="p">);</span>
-     <span class="p">};</span>
+<span class="w">   </span><span class="n">send_goal_options</span><span class="p">.</span><span class="n">feedback_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="w"></span>
+<span class="w">     </span><span class="n">NavigationGoalHandle</span><span class="o">::</span><span class="n">SharedPtr</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="n">NavigationFeedback</span><span class="w"> </span><span class="n">feedback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">       </span><span class="n">send_feedback</span><span class="p">(</span><span class="w"></span>
+<span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">feedback</span><span class="o">-&gt;</span><span class="n">distance_remaining</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dist_to_move</span><span class="p">))),</span><span class="w"></span>
+<span class="w">         </span><span class="s">&quot;Move running&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="p">};</span><span class="w"></span>
 
-   <span class="n">send_goal_options</span><span class="p">.</span><span class="n">result_callback</span> <span class="o">=</span> <span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="k">auto</span><span class="p">)</span> <span class="p">{</span>
-       <span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;Move completed&quot;</span><span class="p">);</span>
-     <span class="p">};</span>
+<span class="w">   </span><span class="n">send_goal_options</span><span class="p">.</span><span class="n">result_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="k">auto</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">       </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Move completed&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="p">};</span><span class="w"></span>
 
-  <span class="p">...</span>
- <span class="p">}</span>
+<span class="w">  </span><span class="p">...</span><span class="w"></span>
+<span class="w"> </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </td></tr></table></div>
 </div></blockquote>
@@ -652,84 +652,84 @@ example is quite complex if you are not familiar with <a class="reference extern
 <p>The mission controller (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp</span></code>) initializes the knowledge in PlanSys2 and implements a FSM to run patrolling plans. It uses
 four PlanSys2 clients to interact with PlanSys2:</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">init</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="n">domain_expert_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-    <span class="n">planner_client_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-    <span class="n">problem_expert_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-    <span class="n">executor_client_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-    <span class="n">init_knowledge</span><span class="p">();</span>
-  <span class="p">}</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">domain_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">planner_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">problem_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">executor_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">init_knowledge</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-<span class="k">private</span><span class="o">:</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span> <span class="n">domain_expert_</span><span class="p">;</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span> <span class="n">planner_client_</span><span class="p">;</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span> <span class="n">problem_expert_</span><span class="p">;</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span> <span class="n">executor_client_</span><span class="p">;</span>
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">domain_expert_</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">planner_client_</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">problem_expert_</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">executor_client_</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>Using these clients, we can add instances and predicates to PlanSys2:</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">init_knowledge</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;r2d2&quot;</span><span class="p">,</span> <span class="s">&quot;robot&quot;</span><span class="p">});</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp_control&quot;</span><span class="p">,</span> <span class="s">&quot;waypoint&quot;</span><span class="p">});</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp1&quot;</span><span class="p">,</span> <span class="s">&quot;waypoint&quot;</span><span class="p">});</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp2&quot;</span><span class="p">,</span> <span class="s">&quot;waypoint&quot;</span><span class="p">});</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp3&quot;</span><span class="p">,</span> <span class="s">&quot;waypoint&quot;</span><span class="p">});</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp4&quot;</span><span class="p">,</span> <span class="s">&quot;waypoint&quot;</span><span class="p">});</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init_knowledge</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;r2d2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;robot&quot;</span><span class="p">});</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp_control&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;waypoint&quot;</span><span class="p">});</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;waypoint&quot;</span><span class="p">});</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;waypoint&quot;</span><span class="p">});</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;waypoint&quot;</span><span class="p">});</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">&quot;wp4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;waypoint&quot;</span><span class="p">});</span><span class="w"></span>
 
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(robot_at r2d2 wp_control)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp1)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp1 wp_control)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp2)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp2 wp_control)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp3)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp3 wp_control)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp4)&quot;</span><span class="p">));</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp4 wp_control)&quot;</span><span class="p">));</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(robot_at r2d2 wp_control)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp1)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp1 wp_control)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp2)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp2 wp_control)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp3)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp3 wp_control)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp_control wp4)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(connected wp4 wp_control)&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>In the <code class="docutils literal notranslate"><span class="pre">step</span></code> method (called at 5Hz) there is the implementation of the FSM. Each switch case contains:
 * The code to execute in the state</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="nl">PATROL_WP1</span><span class="p">:</span>
-  <span class="p">{</span>
-    <span class="k">auto</span> <span class="n">feedback</span> <span class="o">=</span> <span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getFeedBack</span><span class="p">();</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="nl">PATROL_WP1</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">feedback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getFeedBack</span><span class="p">();</span><span class="w"></span>
 
-    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span> <span class="nl">action_feedback</span> <span class="p">:</span> <span class="n">feedback</span><span class="p">.</span><span class="n">action_execution_status</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;[&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">action_feedback</span><span class="p">.</span><span class="n">action</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span>
-        <span class="n">action_feedback</span><span class="p">.</span><span class="n">completion</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;%]&quot;</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action_feedback</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">feedback</span><span class="p">.</span><span class="n">action_execution_status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">action_feedback</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"></span>
+<span class="w">        </span><span class="n">action_feedback</span><span class="p">.</span><span class="n">completion</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;%]&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div></blockquote>
 <ul>
 <li><p>The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using <code class="docutils literal notranslate"><span class="pre">setGoal</span></code>), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call <code class="docutils literal notranslate"><span class="pre">executePlan</span></code>):</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Plan successful finished &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Plan successful finished &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
 
-  <span class="c1">// Cleanning up</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">removePredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(patrolled wp1)&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="c1">// Cleanning up</span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">removePredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">&quot;(patrolled wp1)&quot;</span><span class="p">));</span><span class="w"></span>
 
-  <span class="c1">// Set the goal for next state</span>
-  <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">setGoal</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Goal</span><span class="p">(</span><span class="s">&quot;(and(patrolled wp2))&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="c1">// Set the goal for next state</span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">setGoal</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Goal</span><span class="p">(</span><span class="s">&quot;(and(patrolled wp2))&quot;</span><span class="p">));</span><span class="w"></span>
 
-  <span class="c1">// Compute the plan</span>
-  <span class="k">auto</span> <span class="n">domain</span> <span class="o">=</span> <span class="n">domain_expert_</span><span class="o">-&gt;</span><span class="n">getDomain</span><span class="p">();</span>
-  <span class="k">auto</span> <span class="n">problem</span> <span class="o">=</span> <span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">getProblem</span><span class="p">();</span>
-  <span class="k">auto</span> <span class="n">plan</span> <span class="o">=</span> <span class="n">planner_client_</span><span class="o">-&gt;</span><span class="n">getPlan</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">problem</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Compute the plan</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">domain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">domain_expert_</span><span class="o">-&gt;</span><span class="n">getDomain</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">problem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">getProblem</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">plan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">planner_client_</span><span class="o">-&gt;</span><span class="n">getPlan</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span><span class="w"></span>
 
-  <span class="c1">// Execute the plan</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">executePlan</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span> <span class="p">{</span>
-    <span class="n">state_</span> <span class="o">=</span> <span class="n">PATROL_WP2</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="p">...</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="c1">// Execute the plan</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">executePlan</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PATROL_WP2</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">...</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
