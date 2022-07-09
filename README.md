@@ -1,5 +1,5 @@
 # ros2_planning_system.github.io
-http://intelligentroboticslab.gsyc.urjc.es/ros2_planning_system.github.io
+https://github.com/PlanSys2/plansys2.github.io
 
 This folder holds the source and configuration files used to generate the
 [PlanSys2 documentation](http://intelligentroboticslab.gsyc.urjc.es/ros2_planning_system.github.io) web site.
