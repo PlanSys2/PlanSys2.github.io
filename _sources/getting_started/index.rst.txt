@@ -19,7 +19,7 @@ Installation
 
    .. code-block:: bash
 
-      sudo apt install ros-<ros2-distro>-plansys2_*
+      sudo apt install ros-<ros2-distro>-plansys2-*
 
 Running the Example
 *******************
