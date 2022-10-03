@@ -9,7 +9,7 @@ Install
 PlanSys2 and its dependencies are released as binaries.
 You may install it via the following to get the latest stable released version:
 
-  ``sudo apt install ros-<distro>-plansys2_*``
+  ``sudo apt install ros-<distro>-plansys2-*``
 
 
 Build
