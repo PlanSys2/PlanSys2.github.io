@@ -44,7 +44,7 @@ clean:
 # along with a README
 
 publish:
-	git clone --reference . https://github.com/IntelligentRoboticsLabs/ros2_planning_system.github.io.git $(PUBLISHDIR)
+	git clone --reference . https://github.com/PlanSys2/PlanSys2.github.io.git $(PUBLISHDIR)
 	cd $(PUBLISHDIR) && \
 	git checkout gh-pages && \
 	git config user.email "fmrico@gmail.com" && \
