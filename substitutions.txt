@@ -7,11 +7,11 @@
 
 .. _project repo: https://github.com/IntelligentRoboticsLabs/ros2_planning_system
 
-.. _documentation repo: https://github.com/IntelligentRoboticsLabs/ros2_planning_system.github.io/doc
+.. _documentation repo: https://github.com/PlanSys2/PlanSys2.github.io/doc
 
-.. _documentation site: https://github.com/IntelligentRoboticsLabs/ros2_planning_system.github.io
+.. _documentation site: https://github.com/PlanSys2/PlanSys2.github.io
 
-.. _project website: http://intelligentroboticslab.gsyc.urjc.es/ros2_planning_system.github.io/
+.. _project website: http://intelligentroboticslab.gsyc.urjc.es/plansys2.github.io/
 
 .. |PP| replace:: https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/main
 

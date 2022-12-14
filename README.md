@@ -1,8 +1,8 @@
-# ros2_planning_system.github.io
+# plansys2.github.io
 https://github.com/PlanSys2/plansys2.github.io
 
 This folder holds the source and configuration files used to generate the
-[PlanSys2 documentation](http://intelligentroboticslab.gsyc.urjc.es/ros2_planning_system.github.io) web site.
+[PlanSys2 documentation](http://intelligentroboticslab.gsyc.urjc.es/plansys2.github.io) web site.
 
 Dependencies for Build: 
 * [Sphinx](https://www.sphinx-doc.org/en/master/usage/installation.html)
