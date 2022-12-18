@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Implement actions as Behavior Trees &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -185,7 +184,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="implement-actions-as-behavior-trees">
+  <div class="section" id="implement-actions-as-behavior-trees">
 <span id="bt-actions"></span><h1>Implement actions as Behavior Trees<a class="headerlink" href="#implement-actions-as-behavior-trees" title="Permalink to this headline"></a></h1>
 <h1 align="center">
   <div>
@@ -197,7 +196,7 @@
 <li><p><a class="reference internal" href="#overview">Overview</a></p></li>
 <li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
 </ul>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)">Behavior Trees</a> are a great way to implement actions. Instead of implementing an action, we specify an xml file with the structure of a behavior
 Tree and implement the tree nodes. This allows you to easily modify the implementation of an action, and reuse the nodes that are part of it in different behavior trees.</p>
@@ -206,10 +205,10 @@ learn more control nodes and so more sohisticated actions.</p>
 <p>In this tutorial we are going to see an example of a car assembly factory. The robots in this factory must transport the parts of a car from the areas where they are stored to the assembly area, in order to assemble a car.</p>
 <a class="reference internal image-reference" href="../../_images/carfactory.png"><img alt="../../_images/carfactory.png" class="align-center" src="../../_images/carfactory.png" style="width: 600px;" /></a>
 <p>You can find the PDDL domain of this tutorial <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_bt_example/pddl/bt_example.pddl">in this file</a>.</p>
-</section>
-<section id="tutorial-steps">
+</div>
+<div class="section" id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline"></a></h2>
-<section id="requisites">
+<div class="section" id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline"></a></h3>
 <p>If you haven’t done yet, clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
 <blockquote>
@@ -221,8 +220,8 @@ colcon build --symlink-install
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="running-the-example">
+</div>
+<div class="section" id="running-the-example">
 <h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Permalink to this headline"></a></h3>
 <ul>
 <li><p>Open a new terminal and run PlanSys2:</p>
@@ -289,8 +288,8 @@ ros2 run plansys2_bt_example nav2_sim_node  <span class="c1"># For fake Nav2 nod
 </div></blockquote>
 </li>
 </ul>
-</section>
-<section id="using-behavior-trees">
+</div>
+<div class="section" id="using-behavior-trees">
 <h3>2- Using Behavior Trees<a class="headerlink" href="#using-behavior-trees" title="Permalink to this headline"></a></h3>
 <a class="reference internal image-reference" href="../../_images/demoDiag2.png"><img alt="../../_images/demoDiag2.png" class="align-center" src="../../_images/demoDiag2.png" style="width: 600px;" /></a>
 <p>In the PDDL domain we have three actions: assemble, move and transport. We will implement the assemble action without using BTs, as we have done in the previous tutorials.
@@ -332,7 +331,7 @@ any parameter needed by the specific BT node. In this case, the coordinates of e
 </pre></div>
 </div>
 </div></blockquote>
-<section id="pddl-action-move">
+<div class="section" id="pddl-action-move">
 <h4>2.1 PDDL Action move<a class="headerlink" href="#pddl-action-move" title="Permalink to this headline"></a></h4>
 <p>This is the BT for the <strong>move</strong> action. The sequence is not necessary, but it is mantained in the tutorial to be coherent with the available code.
 It is composed only by one BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code> (do not confuse with PDDL action <code class="docutils literal notranslate"><span class="pre">move</span></code>).</p>
@@ -349,8 +348,8 @@ It is composed only by one BT node <code class="docutils literal notranslate"><s
 </div></blockquote>
 <p>In PlanSys2, the arguments of the PDDL action are accesible in the XML throught values in the blackboard whise identififiers are <code class="docutils literal notranslate"><span class="pre">arg0</span></code>, <code class="docutils literal notranslate"><span class="pre">arg1</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code>, and so on. If executing the
 PDDL action <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r2d2</span> <span class="pre">corridor</span> <span class="pre">kitchen)</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code> is the destiny room <code class="docutils literal notranslate"><span class="pre">kitchen</span></code>.</p>
-</section>
-<section id="pddl-action-transport">
+</div>
+<div class="section" id="pddl-action-transport">
 <h4>2.2 PDDL Action transport<a class="headerlink" href="#pddl-action-transport" title="Permalink to this headline"></a></h4>
 <p>This is the BT for the <strong>transport</strong> action. It is implemented as a sequence of BT nodes, including reuse the BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code>.</p>
 <blockquote>
@@ -368,8 +367,8 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="bt-nodes">
+</div>
+<div class="section" id="bt-nodes">
 <h4>2.3 BT Nodes<a class="headerlink" href="#bt-nodes" title="Permalink to this headline"></a></h4>
 <p>We implemented 4 BT nodes for this tutorial. <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code> have a similar implementation, showing only a message in the terminal when executing:</p>
 <blockquote>
@@ -494,10 +493,10 @@ the input <code class="docutils literal notranslate"><span class="pre">goal</spa
 </div>
 </div></blockquote>
 <p>There are also more method that we can implement if needed (<code class="docutils literal notranslate"><span class="pre">on_success</span></code>, <code class="docutils literal notranslate"><span class="pre">on_aborted</span></code>, <code class="docutils literal notranslate"><span class="pre">on_cancelled</span></code>, and so on).</p>
-</section>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
+</div>
 
 
            </div>

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Build and Install &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -184,23 +183,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="build-and-install">
+  <div class="section" id="build-and-install">
 <span id="build-instructions"></span><h1>Build and Install<a class="headerlink" href="#build-and-install" title="Permalink to this headline"></a></h1>
-<section id="install">
+<div class="section" id="install">
 <h2>Install<a class="headerlink" href="#install" title="Permalink to this headline"></a></h2>
 <p>PlanSys2 and its dependencies are released as binaries.
 You may install it via the following to get the latest stable released version:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">ros-&lt;distro&gt;-plansys2-*</span></code></p>
 </div></blockquote>
-</section>
-<section id="build">
+</div>
+<div class="section" id="build">
 <h2>Build<a class="headerlink" href="#build" title="Permalink to this headline"></a></h2>
-<section id="install-ros">
+<div class="section" id="install-ros">
 <h3>Install ROS<a class="headerlink" href="#install-ros" title="Permalink to this headline"></a></h3>
 <p>Please install ROS 2 via the usual <a class="reference external" href="https://index.ros.org/doc/ros2/Installation">build instructions</a> for your desired distribution.</p>
-</section>
-<section id="build-plansys2">
+</div>
+<div class="section" id="build-plansys2">
 <h3>Build PlanSys2<a class="headerlink" href="#build-plansys2" title="Permalink to this headline"></a></h3>
 <p>Create a new workspace, <code class="docutils literal notranslate"><span class="pre">plansys2_ws</span></code>, and clone PlanSys2 master branch into it and build it.
 Optionally, you can also include the TFD plan solver (you should <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver">install TFD first</a>) and the examples.</p>
@@ -221,9 +220,9 @@ colcon build --symlink-install
 <li><p>If you don’t want to use <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, you can use <code class="docutils literal notranslate"><span class="pre">foxy-devel</span></code> branch instead.</p></li>
 <li><p>if your are using <code class="docutils literal notranslate"><span class="pre">eloquent</span></code>, you should clone the <code class="docutils literal notranslate"><span class="pre">eloquent-devel</span></code> of the first two repositories (no TFD available for this distro).</p></li>
 </ul>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>

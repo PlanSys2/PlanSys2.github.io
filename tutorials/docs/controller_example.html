@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Using a planning controller &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -185,7 +184,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="using-a-planning-controller">
+  <div class="section" id="using-a-planning-controller">
 <span id="controller-example"></span><h1>Using a planning controller<a class="headerlink" href="#using-a-planning-controller" title="Permalink to this headline"></a></h1>
 <h1 align="center">
   <div>
@@ -197,7 +196,7 @@
 <li><p><a class="reference internal" href="#overview">Overview</a></p></li>
 <li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
 </ul>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p>In the previous examples, we have started the knowledge of PlanSys2, and we have calculated and executed plans interactively using the terminal. Obviously, when PlanSys2 is embedded in an application, interactive execution is not convenient.</p>
 <p>A <em>planning controller</em> is a program that:
@@ -213,10 +212,10 @@
 </ul>
 <p>In the tutorial’s first steps, we will use a test component that simulates the navigation process, and at the
 end of the tutorial, we will launch the real Nav2 and a simulator.</p>
-</section>
-<section id="tutorial-steps">
+</div>
+<div class="section" id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline"></a></h2>
-<section id="requisites">
+<div class="section" id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline"></a></h3>
 <p>If you haven’t done yet, clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
 <blockquote>
@@ -228,8 +227,8 @@ colcon build --symlink-install
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="running-the-example">
+</div>
+<div class="section" id="running-the-example">
 <h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Permalink to this headline"></a></h3>
 <ul>
 <li><p>Open a new terminal and run PlanSys2 with a node that simulates de action of navigation. So, the execution of Nav2 will not take place in the first steps of this tutorial:</p>
@@ -248,8 +247,8 @@ colcon build --symlink-install
 </li>
 </ul>
 <p>This will start the mission. You will see in the first terminal how the plans are calculated and how the actions are executed. In the last terminal you will see the execution of the actions too.</p>
-</section>
-<section id="patrol-action-performer">
+</div>
+<div class="section" id="patrol-action-performer">
 <h3>2- Patrol action performer<a class="headerlink" href="#patrol-action-performer" title="Permalink to this headline"></a></h3>
 <p>The action <code class="docutils literal notranslate"><span class="pre">patrol</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrol_action_node.cpp</span></code>) contains the actions that makes the robot spin.</p>
 <blockquote>
@@ -337,8 +336,8 @@ colcon build --symlink-install
 <p>This action runs with a frequency of 1Hz when activated. In each step, it increases its progress by 10% (line 32), sending speed commands to the robot through the
 topic <code class="docutils literal notranslate"><span class="pre">/cmd_vel</span></code> that make it spin (lines 36-44). When it completes the action, it stops the robot (lines 47-54). In each cycle it sends a feedback (line 34)
 or declares that the action has already finished (line 56).</p>
-</section>
-<section id="move-action-performer">
+</div>
+<div class="section" id="move-action-performer">
 <h3>3- Move action performer<a class="headerlink" href="#move-action-performer" title="Permalink to this headline"></a></h3>
 <p>The action <code class="docutils literal notranslate"><span class="pre">move</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp</span></code>) contains the actions that sends navigation requests to Nav2 using the ROS2 action <code class="docutils literal notranslate"><span class="pre">navigate_to_pose</span></code>. This
 example is quite complex if you are not familiar with <a class="reference external" href="https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/">ROS2 actions</a>, so we will not enter in details here, only selected pieces of code.</p>
@@ -421,8 +420,8 @@ example is quite complex if you are not familiar with <a class="reference extern
 <li><p>When receiving feedback from the Nav2 ROS2 action, we send feedback about the execution of the <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
 <li><p>When Nav2 considers the navigation complete, we call <code class="docutils literal notranslate"><span class="pre">finish</span></code> to finalize the execution of <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
 </ul>
-</section>
-<section id="mission-controller">
+</div>
+<div class="section" id="mission-controller">
 <h3>3- Mission controller<a class="headerlink" href="#mission-controller" title="Permalink to this headline"></a></h3>
 <p>The mission controller (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp</span></code>) initializes the knowledge in PlanSys2 and implements a FSM to run patrolling plans. It uses
 four PlanSys2 clients to interact with PlanSys2:</p>
@@ -509,8 +508,8 @@ four PlanSys2 clients to interact with PlanSys2:</p>
 </div>
 </li>
 </ul>
-</section>
-<section id="running-the-example-with-nav2">
+</div>
+<div class="section" id="running-the-example-with-nav2">
 <h3>4- Running the example with Nav2<a class="headerlink" href="#running-the-example-with-nav2" title="Permalink to this headline"></a></h3>
 <ul>
 <li><p>Make sure that Nav2 is <a class="reference external" href="https://navigation.ros.org/getting_started/index.html">correctly installed and it is working</a>.</p></li>
@@ -529,9 +528,9 @@ four PlanSys2 clients to interact with PlanSys2:</p>
 </div></blockquote>
 </li>
 </ul>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>

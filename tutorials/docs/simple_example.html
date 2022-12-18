@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The first planning package &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -185,13 +184,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="the-first-planning-package">
+  <div class="section" id="the-first-planning-package">
 <span id="simple-example"></span><h1>The first planning package<a class="headerlink" href="#the-first-planning-package" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="#overview">Overview</a></p></li>
 <li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
 </ul>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p>It is common for PlanSys2 to have a package that contains all the elements to plan and execute in a domain:</p>
 <ul class="simple">
@@ -201,10 +200,10 @@
 <li><p>Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.</p></li>
 </ul>
 <p>In this tutorial we are going to run again and to analyze the package of the simple example shown in: ref: <cite>getting_started</cite>.</p>
-</section>
-<section id="tutorial-steps">
+</div>
+<div class="section" id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline"></a></h2>
-<section id="requisites">
+<div class="section" id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Permalink to this headline"></a></h3>
 <p>Clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
 <blockquote>
@@ -216,8 +215,8 @@ colcon build --symlink-install
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="running-the-example">
+</div>
+<div class="section" id="running-the-example">
 <h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Permalink to this headline"></a></h3>
 <ul>
 <li><p>Open a new terminal and run PlanSys2:</p>
@@ -280,8 +279,8 @@ and some processes that implements a fake version of the domain’s actions.</p>
 </ul>
 <p>In the PlanSys2 terminal you’ll be able to see the plan. In both terminal, you’ll see the current actions executed and its level of completion. As
 soon as the plan execution finished, the terminal will be available again.</p>
-</section>
-<section id="package-structure">
+</div>
+<div class="section" id="package-structure">
 <h3>2- Package structure<a class="headerlink" href="#package-structure" title="Permalink to this headline"></a></h3>
 <p>Go to <code class="docutils literal notranslate"><span class="pre">&lt;your_workspace&gt;/ros2_planning_system_examples/plansys2_simple_example</span></code>. This is the ROS2 package that contains the example
 of this tutorial. The structure is the usual of a ROS2 package, with a <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as usual. Besides, we have the
@@ -291,8 +290,8 @@ next directories:</p>
 <li><p><strong>launch</strong> It contains the launcher of this example:</p></li>
 <li><p><strong>src</strong> It contains the implementation of the three actions of the domain.</p></li>
 </ul>
-</section>
-<section id="actions-implementation">
+</div>
+<div class="section" id="actions-implementation">
 <h3>3- Actions implementation<a class="headerlink" href="#actions-implementation" title="Permalink to this headline"></a></h3>
 <p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>ask_charge</em>. It will contains a “fake” implementation. Each node that implements an action is called <em>action performer</em>. Each action will take some seconds
 to execute, only incrementing a <code class="docutils literal notranslate"><span class="pre">progress</span></code> value and displaying it in the terminal. Each action in PlanSys2 is a
@@ -393,8 +392,8 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 </li>
 </ul>
 <p>The parameter <code class="docutils literal notranslate"><span class="pre">action</span></code> sets what action implements the <code class="docutils literal notranslate"><span class="pre">node</span></code> object.</p>
-</section>
-<section id="launcher">
+</div>
+<div class="section" id="launcher">
 <h3>4- Launcher<a class="headerlink" href="#launcher" title="Permalink to this headline"></a></h3>
 <p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
 <blockquote>
@@ -455,9 +454,9 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>
