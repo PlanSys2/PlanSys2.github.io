@@ -29,7 +29,7 @@ To learn more about this project, such as related projects, and maintainers, see
 We hope that this software helps to include planning in more Robotics projects, offering simple and powerful software to 
 generate intelligent behaviors for robots.
 
-We want to invite you to contribute to this `Open Source project in GitHub <https://github.com/IntelligentRoboticsLabs/ros2_planning_system>`_ !!
+We want to invite you to contribute to this `Open Source project in GitHub <https://github.com/IntelligentRoboticsLabs/ros2_planning_system>`_ !!!
 
 
 
