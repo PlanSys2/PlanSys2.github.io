@@ -17,8 +17,7 @@
 Overview
 ########
 
-ROS2 Planning System (plansys2 in short) is a project whose objective is to provide Robotics developers with a reliable, 
-simple, and efficient PDDL-based planning system. It is implemented in ROS2, applying the latest concepts developed in this 
+ROS2 Planning System (plansys2 in short) is a project whose objective is to provide Robotics developers with a reliable, simple, and efficient PDDL-based planning system. It is implemented in ROS2, applying the latest concepts developed in this 
 currently de-facto standard in Robotics.
 
 This project is the result of several years of experience in the development of robotic behaviors using 
