@@ -109,7 +109,7 @@ next directories:
 3- Actions implementation
 -------------------------
 
-The actions in the domain are *move*, *charge* and *ask_charge*. It will contains a "fake" implementation. Each node that implements an action is called *action performer*. Each action will take some seconds
+The actions in the domain are *move*, *charge* and *ask_charge*. It will contain a "fake" implementation. Each node that implements an action is called *action performer*. Each action will take some seconds
 to execute, only incrementing a ``progress`` value and displaying it in the terminal. Each action in PlanSys2 is a 
 `managed node <https://design.ros2.org/articles/node_lifecycle.html>`_ , also known as *lifecycle node*. When active, it will iterativelly call 
 a function to perform the job. Let's analyze the code of *move* action in ``src/move_action_node.cpp``:
