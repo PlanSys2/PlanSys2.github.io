@@ -150,15 +150,19 @@ Publishers / Subscriber
 
 This component calculates the plan to obtain a goal. 
 
+Each PDDL solver in PlanSys2 is a plugin.
+By default PlanSys2 uses `POPF <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily.
+Currently, the `Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ is also available.
+
 1. A plan may be requested by providing a domain acquired from the Domain Expert and a problem acquired from the Problem expert.
-2. The domain is stored in ``/tmp/<node namespace>/domain.pddl``. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.
-3. The problem is stored in ``/tmp/<node namespace>/problem.pddl``.
-4. Run the PDDL Solver, storing the output in ``tmp/<node namespace>/plan.pddl``.
-5. Parse ``tmp/<node namespace>/plan.pddl`` to get the sequence of actions as a vector of string.
+2. The domain is stored in ``<output_dir>/<node namespace>/domain.pddl``. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.
+3. The problem is stored in ``<output_dir>/<node namespace>/problem.pddl``.
+4. Run the PDDL Solver, storing the output in ``<output_dir>/<node namespace>/plan.pddl``.
+5. Parse ``<output_dir>/<node namespace>/plan.pddl`` to get the sequence of actions as a vector of string.
 6. Return the result.
 
-Each PDDL solver in PlanSys2 is a plugin. By default PlanSys2 uses `POPF <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily. Currently, the
-`Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ is also available.
+Here, ``<output_dir>`` corresponds to the output directory where the PDDL solver writes files.
+For POPF, the default corresponds to your system's temporary directory (e.g., ``/tmp/``), but it can be modified using the ``<plugin_name>.output_dir`` ROS parameter.
 
 .. image:: images/plansys2_planner.png
     :width: 300px
@@ -187,7 +191,7 @@ Publishers / Subscriber
 
 None
 
-4. Executor
+1. Executor
 ***********
 
 This component is responsible for executing a provided plan. It is, by far, the most complex component since the execution involves activating the action performers. This task is carried out with the following characteristics:
