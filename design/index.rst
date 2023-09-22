@@ -152,7 +152,7 @@ This component calculates the plan to obtain a goal.
 
 Each PDDL solver in PlanSys2 is a plugin.
 By default PlanSys2 uses `POPF <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily.
-Currently, the `Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ is also available.
+Currently, the `Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ (TFD) solver is also available.
 
 1. A plan may be requested by providing a domain acquired from the Domain Expert and a problem acquired from the Problem expert.
 2. The domain is stored in ``<output_dir>/<node namespace>/domain.pddl``. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.
