@@ -39,5 +39,5 @@ We want to invite you to contribute to this `Open Source project in GitHub <http
    build_instructions/index.rst
    design/index.rst
    tutorials/index.rst
+   plugins/index.rst
    about/index.rst
-   
