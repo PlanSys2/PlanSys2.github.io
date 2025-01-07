@@ -16,6 +16,7 @@ This page lists the known planner plugins for PlanSys2.
 | `TFD`_           | `TFDPlanSolver`_     | Numeric fluents; Durative actions.       |
 +------------------+----------------------+------------------------------------------+
 | `OPTIC`_         | `OPTICPlanSolver`_   | Numeric fluents; Durative actions;       |
+|                  |                      | Metrics.                                 |
 +------------------+----------------------+------------------------------------------+
 | `Mips XXL`_      | `MIPSPlanSolver`_    | Numeric fluents; Durative actions;       |
 |                  |                      | Metrics; Negative Preconditions.         |
