@@ -30,6 +30,22 @@ generate intelligent behaviors for robots.
 
 We want to invite you to contribute to this `Open Source project in GitHub <https://github.com/IntelligentRoboticsLabs/ros2_planning_system>`_ !!!
 
+If you use this software, consider citing our work;
+
+.. code-block:: console
+
+    @inproceedings{10.1109/IROS51168.2021.9636544,
+        author = {Mart\'{\i}n, Francisco and Clavero, Jonatan Gin\'{e}s and Matell\'{a}n, Vicente and Rodr\'{\i}guez, Francisco J.},
+        title = {PlanSys2: A Planning System Framework for ROS2},
+        year = {2021},
+        publisher = {IEEE Press},
+        url = {https://doi.org/10.1109/IROS51168.2021.9636544},
+        doi = {10.1109/IROS51168.2021.9636544},
+        booktitle = {2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+        pages = {9742–9749},
+        numpages = {8},
+        location = {Prague, Czech Republic}
+    }
 
 
 .. toctree::
