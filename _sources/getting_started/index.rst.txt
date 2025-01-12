@@ -4,7 +4,7 @@ Getting Started
 ###############
 
 This document will take you through the process of installing the |PN| binaries
-and and using |PN|.
+and using |PN|.
 
 .. note::
 
