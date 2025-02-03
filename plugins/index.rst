@@ -31,6 +31,9 @@ This page lists the known planner plugins for PlanSys2.
 | `SymK`_          | `SymkPlanner`_       | Derived predicates; Existential          |
 |                  |                      | preconditions; Disjunctive preconditions |
 +------------------+----------------------+------------------------------------------+
+| `UPF`_           | `UPFPlanSolver`_     | Unified Planning Framework               |
+|                  |                      |                                          |
++------------------+----------------------+------------------------------------------+
 
 
 .. _POPF: https://planning.wiki/ref/planners/popf
@@ -47,6 +50,8 @@ This page lists the known planner plugins for PlanSys2.
 .. _DownwardPlanner: https://github.com/kas-lab/downward_ros
 .. _SymK: https://github.com/speckdavid/symk
 .. _SymkPlanner: https://github.com/kas-lab/symk_ros
+.. _UPF: https://github.com/aiplan4eu/unified-planning
+.. _UPFPlanSolver: https://github.com/JRL-CARI-CNR-UNIBS/plansys2_upf_plugin
 
 Behavior tree builder plugins
 *****************************
