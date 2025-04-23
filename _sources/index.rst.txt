@@ -55,5 +55,5 @@ If you use this software, consider citing our work;
    build_instructions/index.rst
    design/index.rst
    tutorials/index.rst
+   plugins/index.rst
    about/index.rst
-   
