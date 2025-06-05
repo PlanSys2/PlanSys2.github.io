@@ -8,7 +8,7 @@ else
 endif
 
 # You can set these variables from the command line.
-SPHINXOPTS    ?= -q
+SPHINXOPTS    ?=
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = "ROS2 Planning System Documentation"
 SOURCEDIR     = .

@@ -18,6 +18,8 @@
 #
 import os
 import sys
+import time
+
 sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -30,7 +32,12 @@ sys.path.insert(0, os.path.abspath('.'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['breathe', 'sphinx.ext.graphviz', 'sphinxcontrib.plantuml', 'sphinx.ext.extlinks']
+extensions = [
+    'breathe',
+    'sphinx.ext.extlinks',
+    'sphinx.ext.graphviz',
+    'sphinxcontrib.plantuml',
+]
 
 graphviz_output_format='png'
 graphviz_dot_args=[
@@ -55,8 +62,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'ROS2 Planning System 2'
-copyright = u'2020'
 author = u'Various'
+copyright = f'{time.strftime("%Y")}, {author}'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -75,7 +82,7 @@ version = release = "1.0.0"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
