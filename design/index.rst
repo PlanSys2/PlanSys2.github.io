@@ -36,26 +36,31 @@ Client API
 
   .. code-block:: c++
 
-       std::vector<std::string> getTypes()
-       
-       std::vector<plansys2::Predicate> getPredicates()
-       std::optional<plansys2::Predicate> getPredicate(const std::string & predicate)
+       std::string getName();
+       std::vector<std::string> getTypes();
+       std::vector<std::string> getConstants(const std::string & type);
 
-       std::vector<plansys2::Function> getFunctions()
-       std::optional<plansys2::Function> getFunction(const std::string & function)
-       
-       std::vector<std::string> getActions()
-       plansys2_msgs::msg::Action::SharedPtr getAction(const std::string & action)
-       
-       std::vector<std::string> getDurativeActions()
-       plansys2_msgs::msg::DurativeAction::SharedPtr getDurativeAction(const std::string & action)
+       std::vector<plansys2::Predicate> getPredicates();
+       std::optional<plansys2::Predicate> getPredicate(const std::string & predicate);
 
-       std::string getDomain()
+       std::vector<plansys2::Function> getFunctions();
+       std::optional<plansys2::Function> getFunction(const std::string & function);
+
+       std::vector<plansys2::Predicate> getDerivedPredicates();
+       std::vector<plansys2_msgs::msg::Derived> getDerivedPredicate(const std::string & predicate);
+
+       std::vector<std::string> getActions();
+       plansys2_msgs::msg::Action::SharedPtr getAction(const std::string & action);
+
+       std::vector<std::string> getDurativeActions();
+       plansys2_msgs::msg::DurativeAction::SharedPtr getDurativeAction(const std::string & action);
+
+       std::string getDomain();
 
 Services
 --------
 
-* ``domain_expert/get_domain`` [plansys2_msgs::srv::GetDomain]: Get the domain.
+* ``domain_expert/get_domain_name`` [plansys2_msgs::srv::GetDomainName]: Get the name of the domain.
 * ``domain_expert/get_domain_types`` [plansys2_msgs::srv::GetDomainTypes]: Get the valid types.
 * ``domain_expert/get_domain_actions`` [plansys2_msgs::srv::GetDomainActions]: Get the available actions.
 * ``domain_expert/get_domain_action_details`` [plansys2_msgs::srv::GetDomainActionDetails]: Get the details of a specific action.
@@ -65,14 +70,16 @@ Services
 * ``domain_expert/get_domain_predicate_details`` [plansys2_msgs::srv::GetDomainPredicateDetails]: Get the details of a specific predicate.
 * ``domain_expert/get_domain_functions`` [plansys2_msgs::srv::GetDomainFunctions]: Get the valid functions.
 * ``domain_expert/get_domain_function_details`` [plansys2_msgs::srv::GetDomainFunctionDetails]: Get the details of a specific function.
-* ``domain_expert/get_domain`` [plansys2_msgs::srv::GetDomain]: Set the domain as a string.
+* ``domain_expert/get_domain_derived_predicates`` [plansys2_msgs::srv::GetDomainDerivedPredicates]: Get the valid derived predicates.
+* ``domain_expert/get_domain_derived_predicate_details`` [plansys2_msgs::srv::GetDomainDerivedPredicateDetails]: Get the details of a specific derived predicate.
+* ``domain_expert/get_domain`` [plansys2_msgs::srv::GetDomain]: Get the PDDL domain as a string.
 
 Publishers / Subscriber
 -----------------------
 
-None
+* ``domain_expert/domain`` [std_msgs::msg::String] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic with the current domain.
 
-2. Problem Expert
+1. Problem Expert
 *****************
 
 Contains the knowledge of the system: instances, grounded predicates and functions, and goals.
@@ -113,10 +120,12 @@ Client API
          bool clearKnowledge();
 
          std::string getProblem();
+         bool addProblem(const std::string & problem_str);
 
 Services
 --------
 
+* ``problem_expert/add_problem`` [plansys2_msgs::srv::AddProblem]: Add a problem to the current knowledge.
 * ``problem_expert/add_problem_goal`` [plansys2_msgs::srv::AddProblemGoal]: Replace the goal.
 * ``problem_expert/add_problem_instance`` [plansys2_msgs::srv::AffectParam]: Add an instance.
 * ``problem_expert/add_problem_predicate`` [plansys2_msgs::srv::AffectNode]: Add a predicate.
@@ -124,16 +133,16 @@ Services
 * ``problem_expert/get_problem_goal`` [plansys2_msgs::srv::GetProblemGoal]: Get the current goal.
 * ``problem_expert/get_problem_instance`` [plansys2_msgs::srv::GetProblemInstanceDetails]: Get the details of an instance.
 * ``problem_expert/get_problem_instances`` [plansys2_msgs::srv::GetProblemInstances]: Get all the instances.
-* ``problem_expert/get_problem_predicate =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate.
+* ``problem_expert/get_problem_predicate`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate.
 * ``problem_expert/get_problem_predicates`` [plansys2_msgs::srv::GetStates]: Get all the predicates.
-* ``problem_expert/get_problem_function =`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function.
+* ``problem_expert/get_problem_function`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function.
 * ``problem_expert/get_problem_functions`` [plansys2_msgs::srv::GetStates]: Get all the functions.
 * ``problem_expert/get_problem`` [plansys2_msgs::srv::GetProblem]: Get the PDDL problem as a string.
 * ``problem_expert/remove_problem_goal`` [plansys2_msgs::srv::RemoveProblemGoal]: Remove the current goal.
 * ``problem_expert/remove_problem_instance`` [plansys2_msgs::srv::AffectParam]: Remove an instance.
 * ``problem_expert/remove_problem_predicate`` [plansys2_msgs::srv::AffectNode]: Remove a predicate.
 * ``problem_expert/remove_problem_function`` [plansys2_msgs::srv::AffectNode]: Remove a function.
-* ``problem_expert/clear_problem_predicate`` [plansys2_msgs::srv::ClearProblemKnowledge]: Clears the instances, predicates, and functions.
+* ``problem_expert/clear_problem_knowledge`` [plansys2_msgs::srv::ClearProblemKnowledge]: Clears the instances, predicates, and functions.
 * ``problem_expert/exist_problem_predicate`` [plansys2_msgs::srv::ExistNode]: Check if a predicate exists.
 * ``problem_expert/exist_problem_function`` [plansys2_msgs::srv::ExistNode]: Check if a function exists.
 * ``problem_expert/update_problem_function`` [plansys2_msgs::srv::AffectNode]: Update a function value.
@@ -142,10 +151,11 @@ Services
 Publishers / Subscriber
 -----------------------
 
+* ``problem_expert/problem`` [plansys2_msgs::msg::Problem] {Publisher: rclcpp::QoS(100)}: A message is published on this topic with the current problem.
 * ``problem_expert/update_notify`` [std_msgs::msg::Empty] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.
-* ``problem_expert/knowledge`` [plansys2_msgs::msg::Knowledge] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.
+* ``problem_expert/knowledge`` [plansys2_msgs::msg::Knowledge] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic when any element of the problem changes.
 
-3. Planner
+1. Planner
 **********
 
 This component calculates the plan to obtain a goal. 
@@ -179,12 +189,15 @@ Client API
 
   .. code-block:: c++
 
-       boost::optional<plansys2_msgs::msg::Plan> getPlan(const std::string & domain, const std::string & problem)
+       std::optional<plansys2_msgs::msg::Plan> getPlan(const std::string & domain, const std::string & problem);
+       plansys2_msgs::msg::PlanArray getPlanArray(const std::string & domain, const std::string & problem);
 
 Services
 --------
 
 * ``planner/get_plan`` [plansys2_msgs::srv::GetPlan]: Get a plan that will satisfy the provided domain and problem.
+* ``planner/get_plan_array`` [plansys2_msgs::srv::GetPlanArray]: Get a plan array that will satisfy the provided domain and problem.
+* ``planner/validate_domain`` [plansys2_msgs::srv::ValidateDomain]: Validate the provided domain.
 
 Publishers / Subscriber
 -----------------------
@@ -226,7 +239,8 @@ Client API
        bool execute_and_check_plan();
        void cancel_plan_execution();
        std::vector<plansys2_msgs::msg::Tree> getOrderedSubGoals();
-       std::optional<plansys2_msgs::msg::Plan> getPlan();
+       std::optional<plansys2_msgs::msg::Plan> get_plan();
+       std::optional<plansys2_msgs::msg::Plan> get_remaining_plan();
 
        ExecutePlan::Feedback getFeedBack() {return feedback_;}
        std::optional<ExecutePlan::Result> getResult();
@@ -240,7 +254,9 @@ Publishers / Subscriber
 -----------------------
 
 * ``dot_graph`` [std_msgs::msg::String] {Publisher: rclcpp::QoS(1)}: Publishes the planning DOT graph.
-* ``/action_execution_info`` [plansys2_msgs::msg::ActionExecutionInfo] {Publisher: rclcpp::QoS(100)}: Publishes the action execution information. Note that the action execution information is also provided to the ExecutePlan action client via the feedback and result channels.
+* ``action_execution_info`` [plansys2_msgs::msg::ActionExecutionInfo] {Publisher: rclcpp::QoS(100)}: Publishes the action execution information. Note that the action execution information is also provided to the ExecutePlan action client via the feedback and result channels.
+* ``executing_plan`` [plansys2_msgs::msg::Plan] {Publisher: rclcpp::QoS(100).transient_local()}: Publishes the currently executing plan.
+* ``remaining_plan`` [plansys2_msgs::msg::Plan] {Publisher: rclcpp::QoS(100)}: Publishes the remaining plan to be executed.
 
 Behavior Tree builder
 *********************

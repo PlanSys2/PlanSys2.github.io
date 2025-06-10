@@ -170,7 +170,7 @@ It is composed only by one BT node ``Move`` (do not confuse with PDDL action ``m
        <root main_tree_to_execute = "MainTree" >
            <BehaviorTree ID="MainTree">
               <Sequence name="root_sequence">
-                  <Move    name="move" goal="${arg2}"/>
+                  <Move    name="move" goal="{arg2}"/>
               </Sequence>
            </BehaviorTree>
        </root>
@@ -193,7 +193,7 @@ This is the BT for the **transport** action. It is implemented as a sequence of 
                   <OpenGripper    name="open_gripper"/>
                   <ApproachObject name="approach_object"/>
                   <CloseGripper   name="close_gripper"/>
-                  <Move    name="move" goal="${arg3}"/>
+                  <Move    name="move" goal="{arg3}"/>
                   <OpenGripper    name="open_gripper"/>
               </Sequence>
            </BehaviorTree>
@@ -290,7 +290,7 @@ For implementing the BT node ``Move``, we make it to inherit from ``BtActionNode
 
 
 ``BtActionNode<>`` hides all the complexity, and only it is necessary to implement the method ``on_tick``, called each time the BT node is ticked. In this BT node, we get the destination id from 
-the input ``goal`` parameter. Remember the line in the XML ``<Move    name="move" goal="${arg3}"/>``.
+the input ``goal`` parameter. Remember the line in the XML ``<Move    name="move" goal="{arg3}"/>``.
 
   .. code-block:: c++
 
