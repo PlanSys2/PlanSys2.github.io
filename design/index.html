@@ -74,14 +74,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#publishers-subscriber">Publishers / Subscriber</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#problem-expert">2. Problem Expert</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#problem-expert">1. Problem Expert</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id3">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">Services</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">Publishers / Subscriber</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#planner">3. Planner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#planner">1. Planner</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id6">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id7">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id8">Services</a></li>
@@ -218,21 +218,26 @@ any application and hides the complexity of using ROS2 services.</p>
 <section id="client-api">
 <h3>Client API<a class="headerlink" href="#client-api" title="Link to this heading"></a></h3>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getTypes</span><span class="p">()</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getName</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getTypes</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getConstants</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPredicates</span><span class="p">()</span>
-<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPredicate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">predicate</span><span class="p">)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPredicates</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPredicate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">predicate</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Function</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getFunctions</span><span class="p">()</span>
-<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Function</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getFunction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">function</span><span class="p">)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Function</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getFunctions</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Function</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getFunction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">function</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getActions</span><span class="p">()</span>
-<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Action</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">getAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDerivedPredicates</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Derived</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDerivedPredicate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">predicate</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDurativeActions</span><span class="p">()</span>
-<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">DurativeAction</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">getDurativeAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getActions</span><span class="p">();</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Action</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="nf">getAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">getDomain</span><span class="p">()</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDurativeActions</span><span class="p">();</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">DurativeAction</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="nf">getDurativeAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getDomain</span><span class="p">();</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -240,7 +245,7 @@ any application and hides the complexity of using ROS2 services.</p>
 <section id="services">
 <h3>Services<a class="headerlink" href="#services" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain</span></code> [plansys2_msgs::srv::GetDomain]: Get the domain.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_name</span></code> [plansys2_msgs::srv::GetDomainName]: Get the name of the domain.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_types</span></code> [plansys2_msgs::srv::GetDomainTypes]: Get the valid types.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_actions</span></code> [plansys2_msgs::srv::GetDomainActions]: Get the available actions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_action_details</span></code> [plansys2_msgs::srv::GetDomainActionDetails]: Get the details of a specific action.</p></li>
@@ -250,16 +255,20 @@ any application and hides the complexity of using ROS2 services.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_predicate_details</span></code> [plansys2_msgs::srv::GetDomainPredicateDetails]: Get the details of a specific predicate.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_functions</span></code> [plansys2_msgs::srv::GetDomainFunctions]: Get the valid functions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_function_details</span></code> [plansys2_msgs::srv::GetDomainFunctionDetails]: Get the details of a specific function.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain</span></code> [plansys2_msgs::srv::GetDomain]: Set the domain as a string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_derived_predicates</span></code> [plansys2_msgs::srv::GetDomainDerivedPredicates]: Get the valid derived predicates.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain_derived_predicate_details</span></code> [plansys2_msgs::srv::GetDomainDerivedPredicateDetails]: Get the details of a specific derived predicate.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/get_domain</span></code> [plansys2_msgs::srv::GetDomain]: Get the PDDL domain as a string.</p></li>
 </ul>
 </section>
 <section id="publishers-subscriber">
 <h3>Publishers / Subscriber<a class="headerlink" href="#publishers-subscriber" title="Link to this heading"></a></h3>
-<p>None</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">domain_expert/domain</span></code> [std_msgs::msg::String] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic with the current domain.</p></li>
+</ul>
 </section>
 </section>
 <section id="problem-expert">
-<h2>2. Problem Expert<a class="headerlink" href="#problem-expert" title="Link to this heading"></a></h2>
+<h2>1. Problem Expert<a class="headerlink" href="#problem-expert" title="Link to this heading"></a></h2>
 <p>Contains the knowledge of the system: instances, grounded predicates and functions, and goals.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
@@ -296,6 +305,7 @@ any application and hides the complexity of using ROS2 services.</p>
 <span class="kt">bool</span><span class="w"> </span><span class="nf">clearKnowledge</span><span class="p">();</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getProblem</span><span class="p">();</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">addProblem</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem_str</span><span class="p">);</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -303,6 +313,7 @@ any application and hides the complexity of using ROS2 services.</p>
 <section id="id4">
 <h3>Services<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem</span></code> [plansys2_msgs::srv::AddProblem]: Add a problem to the current knowledge.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_goal</span></code> [plansys2_msgs::srv::AddProblemGoal]: Replace the goal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_instance</span></code> [plansys2_msgs::srv::AffectParam]: Add an instance.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_predicate</span></code> [plansys2_msgs::srv::AffectNode]: Add a predicate.</p></li>
@@ -310,16 +321,16 @@ any application and hides the complexity of using ROS2 services.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_goal</span></code> [plansys2_msgs::srv::GetProblemGoal]: Get the current goal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_instance</span></code> [plansys2_msgs::srv::GetProblemInstanceDetails]: Get the details of an instance.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_instances</span></code> [plansys2_msgs::srv::GetProblemInstances]: Get all the instances.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicate</span> <span class="pre">=</span></code> [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicate</span></code> [plansys2_msgs::srv::GetNodeDetails]: Get the details of a predicate.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicates</span></code> [plansys2_msgs::srv::GetStates]: Get all the predicates.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_function</span> <span class="pre">=</span></code> [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_function</span></code> [plansys2_msgs::srv::GetNodeDetails]: Get the details of a function.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_functions</span></code> [plansys2_msgs::srv::GetStates]: Get all the functions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem</span></code> [plansys2_msgs::srv::GetProblem]: Get the PDDL problem as a string.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_goal</span></code> [plansys2_msgs::srv::RemoveProblemGoal]: Remove the current goal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_instance</span></code> [plansys2_msgs::srv::AffectParam]: Remove an instance.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_predicate</span></code> [plansys2_msgs::srv::AffectNode]: Remove a predicate.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_function</span></code> [plansys2_msgs::srv::AffectNode]: Remove a function.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/clear_problem_predicate</span></code> [plansys2_msgs::srv::ClearProblemKnowledge]: Clears the instances, predicates, and functions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/clear_problem_knowledge</span></code> [plansys2_msgs::srv::ClearProblemKnowledge]: Clears the instances, predicates, and functions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/exist_problem_predicate</span></code> [plansys2_msgs::srv::ExistNode]: Check if a predicate exists.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/exist_problem_function</span></code> [plansys2_msgs::srv::ExistNode]: Check if a function exists.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/update_problem_function</span></code> [plansys2_msgs::srv::AffectNode]: Update a function value.</p></li>
@@ -329,13 +340,14 @@ any application and hides the complexity of using ROS2 services.</p>
 <section id="id5">
 <h3>Publishers / Subscriber<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/problem</span></code> [plansys2_msgs::msg::Problem] {Publisher: rclcpp::QoS(100)}: A message is published on this topic with the current problem.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/update_notify</span></code> [std_msgs::msg::Empty] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/knowledge</span></code> [plansys2_msgs::msg::Knowledge] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">problem_expert/knowledge</span></code> [plansys2_msgs::msg::Knowledge] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic when any element of the problem changes.</p></li>
 </ul>
 </section>
 </section>
 <section id="planner">
-<h2>3. Planner<a class="headerlink" href="#planner" title="Link to this heading"></a></h2>
+<h2>1. Planner<a class="headerlink" href="#planner" title="Link to this heading"></a></h2>
 <p>This component calculates the plan to obtain a goal.</p>
 <p>Each PDDL solver in PlanSys2 is a plugin.
 By default PlanSys2 uses <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver">POPF</a>, although other PDDL solvers can be used easily.
@@ -360,7 +372,8 @@ For POPF, the default corresponds to your system’s temporary directory (e.g., 
 <section id="id7">
 <h3>Client API<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">boost</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPlan</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">)</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPlan</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PlanArray</span><span class="w"> </span><span class="nf">getPlanArray</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -369,6 +382,8 @@ For POPF, the default corresponds to your system’s temporary directory (e.g., 
 <h3>Services<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">planner/get_plan</span></code> [plansys2_msgs::srv::GetPlan]: Get a plan that will satisfy the provided domain and problem.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">planner/get_plan_array</span></code> [plansys2_msgs::srv::GetPlanArray]: Get a plan array that will satisfy the provided domain and problem.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">planner/validate_domain</span></code> [plansys2_msgs::srv::ValidateDomain]: Validate the provided domain.</p></li>
 </ul>
 </section>
 <section id="id9">
@@ -406,7 +421,8 @@ For POPF, the default corresponds to your system’s temporary directory (e.g., 
 <span class="kt">bool</span><span class="w"> </span><span class="nf">execute_and_check_plan</span><span class="p">();</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">cancel_plan_execution</span><span class="p">();</span>
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Tree</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getOrderedSubGoals</span><span class="p">();</span>
-<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPlan</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">get_plan</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">get_remaining_plan</span><span class="p">();</span>
 
 <span class="n">ExecutePlan</span><span class="o">::</span><span class="n">Feedback</span><span class="w"> </span><span class="nf">getFeedBack</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">feedback_</span><span class="p">;}</span>
 <span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">ExecutePlan</span><span class="o">::</span><span class="n">Result</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getResult</span><span class="p">();</span>
@@ -424,7 +440,9 @@ For POPF, the default corresponds to your system’s temporary directory (e.g., 
 <h3>Publishers / Subscriber<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">dot_graph</span></code> [std_msgs::msg::String] {Publisher: rclcpp::QoS(1)}: Publishes the planning DOT graph.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/action_execution_info</span></code> [plansys2_msgs::msg::ActionExecutionInfo] {Publisher: rclcpp::QoS(100)}: Publishes the action execution information. Note that the action execution information is also provided to the ExecutePlan action client via the feedback and result channels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action_execution_info</span></code> [plansys2_msgs::msg::ActionExecutionInfo] {Publisher: rclcpp::QoS(100)}: Publishes the action execution information. Note that the action execution information is also provided to the ExecutePlan action client via the feedback and result channels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">executing_plan</span></code> [plansys2_msgs::msg::Plan] {Publisher: rclcpp::QoS(100).transient_local()}: Publishes the currently executing plan.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remaining_plan</span></code> [plansys2_msgs::msg::Plan] {Publisher: rclcpp::QoS(100)}: Publishes the remaining plan to be executed.</p></li>
 </ul>
 </section>
 </section>

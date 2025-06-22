@@ -74,14 +74,14 @@
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#publishers-subscriber">Publishers / Subscriber</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">2. Problem Expert</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">1. Problem Expert</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Services</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Publishers / Subscriber</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">3. Planner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">1. Planner</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Services</a></li>
@@ -349,7 +349,7 @@ It is composed only by one BT node <code class="docutils literal notranslate"><s
 <div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;root</span><span class="w"> </span><span class="na">main_tree_to_execute =</span><span class="w"> </span><span class="s">&quot;MainTree&quot;</span><span class="w"> </span><span class="nt">&gt;</span>
 <span class="w">    </span><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
 <span class="w">       </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;root_sequence&quot;</span><span class="nt">&gt;</span>
-<span class="w">           </span><span class="nt">&lt;Move</span><span class="w">    </span><span class="na">name=</span><span class="s">&quot;move&quot;</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;${arg2}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">           </span><span class="nt">&lt;Move</span><span class="w">    </span><span class="na">name=</span><span class="s">&quot;move&quot;</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{arg2}&quot;</span><span class="nt">/&gt;</span>
 <span class="w">       </span><span class="nt">&lt;/Sequence&gt;</span>
 <span class="w">    </span><span class="nt">&lt;/BehaviorTree&gt;</span>
 <span class="nt">&lt;/root&gt;</span>
@@ -369,7 +369,7 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 <span class="w">           </span><span class="nt">&lt;OpenGripper</span><span class="w">    </span><span class="na">name=</span><span class="s">&quot;open_gripper&quot;</span><span class="nt">/&gt;</span>
 <span class="w">           </span><span class="nt">&lt;ApproachObject</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;approach_object&quot;</span><span class="nt">/&gt;</span>
 <span class="w">           </span><span class="nt">&lt;CloseGripper</span><span class="w">   </span><span class="na">name=</span><span class="s">&quot;close_gripper&quot;</span><span class="nt">/&gt;</span>
-<span class="w">           </span><span class="nt">&lt;Move</span><span class="w">    </span><span class="na">name=</span><span class="s">&quot;move&quot;</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;${arg3}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">           </span><span class="nt">&lt;Move</span><span class="w">    </span><span class="na">name=</span><span class="s">&quot;move&quot;</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{arg3}&quot;</span><span class="nt">/&gt;</span>
 <span class="w">           </span><span class="nt">&lt;OpenGripper</span><span class="w">    </span><span class="na">name=</span><span class="s">&quot;open_gripper&quot;</span><span class="nt">/&gt;</span>
 <span class="w">       </span><span class="nt">&lt;/Sequence&gt;</span>
 <span class="w">    </span><span class="nt">&lt;/BehaviorTree&gt;</span>
@@ -466,7 +466,7 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 </div>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> hides all the complexity, and only it is necessary to implement the method <code class="docutils literal notranslate"><span class="pre">on_tick</span></code>, called each time the BT node is ticked. In this BT node, we get the destination id from
-the input <code class="docutils literal notranslate"><span class="pre">goal</span></code> parameter. Remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span>&#160;&#160;&#160; <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;${arg3}&quot;/&gt;</span></code>.</p>
+the input <code class="docutils literal notranslate"><span class="pre">goal</span></code> parameter. Remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span>&#160;&#160;&#160; <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;{arg3}&quot;/&gt;</span></code>.</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span>
 <span class="nf">Move::on_tick</span><span class="p">()</span>
