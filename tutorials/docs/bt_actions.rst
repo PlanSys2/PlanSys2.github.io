@@ -23,7 +23,7 @@ Overview
 Tree and implement the tree nodes. This allows you to easily modify the implementation of an action, and reuse the nodes that are part of it in different behavior trees.
 
 In PlanSys2 we will use the `BehaviorTree.CPP <https://www.behaviortree.dev/>`_ package from `Davide Faconti <https://github.com/facontidavide>`_. Read the tutorials there to 
-learn more control nodes and so more sohisticated actions.
+learn more control nodes and so more sophisticated actions.
 
 In this tutorial we are going to see an example of a car assembly factory. The robots in this factory must transport the parts of a car from the areas where they are stored to the assembly area, in order to assemble a car.
 
@@ -64,6 +64,12 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
 
       ros2 launch nav2_bringup tb3_simulation_launch.py  # For real Nav2 and Simulation 
       ros2 run plansys2_bt_example nav2_sim_node  # For fake Nav2 node
+
+* Open a new terminal and run the |PN| terminal:
+   
+   .. code-block:: bash
+
+      ros2 run plansys2_terminal plansys2_terminal
 
 * In the |PN| terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:
 
@@ -112,6 +118,12 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
       set goal (and(car_assembled car_1))
       run
 
+* Alternatively, you can also copy the commands into a text file (e.g. commands.txt) and enter the following line in the |PN| terminal:
+
+   .. code-block:: lisp
+    
+    source commands.txt
+
 2- Using Behavior Trees
 -----------------------
 
@@ -120,12 +132,12 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
     :align: center
 
 In the PDDL domain we have three actions: assemble, move and transport. We will implement the assemble action without using BTs, as we have done in the previous tutorials. 
-We will implement the other two PDDL actions, ``Move`` and ``Transport``, using BTs. For this, each action will have a BT encoded in an XML file that. This XML file contains 
+We will implement the other two PDDL actions, ``Move`` and ``Transport``, using BTs. For this, each action will have a BT encoded in an XML file. This XML file contains 
 the control structures (sequences, fallbacks, ...) and the nodes that carry out the action. In this tutorial, 4 BT nodes have been implemented (``Move``, ``ApproachObject``, 
 ``OpenGripper``, and ``CloseGripper``) that can be included in the BTs of the PDDL actions.
 
 In PlanSys2 there is a generic executable that any BT can run. This executable is ``bt_action_node`` from the package `` plansys2_bt_actions``. To use it, we should add it in 
-the launch file, specifying as parametersthe XML file that contains the BT and the PDDL action name:
+the launch file, specifying as parameter the XML file that contains the BT and the PDDL action name:
 
   .. code-block:: python
 
@@ -162,7 +174,7 @@ any parameter needed by the specific BT node. In this case, the coordinates of e
 2.1 PDDL Action move
 ^^^^^^^^^^^^^^^^^^^^
 
-This is the BT for the **move** action. The sequence is not necessary, but it is mantained in the tutorial to be coherent with the available code. 
+This is the BT for the **move** action. The sequence is not necessary, but it is maintained in the tutorial to be coherent with the available code. 
 It is composed only by one BT node ``Move`` (do not confuse with PDDL action ``move``). 
 
   .. code-block:: xml
@@ -175,7 +187,7 @@ It is composed only by one BT node ``Move`` (do not confuse with PDDL action ``m
            </BehaviorTree>
        </root>
 
-In PlanSys2, the arguments of the PDDL action are accesible in the XML throught values in the blackboard whise identififiers are ``arg0``, ``arg1``, ``arg2``, and so on. If executing the 
+In PlanSys2, the arguments of the PDDL action are accessible in the XML through values in the blackboard whose identifiers are ``arg0``, ``arg1``, ``arg2``, and so on. If executing the 
 PDDL action ``(move r2d2 corridor kitchen)``, ``arg2`` is the destiny room ``kitchen``.
 
 
@@ -326,4 +338,4 @@ the input ``goal`` parameter. Remember the line in the XML ``<Move    name="move
          return BT::NodeStatus::RUNNING;
        }
 
-There are also more method that we can implement if needed (``on_success``, ``on_aborted``, ``on_cancelled``, and so on).
+There are also more methods that we can implement if needed (``on_success``, ``on_aborted``, ``on_cancelled``, and so on).
