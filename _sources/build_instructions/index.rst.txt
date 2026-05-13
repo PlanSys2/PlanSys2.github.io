@@ -18,7 +18,7 @@ Build
 Install ROS
 -----------
 
-Please install ROS 2 via the usual `build instructions <https://index.ros.org/doc/ros2/Installation>`_ for your desired distribution.
+Please install ROS 2 via the usual `build instructions <https://docs.ros.org/en/kilted/Installation.html>`_ for your desired distribution.
 
 Build PlanSys2
 --------------

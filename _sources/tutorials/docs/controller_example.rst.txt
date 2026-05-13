@@ -49,7 +49,7 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+      git clone -b <ros2-distro> https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src/ros2_planning_system_examples
       colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install

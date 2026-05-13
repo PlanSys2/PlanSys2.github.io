@@ -74,14 +74,14 @@
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#publishers-subscriber">Publishers / Subscriber</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">2. Problem Expert</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">1. Problem Expert</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Services</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Publishers / Subscriber</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">3. Planner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">1. Planner</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Services</a></li>
@@ -218,7 +218,7 @@
 <p>Clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
-git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;-devel<span class="w"> </span>https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git<span class="w"> </span>src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
@@ -292,7 +292,7 @@ soon as the plan execution finished, the terminal will be available again.</p>
 </section>
 <section id="package-structure">
 <h3>2- Package structure<a class="headerlink" href="#package-structure" title="Link to this heading"></a></h3>
-<p>Go to <code class="docutils literal notranslate"><span class="pre">&lt;your_workspace&gt;/ros2_planning_system_examples/plansys2_simple_example</span></code>. This is the ROS2 package that contains the example
+<p>Go to <code class="docutils literal notranslate"><span class="pre">&lt;your_workspace&gt;/src/ros2_planning_system_examples/plansys2_simple_example</span></code>. This is the ROS2 package that contains the example
 of this tutorial. The structure is the usual of a ROS2 package, with a <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as usual. Besides, we have the
 next directories:</p>
 <ul class="simple">
@@ -476,7 +476,7 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Various.</p>
+    <p>&#169; Copyright 2026, Various.</p>
   </div>
 
    

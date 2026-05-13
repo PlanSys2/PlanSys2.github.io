@@ -30,7 +30,7 @@ Clone in your workspace and build the |PN| `examples <https://github.com/Intelli
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+      git clone -b <ros2-distro> https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src/ros2_planning_system_examples
       colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
@@ -98,7 +98,7 @@ soon as the plan execution finished, the terminal will be available again.
 2- Package structure
 --------------------
 
-Go to ``<your_workspace>/ros2_planning_system_examples/plansys2_simple_example``. This is the ROS2 package that contains the example 
+Go to ``<your_workspace>/src/ros2_planning_system_examples/plansys2_simple_example``. This is the ROS2 package that contains the example 
 of this tutorial. The structure is the usual of a ROS2 package, with a ``package.xml`` and a ``CMakeLists.txt`` as usual. Besides, we have the 
 next directories:
 
