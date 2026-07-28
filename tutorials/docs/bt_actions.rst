@@ -31,7 +31,7 @@ In this tutorial we are going to see an example of a car assembly factory. The r
     :width: 600px
     :align: center
 
-You can find the PDDL domain of this tutorial `in this file <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_bt_example/pddl/bt_example.pddl>`_.
+You can find the PDDL domain of this tutorial `in this file <https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_bt_example/pddl/bt_example.pddl>`_.
 
 Tutorial Steps
 ==============
@@ -39,12 +39,12 @@ Tutorial Steps
 0- Requisites
 -------------
 
-If you haven't done yet, clone in your workspace and build the |PN| `examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
+If you haven't done yet, clone in your workspace and build the |PN| `examples <https://github.com/PlanSys2/ros2_planning_system_examples>`_
 
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+      git clone -b <ros2-distro>-devel https://github.com/PlanSys2/ros2_planning_system_examples.git src
       colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
@@ -179,7 +179,7 @@ It is composed only by one BT node ``Move`` (do not confuse with PDDL action ``m
 
   .. code-block:: xml
 
-       <root main_tree_to_execute = "MainTree" >
+       <root BTCPP_format="4" main_tree_to_execute = "MainTree" >
            <BehaviorTree ID="MainTree">
               <Sequence name="root_sequence">
                   <Move    name="move" goal="{arg2}"/>
@@ -199,7 +199,7 @@ This is the BT for the **transport** action. It is implemented as a sequence of 
 
   .. code-block:: xml
 
-       <root main_tree_to_execute = "MainTree" >
+       <root BTCPP_format="4" main_tree_to_execute = "MainTree" >
            <BehaviorTree ID="MainTree">
               <Sequence name="root_sequence">
                   <OpenGripper    name="open_gripper"/>
@@ -267,7 +267,7 @@ We implemented 4 BT nodes for this tutorial. ``ApproachObject``, ``OpenGripper``
        
        }  // namespace plansys2_bt_example
        
-       #include "behaviortree_cpp_v3/bt_factory.h"
+       #include "behaviortree_cpp/bt_factory.h"
        BT_REGISTER_NODES(factory)
        {
          factory.registerNodeType<plansys2_bt_example::ApproachObject>("ApproachObject");

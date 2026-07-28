@@ -25,12 +25,12 @@ Tutorial Steps
 0- Requisites
 -------------
 
-Clone in your workspace and build the |PN| `examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
+Clone in your workspace and build the |PN| `examples <https://github.com/PlanSys2/ros2_planning_system_examples>`_
 
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro> https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src/ros2_planning_system_examples
+      git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
       colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
@@ -44,7 +44,7 @@ Clone in your workspace and build the |PN| `examples <https://github.com/Intelli
 
       ros2 launch plansys2_simple_example plansys2_simple_example_launch.py
 
-   This launch PlanSys2 this `simple PDDL domain <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_simple_example/pddl/simple_example.pddl>`_,
+   This launch PlanSys2 this `simple PDDL domain <https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_simple_example/pddl/simple_example.pddl>`_,
    and some processes that implements a fake version of the domain's actions.
 
 * Open a new terminal and run the |PN| terminal:
@@ -122,7 +122,7 @@ a function to perform the job. Let's analyze the code of *move* action in ``src/
        {
        public:
          MoveAction()
-         : plansys2::ActionExecutorClient("move", 250ms)
+         : plansys2::ActionExecutorClient("move")
          {
            progress_ = 0.0;
          }
@@ -153,7 +153,7 @@ a function to perform the job. Let's analyze the code of *move* action in ``src/
          rclcpp::init(argc, argv);
          auto node = std::make_shared<MoveAction>();
        
-         node->set_parameter(rclcpp::Parameter("action", "move"));
+         node->set_parameter(rclcpp::Parameter("action_name", "move"));
          node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
        
          rclcpp::spin(node->get_node_base_interface());
@@ -164,13 +164,13 @@ a function to perform the job. Let's analyze the code of *move* action in ``src/
        }
 
 
-* ``MoveAction`` is a ``plansys2::ActionExecutorClient`` (defined `here <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp>`_), that inherit from ``rclcpp_cascade_lifecycle::CascadeLifecycleNode``. This is, basically, a ``rclcpp_lifecycle::LifecycleNode``, but with an additional property: it can activate in cascade another ``rclcpp_cascade_lifecycle::CascadeLifecycleNode`` when it is active. It's useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See `this repo <https://github.com/fmrico/cascade_lifecycle>`_ for more info.
+* ``MoveAction`` is a ``plansys2::ActionExecutorClient`` (defined `here <https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp>`_), that inherit from ``rclcpp_cascade_lifecycle::CascadeLifecycleNode``. This is, basically, a ``rclcpp_lifecycle::LifecycleNode``, but with an additional property: it can activate in cascade another ``rclcpp_cascade_lifecycle::CascadeLifecycleNode`` when it is active. It's useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See `this repo <https://github.com/fmrico/cascade_lifecycle>`_ for more info.
 
   .. code-block:: c++
-       
-       : plansys2::ActionExecutorClient("move", 250ms)
 
-This indicates that each 250ms (4Hz) the method ``do_work()`` will be called.
+       : plansys2::ActionExecutorClient("move")
+
+By default, ``do_work()`` will be called every 200ms (5Hz). This rate can be changed at runtime through the ``rate`` ROS parameter (in Hz), without having to modify the C++ code.
 
 * ``plansys2::ActionExecutorClient`` has an API, with these relevant protected methods for the actions:
 
@@ -204,9 +204,9 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 
        auto node = std::make_shared<MoveAction>();
      
-       node->set_parameter(rclcpp::Parameter("action", "move"));
+       node->set_parameter(rclcpp::Parameter("action_name", "move"));
        node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-     
+
        rclcpp::spin(node->get_node_base_interface());
 
 The parameter ``action`` sets what action implements the ``node`` object. 

@@ -44,12 +44,12 @@ Tutorial Steps
 0- Requisites
 -------------
 
-If you haven't done yet, clone in your workspace and build the |PN| `examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
+If you haven't done yet, clone in your workspace and build the |PN| `examples <https://github.com/PlanSys2/ros2_planning_system_examples>`_
 
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro> https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src/ros2_planning_system_examples
+      git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
       colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
@@ -83,7 +83,7 @@ The action ``patrol`` (``ros2_planning_system_examples/plansys2_patrol_navigatio
        {
        public:
          Patrol()
-         : plansys2::ActionExecutorClient("patrol", 1s)
+         : plansys2::ActionExecutorClient("patrol")
          {
          }
        
@@ -148,7 +148,8 @@ The action ``patrol`` (``ros2_planning_system_examples/plansys2_patrol_navigatio
          rclcpp::init(argc, argv);
          auto node = std::make_shared<Patrol>();
        
-         node->set_parameter(rclcpp::Parameter("action", "patrol"));
+         node->set_parameter(rclcpp::Parameter("action_name", "patrol"));
+         node->set_parameter(rclcpp::Parameter("rate", 1.0));  // 1 Hz, replaces the old 1s ctor argument
          node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
        
          rclcpp::spin(node->get_node_base_interface());
@@ -173,7 +174,7 @@ example is quite complex if you are not familiar with `ROS2 actions <https://ind
       :linenos:
 
         MoveAction()
-        : plansys2::ActionExecutorClient("move", 500ms)
+        : plansys2::ActionExecutorClient("move")
         {
           geometry_msgs::msg::PoseStamped wp;
           wp.header.frame_id = "/map";
@@ -259,10 +260,10 @@ four PlanSys2 clients to interact with PlanSys2:
          
          void init()
            {
-             domain_expert_ = std::make_shared<plansys2::DomainExpertClient>(shared_from_this());
-             planner_client_ = std::make_shared<plansys2::PlannerClient>(shared_from_this());
-             problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>(shared_from_this());
-             executor_client_ = std::make_shared<plansys2::ExecutorClient>(shared_from_this());
+             domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
+             planner_client_ = std::make_shared<plansys2::PlannerClient>();
+             problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
+             executor_client_ = std::make_shared<plansys2::ExecutorClient>();
              init_knowledge();
            }
 
@@ -310,7 +311,7 @@ In the ``step`` method (called at 5Hz) there is the implementation of the FSM. E
                action_feedback.completion * 100.0 << "%]";
            }
 
-* The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using ``setGoal``), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call ``executePlan``):
+* The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using ``setGoal``), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call ``start_plan_execution``):
 
   .. code-block:: c++
 
@@ -329,7 +330,7 @@ In the ``step`` method (called at 5Hz) there is the implementation of the FSM. E
          auto plan = planner_client_->getPlan(domain, problem);
 
          // Execute the plan
-         if (executor_client_->executePlan(plan.value())) {
+         if (executor_client_->start_plan_execution(plan.value())) {
            state_ = PATROL_WP2;
          }
        } else {

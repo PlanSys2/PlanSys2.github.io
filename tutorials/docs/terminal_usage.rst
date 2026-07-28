@@ -33,7 +33,7 @@ Download a simple PDDL domain for this tutorial. Later, you could reproduce the 
 
   .. code-block:: bash
 
-      wget -P /tmp https://raw.githubusercontent.com/IntelligentRoboticsLabs/ros2_planning_system_examples/master/plansys2_simple_example/pddl/simple_example.pddl
+      wget -P /tmp https://raw.githubusercontent.com/PlanSys2/ros2_planning_system_examples/rolling/plansys2_simple_example/pddl/simple_example.pddl
 
 
 1- Launch PlanSys2

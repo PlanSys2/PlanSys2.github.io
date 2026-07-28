@@ -29,7 +29,7 @@ The objective of the Domain Expert is to read PDDL domains from files and make t
 Parameters
 ----------
 
-* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example>`_ for more details.
+* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/PlanSys2/ros2_planning_system_examples/tree/rolling/plansys2_multidomain_example>`_ for more details.
 
 Client API
 ----------
@@ -46,16 +46,18 @@ Client API
        std::vector<plansys2::Function> getFunctions();
        std::optional<plansys2::Function> getFunction(const std::string & function);
 
-       std::vector<plansys2::Predicate> getDerivedPredicates();
-       std::vector<plansys2_msgs::msg::Derived> getDerivedPredicate(const std::string & predicate);
+       std::vector<plansys2_msgs::msg::Derived> getDerivedPredicates();
+       plansys2::DerivedResolutionGraph getDerivedResolutionGraph();
+       std::vector<plansys2_msgs::msg::Derived> getDerivedPredicate(const std::string & predicate, const std::vector<std::string> & params = {});
 
        std::vector<std::string> getActions();
-       plansys2_msgs::msg::Action::SharedPtr getAction(const std::string & action);
+       plansys2_msgs::msg::Action::SharedPtr getAction(const std::string & action, const std::vector<std::string> & params = {});
 
        std::vector<std::string> getDurativeActions();
-       plansys2_msgs::msg::DurativeAction::SharedPtr getDurativeAction(const std::string & action);
+       plansys2_msgs::msg::DurativeAction::SharedPtr getDurativeAction(const std::string & action, const std::vector<std::string> & params = {});
 
        std::string getDomain();
+       std::string getDomain(bool use_cache);
 
 Services
 --------
@@ -87,7 +89,7 @@ Contains the knowledge of the system: instances, grounded predicates and functio
 Parameters
 ----------
 
-* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example>`_ for more details.
+* ``model_file`` [string]: PDDL model files to load, separates by ":". These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See `plansys2_multidomain_example <https://github.com/PlanSys2/ros2_planning_system_examples/tree/rolling/plansys2_multidomain_example>`_ for more details.
 
 Client API
 ----------
@@ -120,6 +122,8 @@ Client API
          bool clearKnowledge();
 
          std::string getProblem();
+         std::string getProblem(bool use_cache);
+         std::tuple<std::string, rclcpp::Time> getProblemWithTimestamp(bool use_cache = false);
          bool addProblem(const std::string & problem_str);
 
 Services
@@ -161,8 +165,8 @@ Publishers / Subscriber
 This component calculates the plan to obtain a goal. 
 
 Each PDDL solver in PlanSys2 is a plugin.
-By default PlanSys2 uses `POPF <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily.
-Currently, the `Temporal Fast Downward <https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver>`_ (TFD) solver is also available.
+By default PlanSys2 uses `POPF <https://github.com/PlanSys2/ros2_planning_system/tree/rolling/plansys2_popf_plan_solver>`_, although other PDDL solvers can be used easily.
+Currently, the `Temporal Fast Downward <https://github.com/PlanSys2/plansys2_tfd_plan_solver>`_ (TFD) solver is also available.
 
 1. A plan may be requested by providing a domain acquired from the Domain Expert and a problem acquired from the Problem expert.
 2. The domain is stored in ``<output_dir>/<node namespace>/domain.pddl``. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.
@@ -182,7 +186,7 @@ For POPF, the default corresponds to your system's temporary directory (e.g., ``
 Parameters
 ----------
 
-* ``plan_solver_plugins`` [vector<string>]: List of PDDL solver plugins. Currently, only the first plugin specified will be used. If not set, POPF will be used by default. Check `this config <https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_bringup/params/plansys2_params.yaml>`_ as an example on how to use it.
+* ``plan_solver_plugins`` [vector<string>]: List of PDDL solver plugins. Currently, only the first plugin specified will be used. If not set, POPF will be used by default. Check `this config <https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_bringup/params/plansys2_params.yaml>`_ as an example on how to use it.
 
 Client API
 ----------
@@ -258,6 +262,30 @@ Publishers / Subscriber
 * ``executing_plan`` [plansys2_msgs::msg::Plan] {Publisher: rclcpp::QoS(100).transient_local()}: Publishes the currently executing plan.
 * ``remaining_plan`` [plansys2_msgs::msg::Plan] {Publisher: rclcpp::QoS(100)}: Publishes the remaining plan to be executed.
 
+Plan Repair and Multi-Planner Replanning
+*****************************************
+
+PlanSys2 supports two complementary mechanisms that together enable adaptive replanning in dynamic environments, without having to cancel an in-progress plan and start again from scratch. These mechanisms, along with their formal foundations, are described in detail in `Peña-Narváez et al., "LLM-Assisted Plan Execution for Robots in Dynamic Environments" <https://doi.org/10.3390/robotics15040080>`_ (Robotics, 2026), which also introduces an optional LLM-based layer for deciding *when* to trigger a repair.
+
+Requesting plans from several planners at once
+------------------------------------------------
+
+The Planner node can be configured with several plan solver plugins simultaneously (see :ref:`multi_planner` for a full walk-through). Given a domain and a problem, ``PlannerClient::getPlanArray()`` queries every configured plugin **in parallel**, each with its own timeout, and returns every plan that was found in time as a ``plansys2_msgs::msg::PlanArray``. The plans in the array are sorted by their number of actions, shortest first. ``PlannerClient::getPlan()`` is a convenience wrapper around ``getPlanArray()`` that returns only the first (shortest) plan, which corresponds to the *Shortest of the Different Plans* selection criterion described in the paper above. Running several solvers, or the same solver with different tuning arguments, increases the chance of finding a good plan and gives an application (or an external evaluator, such as an LLM) alternative plans to choose from.
+
+Automatic plan repair during execution
+-----------------------------------------
+
+The Executor preserves in-progress work when the plan changes while one is already running. If ``ExecutorClient::start_plan_execution()`` is called again while a previous plan is still executing, the Executor does not cancel every action outright. Instead, it:
+
+1. Builds the Behavior Tree for the new plan.
+2. For every action that was still *running* under the previous plan, checks whether an action with the same name also appears as one of the first actions of the new plan.
+3. If a match is found, the running action executor is **kept alive and reused** (together with its applied effects and timing information), so its execution is not interrupted.
+4. Any running action that has no match in the new plan is cancelled.
+
+This corresponds to the *plan repair* formulation (as opposed to a full *replan from scratch*) described in the paper, where it is shown to significantly reduce goal-completion time and unnecessary action cancellations compared to the classical cancel-and-replan strategy. This behavior is automatic and requires no extra configuration: any application (a state machine, a behavior tree, or an LLM-based controller as in the referenced paper) can implement its own repair policy simply by deciding *when* to call ``start_plan_execution()`` again with a new candidate plan.
+
+A full reference implementation, including a pluggable ``ReplanController`` with interchangeable *Basic*, *Improved*, and *LLM-based* repair strategies (the ones evaluated in the paper), is available in the `paper_plansys2_LLMs <https://github.com/IntelligentRoboticsLabs/paper_plansys2_LLMs>`_ repository, together with the ``plansys2_replan_example`` package used to reproduce its experiments.
+
 Behavior Tree builder
 *********************
 
@@ -300,7 +328,7 @@ Instead, a bidding-based delivery protocol has been developed in the ``ActionExe
 
 When the Executor must execute an action, it requests which action performer can execute it. Those who can 
 reply to this request. The Executor confirms one of them (the first to answer), rejecting the rest. If none are found, repeat the request every second until you give up, aborting the 
-execution of the plan. This protocol uses the topic ``/action_hub``, where you can monitor the execution of the system.
+execution of the plan. This protocol uses the topic ``/actions_hub``, where you can monitor the execution of the system.
 
 .. image:: images/protocol.png
     :width: 500px
@@ -311,8 +339,9 @@ All the action performers inherit from ``ActionExecutorClient``, that is a ROS2 
 Parameters
 ----------
 
-* ``~/action`` [string]: The action managed. This action performer discard any request non equal to this parameter.
+* ``~/action_name`` [string]: The action managed. This action performer discard any request non equal to this parameter.
 * ``~/specialized_arguments`` [vector<string>]: If this parameter is not void, it only replies to action request that contains in any of the arguments any of these values.
+* ``~/rate`` [double]: Frequency, in Hz, at which ``do_work()`` is called while the action is active. Defaults to 5 Hz.
 
 .. note::  In a multirobot application, for example, we add to the actions a parameter with the robot that should do the action. In each robot we can execute the same action performer, and using ``~/specialized_arguments`` we can select which will be executed.
 
