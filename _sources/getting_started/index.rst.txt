@@ -24,12 +24,12 @@ Installation
 Running the Example
 *******************
 
-1. Clone in your workspace the |PN| `examples <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples>`_
+1. Clone in your workspace the |PN| `examples <https://github.com/PlanSys2/ros2_planning_system_examples>`_
 
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro>-devel https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git src
+      git clone -b <ros2-distro>-devel https://github.com/PlanSys2/ros2_planning_system_examples.git src
       colcon build --symlink-install
   
 2. Build the workspace:
@@ -45,7 +45,7 @@ Running the Example
 
       ros2 launch plansys2_simple_example plansys2_simple_example_launch.py
 
-   This launch PlanSys2 this `simple PDDL domain <https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_simple_example/pddl/simple_example.pddl>`_,
+   This launch PlanSys2 this `simple PDDL domain <https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_simple_example/pddl/simple_example.pddl>`_,
    and some processes that implements a fake version of the domain's actions.
 
 4. Open a new terminal and run the |PN| terminal:

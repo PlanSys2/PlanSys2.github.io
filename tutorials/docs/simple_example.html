@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -5,18 +7,17 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The first planning package &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
-  
-        <script src="../../_static/jquery.js?v=8dae8fb0"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -40,9 +41,6 @@
             ROS2 Planning System 2
               <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                latest
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -93,6 +91,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id14">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#actions">Actions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#plan-repair-and-multi-planner-replanning">Plan Repair and Multi-Planner Replanning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#requesting-plans-from-several-planners-at-once">Requesting plans from several planners at once</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#automatic-plan-repair-during-execution">Automatic plan repair during execution</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html#behavior-tree-builder">Behavior Tree builder</a></li>
@@ -146,6 +149,16 @@
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
 </ul>
 </li>
 </ul>
@@ -215,10 +228,10 @@
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
 <section id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Link to this heading"></a></h3>
-<p>Clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
+<p>Clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples">examples</a></p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
-git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
@@ -234,7 +247,7 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_simple_example<span class="w"> </span>plansys2_simple_example_launch.py
 </pre></div>
 </div>
-<p>This launch PlanSys2 this <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/blob/master/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
+<p>This launch PlanSys2 this <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
 and some processes that implements a fake version of the domain’s actions.</p>
 </div></blockquote>
 </li>
@@ -312,7 +325,7 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 <span class="linenos"> 2</span><span class="p">{</span>
 <span class="linenos"> 3</span><span class="k">public</span><span class="o">:</span>
 <span class="linenos"> 4</span><span class="w">  </span><span class="n">MoveAction</span><span class="p">()</span>
-<span class="linenos"> 5</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="n">ms</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">)</span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="p">{</span>
 <span class="linenos"> 7</span><span class="w">    </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="p">}</span>
@@ -343,7 +356,7 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 <span class="linenos">33</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
 <span class="linenos">34</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
 <span class="linenos">35</span>
-<span class="linenos">36</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;move&quot;</span><span class="p">));</span>
+<span class="linenos">36</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;move&quot;</span><span class="p">));</span>
 <span class="linenos">37</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
 <span class="linenos">38</span>
 <span class="linenos">39</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
@@ -356,13 +369,13 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 </div>
 </div></blockquote>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">MoveAction</span></code> is a <code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> (defined <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp">here</a>), that inherit from <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code>. This is, basically, a <code class="docutils literal notranslate"><span class="pre">rclcpp_lifecycle::LifecycleNode</span></code>, but with an additional property: it can activate in cascade another <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code> when it is active. It’s useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See <a class="reference external" href="https://github.com/fmrico/cascade_lifecycle">this repo</a> for more info.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="n">ms</span><span class="p">)</span>
+<li><p><code class="docutils literal notranslate"><span class="pre">MoveAction</span></code> is a <code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> (defined <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp">here</a>), that inherit from <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code>. This is, basically, a <code class="docutils literal notranslate"><span class="pre">rclcpp_lifecycle::LifecycleNode</span></code>, but with an additional property: it can activate in cascade another <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code> when it is active. It’s useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See <a class="reference external" href="https://github.com/fmrico/cascade_lifecycle">this repo</a> for more info.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ul>
-<p>This indicates that each 250ms (4Hz) the method <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called every 200ms (5Hz). This rate can be changed at runtime through the <code class="docutils literal notranslate"><span class="pre">rate</span></code> ROS parameter (in Hz), without having to modify the C++ code.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> has an API, with these relevant protected methods for the actions:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">();</span>
@@ -393,7 +406,7 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 <li><p>The action node, once created, must pass to inactive state to be ready to execute.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
 
-<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;move&quot;</span><span class="p">));</span>
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;move&quot;</span><span class="p">));</span>
 <span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
 
 <span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
@@ -407,7 +420,7 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 <h3>4- Launcher<a class="headerlink" href="#launcher" title="Link to this heading"></a></h3>
 <p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">generate_launch_description</span><span class="p">():</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">generate_launch_description</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="n">example_dir</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">&#39;plansys2_simple_example&#39;</span><span class="p">)</span>
 <span class="linenos"> 3</span>    <span class="n">namespace</span> <span class="o">=</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">)</span>
 <span class="linenos"> 4</span>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,18 +7,17 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ROS2 Planning System &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="_static/plansys2_48x48.png"/>
-  
-        <script src="_static/jquery.js?v=8dae8fb0"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8d563738"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,9 +40,6 @@
             ROS2 Planning System 2
               <img src="_static/plansys2_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                latest
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -92,6 +90,11 @@
 <li class="toctree-l3"><a class="reference internal" href="design/index.html#id14">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design/index.html#actions">Actions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design/index.html#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="design/index.html#plan-repair-and-multi-planner-replanning">Plan Repair and Multi-Planner Replanning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="design/index.html#requesting-plans-from-several-planners-at-once">Requesting plans from several planners at once</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design/index.html#automatic-plan-repair-during-execution">Automatic plan repair during execution</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="design/index.html#behavior-tree-builder">Behavior Tree builder</a></li>
@@ -145,6 +148,16 @@
 <li class="toctree-l4"><a class="reference internal" href="tutorials/docs/bt_actions.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tutorials/docs/bt_actions.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tutorials/docs/bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/docs/multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/docs/multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/docs/multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorials/docs/multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorials/docs/multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorials/docs/multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
 </ul>
 </li>
 </ul>
@@ -211,7 +224,7 @@ to ROS2, we contribute to key aspects: ease of use, efficiency, and new tools, s
 To learn more about this project, such as related projects, and maintainers, see <a class="reference internal" href="about/index.html#about"><span class="std std-ref">About and Contact</span></a>.</p>
 <p>We hope that this software helps to include planning in more Robotics projects, offering simple and powerful software to
 generate intelligent behaviors for robots.</p>
-<p>We want to invite you to contribute to this <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system">Open Source project in GitHub</a> !!!</p>
+<p>We want to invite you to contribute to this <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system">Open Source project in GitHub</a> !!!</p>
 <p>If you use this software, consider citing our work;</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">@inproceedings{10.1109/IROS51168.2021.9636544,</span>
 <span class="go">    author = {Mart\&#39;{\i}n, Francisco and Clavero, Jonatan Gin\&#39;{e}s and Matell\&#39;{a}n, Vicente and Rodr\&#39;{\i}guez, Francisco J.},</span>

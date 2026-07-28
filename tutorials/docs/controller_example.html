@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -5,18 +7,17 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Using a planning controller &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
-  
-        <script src="../../_static/jquery.js?v=8dae8fb0"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -40,9 +41,6 @@
             ROS2 Planning System 2
               <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                latest
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -93,6 +91,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id14">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#actions">Actions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#plan-repair-and-multi-planner-replanning">Plan Repair and Multi-Planner Replanning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#requesting-plans-from-several-planners-at-once">Requesting plans from several planners at once</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#automatic-plan-repair-during-execution">Automatic plan repair during execution</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html#behavior-tree-builder">Behavior Tree builder</a></li>
@@ -146,6 +149,16 @@
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
 </ul>
 </li>
 </ul>
@@ -227,10 +240,10 @@ end of the tutorial, we will launch the real Nav2 and a simulator.</p>
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
 <section id="requisites">
 <h3>0- Requisites<a class="headerlink" href="#requisites" title="Link to this heading"></a></h3>
-<p>If you haven’t done yet, clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples">examples</a></p>
+<p>If you haven’t done yet, clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples">examples</a></p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
-git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
@@ -266,7 +279,7 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <span class="linenos"> 2</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos"> 3</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
 <span class="linenos"> 4</span><span class="w">   </span><span class="n">Patrol</span><span class="p">()</span>
-<span class="linenos"> 5</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;patrol&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="n">s</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;patrol&quot;</span><span class="p">)</span>
 <span class="linenos"> 6</span><span class="w">   </span><span class="p">{</span>
 <span class="linenos"> 7</span><span class="w">   </span><span class="p">}</span>
 <span class="linenos"> 8</span>
@@ -331,15 +344,16 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <span class="linenos">67</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
 <span class="linenos">68</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Patrol</span><span class="o">&gt;</span><span class="p">();</span>
 <span class="linenos">69</span>
-<span class="linenos">70</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;patrol&quot;</span><span class="p">));</span>
-<span class="linenos">71</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
-<span class="linenos">72</span>
-<span class="linenos">73</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
-<span class="linenos">74</span>
-<span class="linenos">75</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
-<span class="linenos">76</span>
-<span class="linenos">77</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="linenos">78</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">70</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;action_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;patrol&quot;</span><span class="p">));</span>
+<span class="linenos">71</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">&quot;rate&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">));</span><span class="w">  </span><span class="c1">// 1 Hz, replaces the old 1s ctor argument</span>
+<span class="linenos">72</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+<span class="linenos">73</span>
+<span class="linenos">74</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+<span class="linenos">75</span>
+<span class="linenos">76</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+<span class="linenos">77</span>
+<span class="linenos">78</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">79</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -353,7 +367,7 @@ or declares that the action has already finished (line 56).</p>
 example is quite complex if you are not familiar with <a class="reference external" href="https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/">ROS2 actions</a>, so we will not enter in details here, only selected pieces of code.</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">  </span><span class="n">MoveAction</span><span class="p">()</span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="n">ms</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">&quot;move&quot;</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="p">{</span>
 <span class="linenos"> 4</span><span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
 <span class="linenos"> 5</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/map&quot;</span><span class="p">;</span>
@@ -438,10 +452,10 @@ four PlanSys2 clients to interact with PlanSys2:</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="n">domain_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-<span class="w">    </span><span class="n">planner_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-<span class="w">    </span><span class="n">problem_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
-<span class="w">    </span><span class="n">executor_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
+<span class="w">    </span><span class="n">domain_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">planner_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">problem_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">executor_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">();</span>
 <span class="w">    </span><span class="n">init_knowledge</span><span class="p">();</span>
 <span class="w">  </span><span class="p">}</span>
 
@@ -492,7 +506,7 @@ four PlanSys2 clients to interact with PlanSys2:</p>
 </div>
 </div></blockquote>
 <ul>
-<li><p>The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using <code class="docutils literal notranslate"><span class="pre">setGoal</span></code>), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call <code class="docutils literal notranslate"><span class="pre">executePlan</span></code>):</p>
+<li><p>The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using <code class="docutils literal notranslate"><span class="pre">setGoal</span></code>), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call <code class="docutils literal notranslate"><span class="pre">start_plan_execution</span></code>):</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Plan successful finished &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
@@ -508,7 +522,7 @@ four PlanSys2 clients to interact with PlanSys2:</p>
 <span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">plan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">planner_client_</span><span class="o">-&gt;</span><span class="n">getPlan</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
 
 <span class="w">  </span><span class="c1">// Execute the plan</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">executePlan</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">start_plan_execution</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PATROL_WP2</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>

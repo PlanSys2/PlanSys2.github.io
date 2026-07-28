@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,18 +7,17 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PlanSys2 design &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/plansys2_48x48.png"/>
-  
-        <script src="../_static/jquery.js?v=8dae8fb0"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -40,9 +41,6 @@
             ROS2 Planning System 2
               <img src="../_static/plansys2_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                latest
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -93,6 +91,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#id14">Client API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#actions">Actions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plan-repair-and-multi-planner-replanning">Plan Repair and Multi-Planner Replanning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requesting-plans-from-several-planners-at-once">Requesting plans from several planners at once</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-plan-repair-during-execution">Automatic plan repair during execution</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#behavior-tree-builder">Behavior Tree builder</a></li>
@@ -150,6 +153,16 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a><ul>
@@ -195,7 +208,8 @@
              
   <section id="plansys2-design">
 <span id="design"></span><h1>PlanSys2 design<a class="headerlink" href="#plansys2-design" title="Link to this heading"></a></h1>
-<a class="reference internal image-reference" href="../_images/plansys2_arch.png"><img alt="../_images/plansys2_arch.png" class="align-center" src="../_images/plansys2_arch.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/plansys2_arch.png"><img alt="../_images/plansys2_arch.png" class="align-center" src="../_images/plansys2_arch.png" style="width: 800px;" />
+</a>
 <p>PlanSys2 has a modular design. It is basically composed of 4 nodes:</p>
 <ul class="simple">
 <li><p><strong>Domain Expert</strong>: Contains the PDDL model information (types, predicates, functions, and actions).</p></li>
@@ -205,14 +219,15 @@
 </ul>
 <p>Each of these nodes exposes its functionality using ROS2 services. Even so, in PlanSys2 we have created a client library that can be used in
 any application and hides the complexity of using ROS2 services.</p>
-<a class="reference internal image-reference" href="../_images/plansys2_clients.png"><img alt="../_images/plansys2_clients.png" class="align-center" src="../_images/plansys2_clients.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../_images/plansys2_clients.png"><img alt="../_images/plansys2_clients.png" class="align-center" src="../_images/plansys2_clients.png" style="width: 500px;" />
+</a>
 <section id="domain-expert">
 <h2>1. Domain Expert<a class="headerlink" href="#domain-expert" title="Link to this heading"></a></h2>
 <p>The objective of the Domain Expert is to read PDDL domains from files and make them available to the rest of the components. It’s static (by now).</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">model_file</span></code> [string]: PDDL model files to load, separates by “:”. These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example">plansys2_multidomain_example</a> for more details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_file</span></code> [string]: PDDL model files to load, separates by “:”. These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples/tree/rolling/plansys2_multidomain_example">plansys2_multidomain_example</a> for more details.</p></li>
 </ul>
 </section>
 <section id="client-api">
@@ -228,16 +243,18 @@ any application and hides the complexity of using ROS2 services.</p>
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Function</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getFunctions</span><span class="p">();</span>
 <span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Function</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getFunction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">function</span><span class="p">);</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDerivedPredicates</span><span class="p">();</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Derived</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDerivedPredicate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">predicate</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Derived</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDerivedPredicates</span><span class="p">();</span>
+<span class="n">plansys2</span><span class="o">::</span><span class="n">DerivedResolutionGraph</span><span class="w"> </span><span class="nf">getDerivedResolutionGraph</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Derived</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDerivedPredicate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">predicate</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{});</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getActions</span><span class="p">();</span>
-<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Action</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="nf">getAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Action</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="nf">getAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{});</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDurativeActions</span><span class="p">();</span>
-<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">DurativeAction</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="nf">getDurativeAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">DurativeAction</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="nf">getDurativeAction</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{});</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getDomain</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getDomain</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">use_cache</span><span class="p">);</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -273,7 +290,7 @@ any application and hides the complexity of using ROS2 services.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">model_file</span></code> [string]: PDDL model files to load, separates by “:”. These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system_examples/tree/master/plansys2_multidomain_example">plansys2_multidomain_example</a> for more details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_file</span></code> [string]: PDDL model files to load, separates by “:”. These models will be merged. This allows for a modular application in which each component/package contributes with part of the PDDL and the action implementation. See <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples/tree/rolling/plansys2_multidomain_example">plansys2_multidomain_example</a> for more details.</p></li>
 </ul>
 </section>
 <section id="id3">
@@ -305,6 +322,8 @@ any application and hides the complexity of using ROS2 services.</p>
 <span class="kt">bool</span><span class="w"> </span><span class="nf">clearKnowledge</span><span class="p">();</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getProblem</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getProblem</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">use_cache</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Time</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getProblemWithTimestamp</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">use_cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
 <span class="kt">bool</span><span class="w"> </span><span class="nf">addProblem</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem_str</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -350,8 +369,8 @@ any application and hides the complexity of using ROS2 services.</p>
 <h2>1. Planner<a class="headerlink" href="#planner" title="Link to this heading"></a></h2>
 <p>This component calculates the plan to obtain a goal.</p>
 <p>Each PDDL solver in PlanSys2 is a plugin.
-By default PlanSys2 uses <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system/tree/master/plansys2_popf_plan_solver">POPF</a>, although other PDDL solvers can be used easily.
-Currently, the <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/plansys2_tfd_plan_solver">Temporal Fast Downward</a> (TFD) solver is also available.</p>
+By default PlanSys2 uses <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/tree/rolling/plansys2_popf_plan_solver">POPF</a>, although other PDDL solvers can be used easily.
+Currently, the <a class="reference external" href="https://github.com/PlanSys2/plansys2_tfd_plan_solver">Temporal Fast Downward</a> (TFD) solver is also available.</p>
 <ol class="arabic simple">
 <li><p>A plan may be requested by providing a domain acquired from the Domain Expert and a problem acquired from the Problem expert.</p></li>
 <li><p>The domain is stored in <code class="docutils literal notranslate"><span class="pre">&lt;output_dir&gt;/&lt;node</span> <span class="pre">namespace&gt;/domain.pddl</span></code>. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.</p></li>
@@ -362,11 +381,12 @@ Currently, the <a class="reference external" href="https://github.com/Intelligen
 </ol>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">&lt;output_dir&gt;</span></code> corresponds to the output directory where the PDDL solver writes files.
 For POPF, the default corresponds to your system’s temporary directory (e.g., <code class="docutils literal notranslate"><span class="pre">/tmp/</span></code>), but it can be modified using the <code class="docutils literal notranslate"><span class="pre">&lt;plugin_name&gt;.output_dir</span></code> ROS parameter.</p>
-<a class="reference internal image-reference" href="../_images/plansys2_planner.png"><img alt="../_images/plansys2_planner.png" class="align-center" src="../_images/plansys2_planner.png" style="width: 300px;" /></a>
+<a class="reference internal image-reference" href="../_images/plansys2_planner.png"><img alt="../_images/plansys2_planner.png" class="align-center" src="../_images/plansys2_planner.png" style="width: 300px;" />
+</a>
 <section id="id6">
 <h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> [vector&lt;string&gt;]: List of PDDL solver plugins. Currently, only the first plugin specified will be used. If not set, POPF will be used by default. Check <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/master/plansys2_bringup/params/plansys2_params.yaml">this config</a> as an example on how to use it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> [vector&lt;string&gt;]: List of PDDL solver plugins. Currently, only the first plugin specified will be used. If not set, POPF will be used by default. Check <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_bringup/params/plansys2_params.yaml">this config</a> as an example on how to use it.</p></li>
 </ul>
 </section>
 <section id="id7">
@@ -399,7 +419,8 @@ For POPF, the default corresponds to your system’s temporary directory (e.g., 
 <li><p>It checks if the requirements are met at runtime.</p></li>
 <li><p>It allows more than one action performer for each action, supporting multirobot execution.</p></li>
 </ul>
-<a class="reference internal image-reference" href="../_images/plansys2_arch2.png"><img alt="../_images/plansys2_arch2.png" class="align-center" src="../_images/plansys2_arch2.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../_images/plansys2_arch2.png"><img alt="../_images/plansys2_arch2.png" class="align-center" src="../_images/plansys2_arch2.png" style="width: 600px;" />
+</a>
 <section id="id10">
 <h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
 <ul class="simple">
@@ -446,18 +467,43 @@ For POPF, the default corresponds to your system’s temporary directory (e.g., 
 </ul>
 </section>
 </section>
+<section id="plan-repair-and-multi-planner-replanning">
+<h2>Plan Repair and Multi-Planner Replanning<a class="headerlink" href="#plan-repair-and-multi-planner-replanning" title="Link to this heading"></a></h2>
+<p>PlanSys2 supports two complementary mechanisms that together enable adaptive replanning in dynamic environments, without having to cancel an in-progress plan and start again from scratch. These mechanisms, along with their formal foundations, are described in detail in <a class="reference external" href="https://doi.org/10.3390/robotics15040080">Peña-Narváez et al., “LLM-Assisted Plan Execution for Robots in Dynamic Environments”</a> (Robotics, 2026), which also introduces an optional LLM-based layer for deciding <em>when</em> to trigger a repair.</p>
+<section id="requesting-plans-from-several-planners-at-once">
+<h3>Requesting plans from several planners at once<a class="headerlink" href="#requesting-plans-from-several-planners-at-once" title="Link to this heading"></a></h3>
+<p>The Planner node can be configured with several plan solver plugins simultaneously (see <a class="reference internal" href="../tutorials/docs/multi_planner.html#multi-planner"><span class="std std-ref">Configuring Multiple Planners</span></a> for a full walk-through). Given a domain and a problem, <code class="docutils literal notranslate"><span class="pre">PlannerClient::getPlanArray()</span></code> queries every configured plugin <strong>in parallel</strong>, each with its own timeout, and returns every plan that was found in time as a <code class="docutils literal notranslate"><span class="pre">plansys2_msgs::msg::PlanArray</span></code>. The plans in the array are sorted by their number of actions, shortest first. <code class="docutils literal notranslate"><span class="pre">PlannerClient::getPlan()</span></code> is a convenience wrapper around <code class="docutils literal notranslate"><span class="pre">getPlanArray()</span></code> that returns only the first (shortest) plan, which corresponds to the <em>Shortest of the Different Plans</em> selection criterion described in the paper above. Running several solvers, or the same solver with different tuning arguments, increases the chance of finding a good plan and gives an application (or an external evaluator, such as an LLM) alternative plans to choose from.</p>
+</section>
+<section id="automatic-plan-repair-during-execution">
+<h3>Automatic plan repair during execution<a class="headerlink" href="#automatic-plan-repair-during-execution" title="Link to this heading"></a></h3>
+<p>The Executor preserves in-progress work when the plan changes while one is already running. If <code class="docutils literal notranslate"><span class="pre">ExecutorClient::start_plan_execution()</span></code> is called again while a previous plan is still executing, the Executor does not cancel every action outright. Instead, it:</p>
+<ol class="arabic simple">
+<li><p>Builds the Behavior Tree for the new plan.</p></li>
+<li><p>For every action that was still <em>running</em> under the previous plan, checks whether an action with the same name also appears as one of the first actions of the new plan.</p></li>
+<li><p>If a match is found, the running action executor is <strong>kept alive and reused</strong> (together with its applied effects and timing information), so its execution is not interrupted.</p></li>
+<li><p>Any running action that has no match in the new plan is cancelled.</p></li>
+</ol>
+<p>This corresponds to the <em>plan repair</em> formulation (as opposed to a full <em>replan from scratch</em>) described in the paper, where it is shown to significantly reduce goal-completion time and unnecessary action cancellations compared to the classical cancel-and-replan strategy. This behavior is automatic and requires no extra configuration: any application (a state machine, a behavior tree, or an LLM-based controller as in the referenced paper) can implement its own repair policy simply by deciding <em>when</em> to call <code class="docutils literal notranslate"><span class="pre">start_plan_execution()</span></code> again with a new candidate plan.</p>
+<p>A full reference implementation, including a pluggable <code class="docutils literal notranslate"><span class="pre">ReplanController</span></code> with interchangeable <em>Basic</em>, <em>Improved</em>, and <em>LLM-based</em> repair strategies (the ones evaluated in the paper), is available in the <a class="reference external" href="https://github.com/IntelligentRoboticsLabs/paper_plansys2_LLMs">paper_plansys2_LLMs</a> repository, together with the <code class="docutils literal notranslate"><span class="pre">plansys2_replan_example</span></code> package used to reproduce its experiments.</p>
+</section>
+</section>
 <section id="behavior-tree-builder">
 <h2>Behavior Tree builder<a class="headerlink" href="#behavior-tree-builder" title="Link to this heading"></a></h2>
 <p>Once a plan is obtained, the Executor converts it to a Behavior Tree to execute it. Each action becomes the following subtree:</p>
-<a class="reference internal image-reference" href="../_images/action_bt.png"><img alt="../_images/action_bt.png" class="align-center" src="../_images/action_bt.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="../_images/action_bt.png"><img alt="../_images/action_bt.png" class="align-center" src="../_images/action_bt.png" style="width: 400px;" />
+</a>
 <p>The first step is building a planning graph that encodes the action dependencies that define the execution order. This is made
 by pairing the effects of an action with a requirement of a posterior action. We take as reference the time of the calculated plan:</p>
-<a class="reference internal image-reference" href="../_images/action_deps.png"><img alt="../_images/action_deps.png" class="align-center" src="../_images/action_deps.png" style="width: 250px;" /></a>
-<a class="reference internal image-reference" href="../_images/plan_graph.png"><img alt="../_images/plan_graph.png" class="align-center" src="../_images/plan_graph.png" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../_images/action_deps.png"><img alt="../_images/action_deps.png" class="align-center" src="../_images/action_deps.png" style="width: 250px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/plan_graph.png"><img alt="../_images/plan_graph.png" class="align-center" src="../_images/plan_graph.png" style="width: 200px;" />
+</a>
 <p>Once created the graph, we identify the execution flows:</p>
-<a class="reference internal image-reference" href="../_images/graph_flows.png"><img alt="../_images/graph_flows.png" class="align-center" src="../_images/graph_flows.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/graph_flows.png"><img alt="../_images/graph_flows.png" class="align-center" src="../_images/graph_flows.png" style="width: 800px;" />
+</a>
 <p>From the red flow, for example, we get:</p>
-<a class="reference internal image-reference" href="../_images/red_flow.png"><img alt="../_images/red_flow.png" class="align-center" src="../_images/red_flow.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="../_images/red_flow.png"><img alt="../_images/red_flow.png" class="align-center" src="../_images/red_flow.png" style="width: 400px;" />
+</a>
 <p>Each flow is executed in parallel. There is no problem if flows overlap because the BT that executes an action is implemented following a Singleton-like approach.</p>
 </section>
 <section id="action-delivery-protocol">
@@ -466,14 +512,16 @@ by pairing the effects of an action with a requirement of a posterior action. We
 Instead, a bidding-based delivery protocol has been developed in the <code class="docutils literal notranslate"><span class="pre">ActionExecutor</span></code> and <code class="docutils literal notranslate"><span class="pre">ActionExecutorClient</span></code> classes that uses the <code class="docutils literal notranslate"><span class="pre">plansys2_msgs::msg::ActionExecution</span></code> message.</p>
 <p>When the Executor must execute an action, it requests which action performer can execute it. Those who can
 reply to this request. The Executor confirms one of them (the first to answer), rejecting the rest. If none are found, repeat the request every second until you give up, aborting the
-execution of the plan. This protocol uses the topic <code class="docutils literal notranslate"><span class="pre">/action_hub</span></code>, where you can monitor the execution of the system.</p>
-<a class="reference internal image-reference" href="../_images/protocol.png"><img alt="../_images/protocol.png" class="align-center" src="../_images/protocol.png" style="width: 500px;" /></a>
+execution of the plan. This protocol uses the topic <code class="docutils literal notranslate"><span class="pre">/actions_hub</span></code>, where you can monitor the execution of the system.</p>
+<a class="reference internal image-reference" href="../_images/protocol.png"><img alt="../_images/protocol.png" class="align-center" src="../_images/protocol.png" style="width: 500px;" />
+</a>
 <p>All the action performers inherit from <code class="docutils literal notranslate"><span class="pre">ActionExecutorClient</span></code>, that is a ROS2 Node with the next information:</p>
 <section id="id16">
 <h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">~/action</span></code> [string]: The action managed. This action performer discard any request non equal to this parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/action_name</span></code> [string]: The action managed. This action performer discard any request non equal to this parameter.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">~/specialized_arguments</span></code> [vector&lt;string&gt;]: If this parameter is not void, it only replies to action request that contains in any of the arguments any of these values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/rate</span></code> [double]: Frequency, in Hz, at which <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> is called while the action is active. Defaults to 5 Hz.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

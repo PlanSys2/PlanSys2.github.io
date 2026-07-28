@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuring Multiple Planners &mdash; ROS2 Planning System 2 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plugins" href="../../plugins/index.html" />
+    <link rel="prev" title="Implement actions as Behavior Trees" href="bt_actions.html" />
+
+<link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ROS2 Planning System 2
+              <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#build">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../build_instructions/index.html#install-ros">Install ROS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../build_instructions/index.html#build-plansys2">Build PlanSys2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#domain-expert">1. Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#client-api">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#publishers-subscriber">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">1. Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">1. Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id9">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#executor">1. Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id10">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id14">Client API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#actions">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id15">Publishers / Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#plan-repair-and-multi-planner-replanning">Plan Repair and Multi-Planner Replanning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#requesting-plans-from-several-planners-at-once">Requesting plans from several planners at once</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#automatic-plan-repair-during-execution">Automatic plan repair during execution</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#behavior-tree-builder">Behavior Tree builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#action-delivery-protocol">Action delivery protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id16">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id17">Publishers / Subscriber</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="simple_example.html">The first planning package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#planner-plugins">Planner plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#behavior-tree-builder-plugins">Behavior tree builder plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS2 Planning System 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/PlanSys2/PlanSys2.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/plansys2.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Configuring Multiple Planners</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuring-multiple-planners">
+<span id="multi-planner"></span><h1>Configuring Multiple Planners<a class="headerlink" href="#configuring-multiple-planners" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Planner node does not have to be limited to a single PDDL solver. You can configure it with several plan solver
+plugins at once, either different solvers (e.g. POPF and a third-party plugin such as OPTIC) or several instances of
+the same solver configured with different command-line arguments. When more than one plugin is configured, PlanSys2
+requests a plan from every plugin <strong>in parallel</strong> and keeps every plan that is found before the shared timeout expires.</p>
+<p>This is useful because:</p>
+<ul class="simple">
+<li><p>Different solver configurations may succeed or fail on different problems, or find plans of different quality.</p></li>
+<li><p>Some solver arguments trade off search speed for plan quality (see <a class="reference internal" href="#popf-arguments">POPF arguments</a> below); running several
+configurations in parallel lets you get the fastest <em>usable</em> plan without having to guess the best configuration
+in advance.</p></li>
+<li><p>Applications that implement their own replanning strategy (for example, choosing the best candidate plan with an
+LLM, as described in <a class="reference external" href="https://doi.org/10.3390/robotics15040080">Peña-Narváez et al., 2026</a>) need access to every
+candidate plan, not just one.</p></li>
+</ul>
+</section>
+<section id="tutorial-steps">
+<h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
+<section id="the-plan-solver-plugins-parameter">
+<h3>1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter<a class="headerlink" href="#the-plan-solver-plugins-parameter" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">planner</span></code> node’s <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter takes a list of arbitrary <strong>solver IDs</strong>. Each ID must have
+a corresponding block in the same YAML file declaring, at least, which plugin class to load:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">planner</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">plan_solver_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">    </span><span class="nt">plan_solver_plugins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;POPF&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">POPF</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plansys2/POPFPlanSolver&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">plan_solver_timeout</span></code> [double]: Maximum time, in seconds, given to <strong>each</strong> configured plugin to find a plan. All
+plugins run concurrently, so this is not a cumulative budget: with 5 plugins configured, the total time to get a
+result is still bounded by this same timeout, not five times it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> [vector&lt;string&gt;]: The list of solver IDs to load. If left empty, PlanSys2 falls back to a
+single default solver named <code class="docutils literal notranslate"><span class="pre">POPF</span></code>.</p></li>
+<li><p>For each ID in <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code>, a block named after that ID must declare at least the <code class="docutils literal notranslate"><span class="pre">plugin</span></code> key with
+the fully-qualified plugin class name (see <a class="reference internal" href="../../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> for the available planner plugins).</p></li>
+</ul>
+</section>
+<section id="running-the-same-solver-with-different-arguments">
+<h3>2- Running the same solver with different arguments<a class="headerlink" href="#running-the-same-solver-with-different-arguments" title="Link to this heading"></a></h3>
+<p>The ID does not have to match the underlying plugin’s name — it is just a label you choose. This lets you configure
+the <strong>same</strong> plugin several times with different options. For POPF (<code class="docutils literal notranslate"><span class="pre">plansys2/POPFPlanSolver</span></code>), two extra
+per-solver parameters are available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;.arguments</span></code> [string]: Extra command-line flags passed to the <code class="docutils literal notranslate"><span class="pre">popf</span></code> executable. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;.output_dir</span></code> [string]: Directory where the <code class="docutils literal notranslate"><span class="pre">domain.pddl</span></code>, <code class="docutils literal notranslate"><span class="pre">problem.pddl</span></code> and <code class="docutils literal notranslate"><span class="pre">plan.pddl</span></code> files for
+this solver are written. Defaults to the system’s temporary directory. Each namespaced node gets its own
+subdirectory under this path, so several PlanSys2 instances (e.g. simulating several robots) can safely share the
+same <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p></li>
+</ul>
+<p>For example, the following configuration runs four instances of POPF with progressively more aggressive search
+settings, plus a fifth, differently-configured solver plugin, all queried in parallel every time a plan is requested:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">planner</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">plan_solver_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">    </span><span class="nt">plan_solver_plugins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;POPF1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;POPF2&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;POPF3&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;POPF4&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;OPTICS&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">POPF1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plansys2/POPFPlanSolver&quot;</span>
+<span class="w">      </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;-h</span><span class="nv"> </span><span class="s">-E</span><span class="nv"> </span><span class="s">-A&quot;</span>
+<span class="w">      </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/tmp/POPF1&quot;</span>
+<span class="w">    </span><span class="nt">POPF2</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plansys2/POPFPlanSolver&quot;</span>
+<span class="w">      </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;-h</span><span class="nv"> </span><span class="s">-E&quot;</span>
+<span class="w">      </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/tmp/POPF2&quot;</span>
+<span class="w">    </span><span class="nt">POPF3</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plansys2/POPFPlanSolver&quot;</span>
+<span class="w">      </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;-h&quot;</span>
+<span class="w">      </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/tmp/POPF3&quot;</span>
+<span class="w">    </span><span class="nt">POPF4</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plansys2/POPFPlanSolver&quot;</span>
+<span class="w">      </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/tmp/POPF4&quot;</span>
+<span class="w">    </span><span class="nt">OPTICS</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;plansys2/OPTICPlanSolver&quot;</span>
+<span class="w">      </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;-N&quot;</span>
+<span class="w">      </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/tmp/OPTICS&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike POPF, which ships with PlanSys2, <code class="docutils literal notranslate"><span class="pre">OPTICPlanSolver</span></code> (and other solvers such as <code class="docutils literal notranslate"><span class="pre">TFDPlanSolver</span></code>)
+are separate, third-party plugin packages that must be installed independently. See <a class="reference internal" href="../../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> for the list of
+known planner plugins and where to get them. If a plugin package referenced in <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> is not
+installed, the planner node will fail to configure.</p>
+</div>
+<section id="popf-arguments">
+<h4>POPF arguments<a class="headerlink" href="#popf-arguments" title="Link to this heading"></a></h4>
+<p>The most commonly used POPF flags, from fastest/greediest to most thorough, are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-h</span></code>: Disable helpful-action pruning.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-E</span></code>: Skip Enforced Hill-Climbing (EHC) and go straight to best-first search.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-A</span></code>: Use better actions in the heuristic, using h-add costs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> (no arguments): Run POPF with its default search strategy.</p></li>
+</ul>
+<p>Combining these flags (as in the <code class="docutils literal notranslate"><span class="pre">POPF1</span></code>-<code class="docutils literal notranslate"><span class="pre">POPF4</span></code> example above) trades search completeness for speed, so running
+several of them in parallel is a simple way to hedge between a fast, possibly suboptimal plan and a slower, more
+thorough search, without having to pick a single strategy up front.</p>
+</section>
+</section>
+<section id="requesting-plans-from-all-configured-solvers">
+<h3>3- Requesting plans from all configured solvers<a class="headerlink" href="#requesting-plans-from-all-configured-solvers" title="Link to this heading"></a></h3>
+<p>Once several solvers are configured, two client calls are available:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPlan</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PlanArray</span><span class="w"> </span><span class="nf">getPlanArray</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getPlan()</span></code> queries every configured solver in parallel and returns only the <strong>shortest</strong> plan found (the plans
+are sorted by number of actions before picking the first one). This is the call used internally whenever PlanSys2
+needs a single plan, for example from the terminal’s <code class="docutils literal notranslate"><span class="pre">get</span> <span class="pre">plan</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span></code> commands.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getPlanArray()</span></code> returns <strong>every</strong> plan found by every solver, sorted from shortest to longest, as a
+<code class="docutils literal notranslate"><span class="pre">plansys2_msgs::msg::PlanArray</span></code>. Use this call if your application wants to choose among the candidates itself
+(for instance, to prefer the plan that best matches the plan currently being executed, or to delegate the choice
+to an external evaluator).</p></li>
+</ul>
+<p>See the <em>Plan Repair and Multi-Planner Replanning</em> section of the <a class="reference internal" href="../../design/index.html#design"><span class="std std-ref">PlanSys2 design</span></a> page for how this combines with
+PlanSys2’s automatic plan repair when a new plan is sent for execution while another one is still running.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

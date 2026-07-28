@@ -12,3 +12,4 @@ PlanSys2 Tutorials
    docs/simple_example.rst
    docs/controller_example.rst
    docs/bt_actions.rst
+   docs/multi_planner.rst
