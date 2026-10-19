@@ -3,6 +3,11 @@
 Configuring Multiple Planners
 ******************************
 
+.. note::
+
+   Several planners at once need |PN| 3.x (Kilted, Lyrical). In Jazzy (2.0.x) the planner uses
+   one of the configured plugins, and there is no ``get_plan_array``.
+
 - `Overview`_
 - `Tutorial Steps`_
 
@@ -58,7 +63,7 @@ the **same** plugin several times with different options. For POPF (``plansys2/P
 per-solver parameters are available:
 
 * ``<id>.arguments`` [string]: Extra command-line flags passed to the ``popf`` executable. Defaults to ``""``.
-* ``<id>.output_dir`` [string]: Directory where the ``domain.pddl``, ``problem.pddl`` and ``plan.pddl`` files for
+* ``<id>.output_dir`` [string]: Directory where the ``domain.pddl``, ``problem.pddl`` and ``plan`` files for
   this solver are written. Defaults to the system's temporary directory. Each namespaced node gets its own
   subdirectory under this path, so several PlanSys2 instances (e.g. simulating several robots) can safely share the
   same ``output_dir``.
@@ -96,7 +101,7 @@ settings, plus a fifth, differently-configured solver plugin, all queried in par
 .. note:: Unlike POPF, which ships with PlanSys2, ``OPTICPlanSolver`` (and other solvers such as ``TFDPlanSolver``)
   are separate, third-party plugin packages that must be installed independently. See :ref:`plugins` for the list of
   known planner plugins and where to get them. If a plugin package referenced in ``plan_solver_plugins`` is not
-  installed, the planner node will fail to configure.
+  installed, the planner process aborts.
 
 POPF arguments
 ^^^^^^^^^^^^^^

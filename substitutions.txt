@@ -15,7 +15,7 @@
 
 .. |PP| replace:: https://github.com/IntelligentRoboticsLabs/ros2_planning_system/blob/main
 
-.. _`ROS 2 binary packages`: https://index.ros.org/doc/ros2/Installation/
+.. _`ROS 2 binary packages`: https://docs.ros.org
 
 .. These are replacement strings for non-ASCII characters used within the project
    using the same name as the html entity names (e.g., &copy;) for that character

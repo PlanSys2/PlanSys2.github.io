@@ -28,7 +28,7 @@ A *planning controller* is a program that:
 
 This program controls the robot's mission. It is usually implemented as a finite state machine and decides what the next goal to be achieved is.
 
-In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: ``wp_control``, ``wp_1``, ``wp_2``, ``wp_3``, and ``wp_4``. Each one has different coordinates.
+In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: ``wp_control``, ``wp1``, ``wp2``, ``wp3``, and ``wp4``. Each one has different coordinates.
 
 * ``wp_control`` is the junction to which all other waypoints are connected. A patrol always goes through wp_control, since the waypoints are not connected to each other.
 * Patrolling a waypoint consists of moving to the waypoint and, once there, rotating for a few seconds to perceive the environment.
@@ -50,7 +50,6 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
 
       cd <your_workspace>
       git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
-      colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
 
@@ -83,7 +82,7 @@ The action ``patrol`` (``ros2_planning_system_examples/plansys2_patrol_navigatio
        {
        public:
          Patrol()
-         : plansys2::ActionExecutorClient("patrol")
+         : plansys2::ActionExecutorClient("patrol")  // Jazzy: ("patrol", 1s)
          {
          }
        
@@ -167,17 +166,17 @@ or declares that the action has already finished (line 56).
 ------------------------
 
 The action ``move`` (``ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp``) contains the actions that sends navigation requests to Nav2 using the ROS2 action ``navigate_to_pose``. This
-example is quite complex if you are not familiar with `ROS2 actions <https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/>`_, so we will not enter in details here, only selected pieces of code.
+example is quite complex if you are not familiar with `ROS2 actions <https://docs.ros.org/en/kilted/Tutorials/Intermediate/Writing-an-Action-Server-Client/Cpp.html>`_, so we will not enter in details here, only selected pieces of code.
 
 
   .. code-block:: c++
       :linenos:
 
         MoveAction()
-        : plansys2::ActionExecutorClient("move")
+        : plansys2::ActionExecutorClient("move")  // Jazzy: ("move", 500ms)
         {
           geometry_msgs::msg::PoseStamped wp;
-          wp.header.frame_id = "/map";
+          wp.header.frame_id = "map";
           wp.pose.position.x = 0.0;
           wp.pose.position.y = -2.0;
           wp.pose.position.z = 0.0;
@@ -246,7 +245,7 @@ The coordinates of each waypoint are initialized and inserted in ``waypoints_``.
         ...
        }
 
-* If we execute the action ``(move leia wp_control wp_1)``, the third argument (``get_arguments()[2]``) is the waypoint to navigate, ``wp_1``. We use this id to get the coordinate from ``waypoints_`` for sending it in the Nav2 action.
+* If we execute the action ``(move r2d2 wp_control wp1)``, the third argument (``get_arguments()[2]``) is the waypoint to navigate, ``wp1``. We use this id to get the coordinate from ``waypoints_`` for sending it in the Nav2 action.
 * When receiving feedback from the Nav2 ROS2 action, we send feedback about the execution of the ``move`` action.
 * When Nav2 considers the navigation complete, we call ``finish`` to finalize the execution of ``move`` action.
 
@@ -315,7 +314,9 @@ In the ``step`` method (called at 5Hz) there is the implementation of the FSM. E
 
   .. code-block:: c++
 
-       if (executor_client_->getResult().value().success) {
+       if (executor_client_->getResult().value().result ==
+         plansys2_msgs::action::ExecutePlan::Result::SUCCESS)  // Jazzy: .success
+       {
          std::cout << "Plan successful finished " << std::endl;
 
          // Cleanning up
@@ -340,9 +341,9 @@ In the ``step`` method (called at 5Hz) there is the implementation of the FSM. E
 4- Running the example with Nav2
 --------------------------------
 
-* Make sure that Nav2 is `correctly installed and it is working <https://navigation.ros.org/getting_started/index.html>`_.
+* Make sure that Nav2 is `correctly installed and it is working <https://docs.nav2.org/>`_.
 
-* Open a new terminal and run |PN| with a node that simulates de action of navigation. So, the execution of Nav2 will not take place in the first steps of this tutorial:
+* Open a new terminal and run |PN| together with Nav2 and the TurtleBot3 simulation:
 
    .. code-block:: bash
 

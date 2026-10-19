@@ -29,8 +29,7 @@ Running the Example
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro>-devel https://github.com/PlanSys2/ros2_planning_system_examples.git src
-      colcon build --symlink-install
+      git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
   
 2. Build the workspace:
 

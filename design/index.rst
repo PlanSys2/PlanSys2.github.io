@@ -3,6 +3,15 @@
 PlanSys2 design
 ###############
 
+.. note::
+
+   This page describes |PN| 3.x (Kilted, Lyrical). Jazzy (2.0.x) does not have
+   ``planner/get_plan_array`` nor ``PlannerClient::getPlanArray``, the ``remaining_plan``
+   topic, ``ExecutorClient::get_remaining_plan()`` (its executor client has ``getPlan()``), the
+   plan repair described below, ``DomainExpertClient::getDerivedResolutionGraph()``,
+   ``getDomain(bool)``, nor ``ProblemExpertClient::getProblem(bool)`` and
+   ``getProblemWithTimestamp()``.
+
 .. image:: images/plansys2_arch.png
     :width: 800px
     :align: center
@@ -66,20 +75,20 @@ Services
 * ``domain_expert/get_domain_types`` [plansys2_msgs::srv::GetDomainTypes]: Get the valid types.
 * ``domain_expert/get_domain_actions`` [plansys2_msgs::srv::GetDomainActions]: Get the available actions.
 * ``domain_expert/get_domain_action_details`` [plansys2_msgs::srv::GetDomainActionDetails]: Get the details of a specific action.
-* ``domain_expert/get_domain_durative_actions`` [plansys2_msgs::srv::GetDomainDurativeActions]: Get the available durative actions.
+* ``domain_expert/get_domain_durative_actions`` [plansys2_msgs::srv::GetDomainActions]: Get the available durative actions.
 * ``domain_expert/get_domain_durative_action_details`` [plansys2_msgs::srv::GetDomainDurativeActionDetails]: Get the details of a specific durative action.
-* ``domain_expert/get_domain_predicates`` [plansys2_msgs::srv::GetDomainPredicates]: Get the valid predicates.
-* ``domain_expert/get_domain_predicate_details`` [plansys2_msgs::srv::GetDomainPredicateDetails]: Get the details of a specific predicate.
-* ``domain_expert/get_domain_functions`` [plansys2_msgs::srv::GetDomainFunctions]: Get the valid functions.
-* ``domain_expert/get_domain_function_details`` [plansys2_msgs::srv::GetDomainFunctionDetails]: Get the details of a specific function.
-* ``domain_expert/get_domain_derived_predicates`` [plansys2_msgs::srv::GetDomainDerivedPredicates]: Get the valid derived predicates.
+* ``domain_expert/get_domain_predicates`` [plansys2_msgs::srv::GetStates]: Get the valid predicates.
+* ``domain_expert/get_domain_predicate_details`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a specific predicate.
+* ``domain_expert/get_domain_functions`` [plansys2_msgs::srv::GetStates]: Get the valid functions.
+* ``domain_expert/get_domain_function_details`` [plansys2_msgs::srv::GetNodeDetails]: Get the details of a specific function.
+* ``domain_expert/get_domain_derived_predicates`` [plansys2_msgs::srv::GetDomainDerivedPredicateDetails] (Jazzy: ``GetStates``): Get the valid derived predicates.
 * ``domain_expert/get_domain_derived_predicate_details`` [plansys2_msgs::srv::GetDomainDerivedPredicateDetails]: Get the details of a specific derived predicate.
 * ``domain_expert/get_domain`` [plansys2_msgs::srv::GetDomain]: Get the PDDL domain as a string.
 
 Publishers / Subscriber
 -----------------------
 
-* ``domain_expert/domain`` [std_msgs::msg::String] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic with the current domain.
+* ``domain_expert/domain`` [std_msgs::msg::String] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic with the current domain (3.x; not in Jazzy).
 
 1. Problem Expert
 *****************
@@ -155,7 +164,7 @@ Services
 Publishers / Subscriber
 -----------------------
 
-* ``problem_expert/problem`` [plansys2_msgs::msg::Problem] {Publisher: rclcpp::QoS(100)}: A message is published on this topic with the current problem.
+* ``problem_expert/problem`` [plansys2_msgs::msg::Problem] {Publisher: rclcpp::QoS(100)}: A message is published on this topic with the current problem (3.x; not in Jazzy).
 * ``problem_expert/update_notify`` [std_msgs::msg::Empty] {Publisher: rclcpp::QoS(100)}: A message is published on this topic when any element of the problem changes.
 * ``problem_expert/knowledge`` [plansys2_msgs::msg::Knowledge] {Publisher: rclcpp::QoS(100).transient_local()}: A message is published on this topic when any element of the problem changes.
 
@@ -171,8 +180,8 @@ Currently, the `Temporal Fast Downward <https://github.com/PlanSys2/plansys2_tfd
 1. A plan may be requested by providing a domain acquired from the Domain Expert and a problem acquired from the Problem expert.
 2. The domain is stored in ``<output_dir>/<node namespace>/domain.pddl``. This allows for several PlanSys2 instances in the same machine, which is useful for simulating multiple robots in the same machine.
 3. The problem is stored in ``<output_dir>/<node namespace>/problem.pddl``.
-4. Run the PDDL Solver, storing the output in ``<output_dir>/<node namespace>/plan.pddl``.
-5. Parse ``<output_dir>/<node namespace>/plan.pddl`` to get the sequence of actions as a vector of string.
+4. Run the PDDL Solver, storing the output in ``<output_dir>/<node namespace>/plan``.
+5. Parse ``<output_dir>/<node namespace>/plan`` to get the sequence of actions as a vector of string.
 6. Return the result.
 
 Here, ``<output_dir>`` corresponds to the output directory where the PDDL solver writes files.
@@ -186,7 +195,7 @@ For POPF, the default corresponds to your system's temporary directory (e.g., ``
 Parameters
 ----------
 
-* ``plan_solver_plugins`` [vector<string>]: List of PDDL solver plugins. Currently, only the first plugin specified will be used. If not set, POPF will be used by default. Check `this config <https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_bringup/params/plansys2_params.yaml>`_ as an example on how to use it.
+* ``plan_solver_plugins`` [vector<string>]: List of PDDL solver plugins. In 3.x, all of them are queried in parallel and ``get_plan`` returns the shortest plan found; in Jazzy (2.0.x) only one of them is used (which one is not specified), so configure a single plugin. If not set, POPF will be used by default. Check `this config <https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_bringup/params/plansys2_params.yaml>`_ as an example on how to use it.
 
 Client API
 ----------
@@ -229,10 +238,8 @@ Parameters
 * ``default_action_bt_xml_filename`` [string]: Filepath to a user provided custom action execution XML behavior tree template. The user can use this template to specify a different XML behavior tree template than the one provided in the plansy2_executor package. Currently the only available BT node not used by the default behavior tree template is the CheckTimeout node.
 * ``enable_dotgraph_legend`` [bool]: Enable legend with planning graph in DOT graph plan viewer.
 * ``print_graph`` [bool]: Print planning graph to terminal.
-* ``enable_groot_monitoring`` [bool]: Enable visualizing the plan's behavior tree inside `Groot <https://github.com/BehaviorTree/Groot>`_.
-* ``publisher_port`` [unsigned int]: ZeroMQ publisher port for `Groot <https://github.com/BehaviorTree/Groot>`_.
-* ``server_port`` [unsigned int]: ZeroMQ server port for `Groot <https://github.com/BehaviorTree/Groot>`_.
-* ``max_msgs_per_second`` [unsigned int]: Maximum number of ZeroMQ messages sent per second to `Groot <https://github.com/BehaviorTree/Groot>`_.
+* ``enable_groot_monitoring`` [bool]: Enable visualizing the plan's behavior tree inside `Groot2 <https://www.behaviortree.dev/groot>`_ (3.x; default false).
+* ``server_port`` [int]: Groot2 server port (3.x; default 1800).
 
 Client API
 ----------
@@ -278,7 +285,7 @@ Automatic plan repair during execution
 The Executor preserves in-progress work when the plan changes while one is already running. If ``ExecutorClient::start_plan_execution()`` is called again while a previous plan is still executing, the Executor does not cancel every action outright. Instead, it:
 
 1. Builds the Behavior Tree for the new plan.
-2. For every action that was still *running* under the previous plan, checks whether an action with the same name also appears as one of the first actions of the new plan.
+2. For every action that was still *running* under the previous plan, checks whether the same grounded action (same name and arguments) appears at the start (time 0) of the new plan.
 3. If a match is found, the running action executor is **kept alive and reused** (together with its applied effects and timing information), so its execution is not interrupted.
 4. Any running action that has no match in the new plan is cancelled.
 
@@ -328,7 +335,7 @@ Instead, a bidding-based delivery protocol has been developed in the ``ActionExe
 
 When the Executor must execute an action, it requests which action performer can execute it. Those who can 
 reply to this request. The Executor confirms one of them (the first to answer), rejecting the rest. If none are found, repeat the request every second until you give up, aborting the 
-execution of the plan. This protocol uses the topic ``/actions_hub``, where you can monitor the execution of the system.
+execution of the plan. This protocol uses the topic ``actions_hub`` (relative to the namespace), where you can monitor the execution of the system.
 
 .. image:: images/protocol.png
     :width: 500px
@@ -340,13 +347,13 @@ Parameters
 ----------
 
 * ``~/action_name`` [string]: The action managed. This action performer discard any request non equal to this parameter.
-* ``~/specialized_arguments`` [vector<string>]: If this parameter is not void, it only replies to action request that contains in any of the arguments any of these values.
-* ``~/rate`` [double]: Frequency, in Hz, at which ``do_work()`` is called while the action is active. Defaults to 5 Hz.
+* ``~/specialized_arguments`` [vector<string>]: If this parameter is not void, the performer only replies to requests whose i-th argument equals the i-th element of this list (empty strings match any value).
+* ``~/rate`` [double]: Frequency, in Hz, at which ``do_work()`` is called while the action is active. Defaults to 5 Hz (3.x; in Jazzy the default comes from the period given to the constructor).
 
 .. note::  In a multirobot application, for example, we add to the actions a parameter with the robot that should do the action. In each robot we can execute the same action performer, and using ``~/specialized_arguments`` we can select which will be executed.
 
 Publishers / Subscriber
 -----------------------
 
-* ``/actions_hub`` [plansys2_msgs::msg::ActionExecution] {Publisher: rclcpp::QoS(100).reliable()}: Receive messages from the Action Hub.
-* ``/actions_hub`` [plansys2_msgs::msg::ActionExecution] {Subscriber: rclcpp::QoS(100).reliable()}: Publish messages to the Action Hub.
+* ``actions_hub`` [plansys2_msgs::msg::ActionExecution] {Publisher: rclcpp::QoS(100).reliable()}: Publish messages to the Action Hub.
+* ``actions_hub`` [plansys2_msgs::msg::ActionExecution] {Subscriber: rclcpp::QoS(100).reliable()}: Receive messages from the Action Hub.

@@ -44,8 +44,7 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
   .. code-block:: bash
 
       cd <your_workspace>
-      git clone -b <ros2-distro>-devel https://github.com/PlanSys2/ros2_planning_system_examples.git src
-      colcon build --symlink-install
+      git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
 
@@ -131,10 +130,10 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
     :width: 600px
     :align: center
 
-In the PDDL domain we have three actions: assemble, move and transport. We will implement the assemble action without using BTs, as we have done in the previous tutorials. 
-We will implement the other two PDDL actions, ``Move`` and ``Transport``, using BTs. For this, each action will have a BT encoded in an XML file. This XML file contains 
-the control structures (sequences, fallbacks, ...) and the nodes that carry out the action. In this tutorial, 4 BT nodes have been implemented (``Move``, ``ApproachObject``, 
-``OpenGripper``, and ``CloseGripper``) that can be included in the BTs of the PDDL actions.
+In the PDDL domain we have four actions: assemble, move, transport and recharge. We will implement the assemble action without using BTs, as we have done in the previous tutorials. 
+We will implement the other PDDL actions, ``Move``, ``Transport`` and ``Recharge``, using BTs. For this, each action will have a BT encoded in an XML file. This XML file contains 
+the control structures (sequences, fallbacks, ...) and the nodes that carry out the action. In this tutorial, 5 BT nodes have been implemented (``Move``, ``ApproachObject``, 
+``OpenGripper``, ``CloseGripper``, and ``Recharge``) that can be included in the BTs of the PDDL actions.
 
 In PlanSys2 there is a generic executable that any BT can run. This executable is ``bt_action_node`` from the package `` plansys2_bt_actions``. To use it, we should add it in 
 the launch file, specifying as parameter the XML file that contains the BT and the PDDL action name:
@@ -144,7 +143,7 @@ the launch file, specifying as parameter the XML file that contains the BT and t
        move_cmd = Node(
            package='plansys2_bt_actions',
            executable='bt_action_node',
-           name='move',
+           name='move_1',
            namespace=namespace,
            output='screen',
            parameters=[
@@ -160,7 +159,7 @@ any parameter needed by the specific BT node. In this case, the coordinates of e
 
   .. code-block:: yaml
 
-       move:
+       move_1:
          ros__parameters:
            plugins:
              - plansys2_move_bt_node
@@ -214,7 +213,7 @@ This is the BT for the **transport** action. It is implemented as a sequence of 
 2.3 BT Nodes
 ^^^^^^^^^^^^
 
-We implemented 4 BT nodes for this tutorial. ``ApproachObject``, ``OpenGripper``, and ``CloseGripper`` have a similar implementation, showing only a message in the terminal when executing:
+We implemented 5 BT nodes for this tutorial. ``ApproachObject``, ``OpenGripper``, and ``CloseGripper`` have a similar implementation, showing only a message in the terminal when executing:
 
   .. code-block:: c++
 
@@ -301,6 +300,11 @@ For implementing the BT node ``Move``, we make it to inherit from ``BtActionNode
        };
 
 
+.. note::
+
+   This is the Jazzy version of ``Move``. In Kilted and Lyrical, the waypoints are
+   ``geometry_msgs::msg::Pose`` and the goal takes the pose as it is (``goal_pos.pose = pose2nav;``).
+
 ``BtActionNode<>`` hides all the complexity, and only it is necessary to implement the method ``on_tick``, called each time the BT node is ticked. In this BT node, we get the destination id from 
 the input ``goal`` parameter. Remember the line in the XML ``<Move    name="move" goal="{arg3}"/>``.
 
@@ -310,7 +314,7 @@ the input ``goal`` parameter. Remember the line in the XML ``<Move    name="move
        Move::on_tick()
        {
          if (status() == BT::NodeStatus::IDLE) {
-           rclcpp::Node::SharedPtr node;
+           rclcpp_lifecycle::LifecycleNode::SharedPtr node;
            config().blackboard->get("node", node);
        
            std::string goal;

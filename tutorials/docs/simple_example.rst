@@ -17,7 +17,7 @@ It is common for PlanSys2 to have a package that contains all the elements to pl
 * Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.
 
 
-In this tutorial we are going to run again and to analyze the package of the simple example shown in: ref: `getting_started`.
+In this tutorial we are going to run again and to analyze the package of the simple example shown in :ref:`getting_started`.
 
 Tutorial Steps
 ==============
@@ -31,7 +31,6 @@ Clone in your workspace and build the |PN| `examples <https://github.com/PlanSys
 
       cd <your_workspace>
       git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
-      colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
 
@@ -102,14 +101,14 @@ Go to ``<your_workspace>/src/ros2_planning_system_examples/plansys2_simple_examp
 of this tutorial. The structure is the usual of a ROS2 package, with a ``package.xml`` and a ``CMakeLists.txt`` as usual. Besides, we have the 
 next directories:
 
-* **pddl** The directory with the PDDL file that contains the domain. It is the same of the ref: `terminal_usage`.
+* **pddl** The directory with the PDDL file that contains the domain. It is the same of :ref:`terminal_usage`.
 * **launch** It contains the launcher of this example:
 * **src** It contains the implementation of the three actions of the domain.
 
 3- Actions implementation
 -------------------------
 
-The actions in the domain are *move*, *charge* and *ask_charge*. It will contain a "fake" implementation. Each node that implements an action is called *action performer*. Each action will take some seconds
+The actions in the domain are *move*, *charge* and *askcharge*. It will contain a "fake" implementation. Each node that implements an action is called *action performer*. Each action will take some seconds
 to execute, only incrementing a ``progress`` value and displaying it in the terminal. Each action in PlanSys2 is a 
 `managed node <https://design.ros2.org/articles/node_lifecycle.html>`_ , also known as *lifecycle node*. When active, it will iterativelly call 
 a function to perform the job. Let's analyze the code of *move* action in ``src/move_action_node.cpp``:
@@ -170,7 +169,11 @@ a function to perform the job. Let's analyze the code of *move* action in ``src/
 
        : plansys2::ActionExecutorClient("move")
 
-By default, ``do_work()`` will be called every 200ms (5Hz). This rate can be changed at runtime through the ``rate`` ROS parameter (in Hz), without having to modify the C++ code.
+By default, ``do_work()`` will be called every 200ms (5Hz). This rate can be changed at runtime through the ``rate`` ROS parameter (in Hz), without having to modify the C++ code; ``move_action_node.cpp`` sets it to 4 Hz in its ``main``.
+
+.. note::
+
+   In Jazzy (2.0.x) the constructor also takes the period, e.g. ``plansys2::ActionExecutorClient("move", 250ms)``, and the default of ``rate`` comes from it.
 
 * ``plansys2::ActionExecutorClient`` has an API, with these relevant protected methods for the actions:
 
@@ -205,11 +208,12 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
        auto node = std::make_shared<MoveAction>();
      
        node->set_parameter(rclcpp::Parameter("action_name", "move"));
+       node->set_parameter(rclcpp::Parameter("rate", 4.0));
        node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
        rclcpp::spin(node->get_node_base_interface());
 
-The parameter ``action`` sets what action implements the ``node`` object. 
+The parameter ``action_name`` sets what action implements the ``node`` object. 
 
 4- Launcher
 -----------
