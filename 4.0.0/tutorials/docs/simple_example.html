@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The first planning package &mdash; ROS2 Planning System 2 4.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3304f9e4"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Using a planning controller" href="controller_example.html" />
+    <link rel="prev" title="Terminal Usage" href="terminal_usage.html" />
+
+<link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ROS2 Planning System 2
+              <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#what-next">What next</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#releases-and-distributions">Releases and distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#install-the-binaries">Install the binaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#build-from-source">Build from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#choosing-the-middleware">Choosing the middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#optional-planners">Optional planners</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#interfaces-at-a-glance">Interfaces at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#domain-expert">Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#topics">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id2">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#executor">Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#action">Action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#behavior-tree-builders">Behavior tree builders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#repairing-a-plan">Repairing a plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#constraints">Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#action-performers">Action performers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#protocol">Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id9">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id10">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#client-libraries">Client libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#c">C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#python">Python</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#running-pn">Running PlanSys2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#messages">Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/index.html">Migrating to 4.0.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-clients-take-the-node-of-the-application">The clients take the node of the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#spinning-the-node-of-a-controller">Spinning the node of a controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-lifecycle-manager">The lifecycle manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-bringup">The bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#bt-builders">BT builders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#executors">Executors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#kairos-the-default-planner">Kairos, the default planner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#c-20">C++20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#humble">Humble</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pddl_support/index.html">PDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#what-pn-executes">What PlanSys2 executes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#pddl-dynamics">PDDL+ dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#what-each-planner-plans">What each planner plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../execution_trace/index.html">Reading an execution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#the-events">The events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#late-and-shifted">Late, and shifted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#what-to-look-for">What to look for</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#terminal">Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#tui">TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#command-line">Command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#rqt-plugins">rqt plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The first planning package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#planner-plugins">Planner plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#behavior-tree-builder-plugins">Behavior tree builder plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS2 Planning System 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/PlanSys2/PlanSys2.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/plansys2.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">The first planning package</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-first-planning-package">
+<span id="simple-example"></span><h1>The first planning package<a class="headerlink" href="#the-first-planning-package" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>It is common for PlanSys2 to have a package that contains all the elements to plan and execute in a domain:</p>
+<ul class="simple">
+<li><p>A PDDL model.</p></li>
+<li><p>A node that implements each action, probably in different executables.</p></li>
+<li><p>A launcher that executes the actions and launches PlanSys2 with the appropriate domain.</p></li>
+<li><p>Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.</p></li>
+</ul>
+<p>In this tutorial we are going to run again and to analyze the package of the simple example shown in: ref: <cite>getting_started</cite>.</p>
+</section>
+<section id="tutorial-steps">
+<h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
+<section id="requisites">
+<h3>0- Requisites<a class="headerlink" href="#requisites" title="Link to this heading"></a></h3>
+<p>Clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples">examples</a></p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="running-the-example">
+<h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Open a new terminal and run PlanSys2:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_simple_example<span class="w"> </span>plansys2_simple_example_launch.py
+</pre></div>
+</div>
+<p>This launch PlanSys2 this <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
+and some processes that implements a fake version of the domain’s actions.</p>
+</div></blockquote>
+</li>
+<li><p>Open a new terminal and run the PlanSys2 terminal:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_terminal<span class="w"> </span>plansys2_terminal
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In the PlanSys2 terminal shell, copy and paste the next commands to init the knowledge of the system and set the goal:</p>
+<blockquote>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">robot</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">entrance</span><span class="w"> </span><span class="nb">room</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">kitchen</span><span class="w"> </span><span class="nb">room</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">bedroom</span><span class="w"> </span><span class="nb">room</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">dinning</span><span class="w"> </span><span class="nb">room</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">bathroom</span><span class="w"> </span><span class="nb">room</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">chargingroom</span><span class="w"> </span><span class="nb">room</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">entrance</span><span class="w"> </span><span class="nv">dinning</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">dinning</span><span class="w"> </span><span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">dinning</span><span class="w"> </span><span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">kitchen</span><span class="w"> </span><span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">dinning</span><span class="w"> </span><span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">bedroom</span><span class="w"> </span><span class="nv">dinning</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">bathroom</span><span class="w"> </span><span class="nv">bedroom</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">bedroom</span><span class="w"> </span><span class="nv">bathroom</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">chargingroom</span><span class="w"> </span><span class="nv">kitchen</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">kitchen</span><span class="w"> </span><span class="nv">chargingroom</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">charging_point_at</span><span class="w"> </span><span class="nv">chargingroom</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">battery_low</span><span class="w"> </span><span class="nv">leia</span><span class="p">)</span>
+<span class="nb">set</span><span class="w"> </span><span class="nv">predicate</span><span class="w"> </span><span class="p">(</span><span class="nv">robot_at</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">entrance</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="w"> </span><span class="nv">goal</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="p">(</span><span class="nv">robot_at</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">bathroom</span><span class="p">))</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In the PlanSys2 terminal shell, run the plan:</p>
+<blockquote>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nv">run</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>In the PlanSys2 terminal you’ll be able to see the plan. In both terminal, you’ll see the current actions executed and its level of completion. As
+soon as the plan execution finished, the terminal will be available again.</p>
+</section>
+<section id="package-structure">
+<h3>2- Package structure<a class="headerlink" href="#package-structure" title="Link to this heading"></a></h3>
+<p>Go to <code class="docutils literal notranslate"><span class="pre">&lt;your_workspace&gt;/src/ros2_planning_system_examples/plansys2_simple_example</span></code>. This is the ROS2 package that contains the example
+of this tutorial. The structure is the usual of a ROS2 package, with a <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as usual. Besides, we have the
+next directories:</p>
+<ul class="simple">
+<li><p><strong>pddl</strong> The directory with the PDDL file that contains the domain. It is the same of the ref: <cite>terminal_usage</cite>.</p></li>
+<li><p><strong>launch</strong> It contains the launcher of this example:</p></li>
+<li><p><strong>src</strong> It contains the implementation of the three actions of the domain.</p></li>
+</ul>
+</section>
+<section id="actions-implementation">
+<h3>3- Actions implementation<a class="headerlink" href="#actions-implementation" title="Link to this heading"></a></h3>
+<p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>ask_charge</em>. It will contain a “fake” implementation. Each node that implements an action is called <em>action performer</em>. Each action will take some seconds
+to execute, only incrementing a <code class="docutils literal notranslate"><span class="pre">progress</span></code> value and displaying it in the terminal. Each action in PlanSys2 is a
+<a class="reference external" href="https://design.ros2.org/articles/node_lifecycle.html">managed node</a> , also known as <em>lifecycle node</em>. When active, it will iterativelly call
+a function to perform the job. Let’s analyze the code of <em>move</em> action in <code class="docutils literal notranslate"><span class="pre">src/move_action_node.cpp</span></code>:</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MoveAction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
+<span class="linenos"> 2</span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="n">MoveAction</span><span class="p">()</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">"move"</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">private</span><span class="o">:</span>
+<span class="linenos">11</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">do_work</span><span class="p">()</span>
+<span class="linenos">12</span><span class="w">  </span><span class="p">{</span>
+<span class="linenos">13</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">      </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Move running"</span><span class="p">);</span>
+<span class="linenos">16</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">17</span><span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\r</span><span class="s">\e[K"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+<span class="linenos">24</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Moving ... ["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="n">progress_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"%]  "</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="linenos">25</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+<span class="linenos">26</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span>
+<span class="linenos">29</span><span class="p">};</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
+<span class="linenos">32</span><span class="p">{</span>
+<span class="linenos">33</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="linenos">34</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"move"</span><span class="p">));</span>
+<span class="linenos">37</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">44</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MoveAction</span></code> is a <code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> (defined <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/include/plansys2_executor/ActionExecutorClient.hpp">here</a>), that inherit from <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code>. This is, basically, a <code class="docutils literal notranslate"><span class="pre">rclcpp_lifecycle::LifecycleNode</span></code>, but with an additional property: it can activate in cascade another <code class="docutils literal notranslate"><span class="pre">rclcpp_cascade_lifecycle::CascadeLifecycleNode</span></code> when it is active. It’s useful when an action requires to activate a node that process a sensor information. It will only be active while the action that requires its output is active. See <a class="reference external" href="https://github.com/fmrico/cascade_lifecycle">this repo</a> for more info.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">"move"</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called every 200ms (5Hz). This rate can be changed at runtime through the <code class="docutils literal notranslate"><span class="pre">rate</span></code> ROS parameter (in Hz), without having to modify the C++ code.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> has an API, with these relevant protected methods for the actions:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">();</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">send_feedback</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">finish</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">get_arguments()</span></code> returns the list of arguments of an action. For example, when executing <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">leia</span> <span class="pre">chargingroom</span> <span class="pre">kitchen)</span></code>, it will return
+this vector of strings: <code class="docutils literal notranslate"><span class="pre">{&quot;leia&quot;,</span> <span class="pre">&quot;chargingroom&quot;,</span> <span class="pre">&quot;kitchen&quot;}</span></code></p>
+<p>This code is sending feedback of its completion. When finished, <code class="docutils literal notranslate"><span class="pre">finish</span></code> method indicates that the action has finished, and send back if
+it succesfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">;</span>
+<span class="w">  </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Move running"</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p>The action node, once created, must pass to inactive state to be ready to execute.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"move"</span><span class="p">));</span>
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+
+<span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">action</span></code> sets what action implements the <code class="docutils literal notranslate"><span class="pre">node</span></code> object.</p>
+</section>
+<section id="launcher">
+<h3>4- Launcher<a class="headerlink" href="#launcher" title="Link to this heading"></a></h3>
+<p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">generate_launch_description</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="n">example_dir</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">'plansys2_simple_example'</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="n">namespace</span> <span class="o">=</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s1">'namespace'</span><span class="p">)</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">declare_namespace_cmd</span> <span class="o">=</span> <span class="n">DeclareLaunchArgument</span><span class="p">(</span>
+<span class="linenos"> 6</span>        <span class="s1">'namespace'</span><span class="p">,</span>
+<span class="linenos"> 7</span>        <span class="n">default_value</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+<span class="linenos"> 8</span>        <span class="n">description</span><span class="o">=</span><span class="s1">'Namespace'</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">plansys2_cmd</span> <span class="o">=</span> <span class="n">IncludeLaunchDescription</span><span class="p">(</span>
+<span class="linenos">11</span>        <span class="n">PythonLaunchDescriptionSource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="linenos">12</span>            <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">'plansys2_bringup'</span><span class="p">),</span>
+<span class="linenos">13</span>            <span class="s1">'launch'</span><span class="p">,</span>
+<span class="linenos">14</span>            <span class="s1">'plansys2_bringup_launch_monolithic.py'</span><span class="p">)),</span>
+<span class="linenos">15</span>        <span class="n">launch_arguments</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">16</span>          <span class="s1">'model_file'</span><span class="p">:</span> <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">'/pddl/simple_example.pddl'</span><span class="p">,</span>
+<span class="linenos">17</span>          <span class="s1">'namespace'</span><span class="p">:</span> <span class="n">namespace</span>
+<span class="linenos">18</span>          <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">move_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+<span class="linenos">21</span>        <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_simple_example'</span><span class="p">,</span>
+<span class="linenos">22</span>        <span class="n">executable</span><span class="o">=</span><span class="s1">'move_action_node'</span><span class="p">,</span>
+<span class="linenos">23</span>        <span class="n">name</span><span class="o">=</span><span class="s1">'move_action_node'</span><span class="p">,</span>
+<span class="linenos">24</span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+<span class="linenos">25</span>        <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
+<span class="linenos">26</span>        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="n">charge_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+<span class="linenos">29</span>        <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_simple_example'</span><span class="p">,</span>
+<span class="linenos">30</span>        <span class="n">executable</span><span class="o">=</span><span class="s1">'charge_action_node'</span><span class="p">,</span>
+<span class="linenos">31</span>        <span class="n">name</span><span class="o">=</span><span class="s1">'charge_action_node'</span><span class="p">,</span>
+<span class="linenos">32</span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+<span class="linenos">33</span>        <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
+<span class="linenos">34</span>        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>    <span class="n">ask_charge_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+<span class="linenos">37</span>        <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_simple_example'</span><span class="p">,</span>
+<span class="linenos">38</span>        <span class="n">executable</span><span class="o">=</span><span class="s1">'ask_charge_action_node'</span><span class="p">,</span>
+<span class="linenos">39</span>        <span class="n">name</span><span class="o">=</span><span class="s1">'ask_charge_action_node'</span><span class="p">,</span>
+<span class="linenos">40</span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+<span class="linenos">41</span>        <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
+<span class="linenos">42</span>        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>   <span class="c1"># Create the launch description and populate</span>
+<span class="linenos">43</span>    <span class="n">ld</span> <span class="o">=</span> <span class="n">LaunchDescription</span><span class="p">()</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">declare_namespace_cmd</span><span class="p">)</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span>    <span class="c1"># Declare the launch options</span>
+<span class="linenos">48</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">plansys2_cmd</span><span class="p">)</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">move_cmd</span><span class="p">)</span>
+<span class="linenos">51</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">charge_cmd</span><span class="p">)</span>
+<span class="linenos">52</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">ask_charge_cmd</span><span class="p">)</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span>    <span class="k">return</span> <span class="n">ld</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="plansys2-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> PlanSys2</span>
+    v: <span id="plansys2-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="plansys2-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

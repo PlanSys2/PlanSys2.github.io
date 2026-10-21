@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build and Install &mdash; ROS2 Planning System 2 latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="shortcut icon" href="../_static/plansys2_48x48.png"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PlanSys2 design" href="../design/index.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started/index.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ROS2 Planning System 2
+              <img src="../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#running-the-example">Running the example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#what-next">What next</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#releases-and-distributions">Releases and distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-from-source">Build from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choosing-the-middleware">Choosing the middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-planners">Optional planners</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#interfaces-at-a-glance">Interfaces at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#domain-expert">Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#topics">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#problem-expert">Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id2">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id3">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#planner">Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id4">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id5">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#executor">Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#action">Action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id7">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id8">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#behavior-tree-builders">Behavior tree builders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#repairing-a-plan">Repairing a plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#constraints">Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#action-performers">Action performers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#protocol">Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id9">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#id10">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#client-libraries">Client libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#c">C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#python">Python</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#running-pn">Running PlanSys2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#messages">Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../migration/index.html">Migrating to 4.0.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#the-clients-take-the-node-of-the-application">The clients take the node of the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#spinning-the-node-of-a-controller">Spinning the node of a controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#the-lifecycle-manager">The lifecycle manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#the-bringup">The bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#bt-builders">BT builders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#executors">Executors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#kairos-the-default-planner">Kairos, the default planner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#c-20">C++20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration/index.html#humble">Humble</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pddl_support/index.html">PDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#what-pn-executes">What PlanSys2 executes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#pddl-dynamics">PDDL+ dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#what-each-planner-plans">What each planner plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../execution_trace/index.html">Reading an execution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#the-events">The events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#late-and-shifted">Late, and shifted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#what-to-look-for">What to look for</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#terminal">Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#tui">TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#command-line">Command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#rqt-plugins">rqt plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/simple_example.html">The first planning package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/simple_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/simple_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/simple_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/simple_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/simple_example.html#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/simple_example.html#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/simple_example.html#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/bt_actions.html">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/bt_actions.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/bt_actions.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/bt_actions.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planner-plugins">Planner plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#behavior-tree-builder-plugins">Behavior tree builder plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS2 Planning System 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/PlanSys2/PlanSys2.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/plansys2.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Build and Install</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="build-and-install">
+<span id="build-instructions"></span><h1>Build and Install<a class="headerlink" href="#build-and-install" title="Link to this heading"></a></h1>
+<section id="releases-and-distributions">
+<h2>Releases and distributions<a class="headerlink" href="#releases-and-distributions" title="Link to this heading"></a></h2>
+<p>PlanSys2 4.0.0 is the same version for Humble, Jazzy, Kilted and Lyrical: the same features and the same
+code in every distribution. It brings Kairos as the default planner, the execution of
+everything Kairos plans (conditional effects, timed literals, PDDL+, constraints…) and the
+execution trace. The earlier releases are documented in version 3.1.0 of this site (version
+selector, bottom left).</p>
+<p>This is the documentation of the <code class="docutils literal notranslate"><span class="pre">rolling</span></code> branch, what comes after 4.0.0. The version
+selector (bottom left) shows the one of 4.0.0.</p>
+</section>
+<section id="build-from-source">
+<h2>Build from source<a class="headerlink" href="#build-from-source" title="Link to this heading"></a></h2>
+<p>This is the development documentation: what it describes is in the <code class="docutils literal notranslate"><span class="pre">rolling</span></code> branches
+and is not released yet. Build it from source.</p>
+<p>PlanSys2 needs some packages that are built with it from source:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/PlanSys2/kairos">Kairos</a>, the default planner.</p></li>
+<li><p><a class="reference external" href="https://github.com/fmrico/cascade_lifecycle">cascade_lifecycle</a> and
+<a class="reference external" href="https://github.com/fmrico/popf">popf</a>, from the branches that match PlanSys2.</p></li>
+<li><p>For the examples, <a class="reference external" href="https://github.com/EasyNavigation/EasyNavigation">EasyNav</a> and
+<a class="reference external" href="https://github.com/fmrico/yaets">yaets</a>.</p></li>
+</ul>
+<p>Each repository lists them in <code class="docutils literal notranslate"><span class="pre">dependency_repos.repos</span></code>; <code class="docutils literal notranslate"><span class="pre">vcs</span></code> clones them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-vcstool
+mkdir<span class="w"> </span>-p<span class="w"> </span>~/plansys2_ws/src
+<span class="nb">cd</span><span class="w"> </span>~/plansys2_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system.git
+vcs<span class="w"> </span>import<span class="w"> </span>&lt;<span class="w"> </span>ros2_planning_system/dependency_repos.repos
+
+<span class="c1"># The examples, optional</span>
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git
+vcs<span class="w"> </span>import<span class="w"> </span>--skip-existing<span class="w"> </span>&lt;<span class="w"> </span>ros2_planning_system_examples/dependency_repos.repos
+
+<span class="nb">cd</span><span class="w"> </span>~/plansys2_ws
+rosdep<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>-r<span class="w"> </span>-q<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>For a released distribution, use <code class="docutils literal notranslate"><span class="pre">&lt;distro&gt;-devel</span></code> instead of <code class="docutils literal notranslate"><span class="pre">rolling</span></code> for PlanSys2 (for
+instance <code class="docutils literal notranslate"><span class="pre">jazzy-devel</span></code>) and <code class="docutils literal notranslate"><span class="pre">&lt;distro&gt;</span></code> for the examples (for instance <code class="docutils literal notranslate"><span class="pre">jazzy</span></code>).</p></li>
+<li><p>The examples’ <code class="docutils literal notranslate"><span class="pre">dependency_repos.repos</span></code> also lists PlanSys2 itself: <code class="docutils literal notranslate"><span class="pre">--skip-existing</span></code> keeps
+the one cloned above.</p></li>
+</ul>
+</section>
+<section id="choosing-the-middleware">
+<h2>Choosing the middleware<a class="headerlink" href="#choosing-the-middleware" title="Link to this heading"></a></h2>
+<p>PlanSys2 works with any ROS 2 middleware (RMW), but we recommend <strong>Zenoh</strong>, the one we develop and
+test PlanSys2 with; Cyclone DDS works as well. Our stress tests start PlanSys2, its performers and the
+controller of each example in every order (all at once, the controller first, PlanSys2 minutes
+later…), three times each. With Zenoh and Cyclone DDS they never failed. With Fast DDS, the
+default RMW of ROS 2, some runs lost messages while everything was starting: the server side
+gives up a response it cannot deliver (<code class="docutils literal notranslate"><span class="pre">failed</span> <span class="pre">to</span> <span class="pre">send</span> <span class="pre">response</span> <span class="pre">...</span> <span class="pre">client</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">receive</span>
+<span class="pre">response</span></code>). PlanSys2 sends such requests again, but the processes of an application (a navigation
+performer and its navigation stack, for instance) may not.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>RMW</p></th>
+<th class="head"><p>Runs that ended well</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Zenoh</p></td>
+<td><p>57 of 57</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cyclone DDS</p></td>
+<td><p>57 of 57</p></td>
+</tr>
+<tr class="row-even"><td><p>Fast DDS</p></td>
+<td><p>45 of 57</p></td>
+</tr>
+</tbody>
+</table>
+<p>To use Zenoh, which also needs its router running (once per machine):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-rmw-zenoh-cpp
+<span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
+ros2<span class="w"> </span>run<span class="w"> </span>rmw_zenoh_cpp<span class="w"> </span>rmw_zenohd
+</pre></div>
+</div>
+<p>To use Cyclone DDS:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-rmw-cyclonedds-cpp
+<span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_cyclonedds_cpp
+</pre></div>
+</div>
+<p>All the processes (PlanSys2, the performers, the controller) must use the same RMW.</p>
+<p>If you stay with Fast DDS: processes killed with <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span></code> or crashed leave shared memory
+segments behind in <code class="docutils literal notranslate"><span class="pre">/dev/shm</span></code>, and later processes may send to them and lose messages.
+<code class="docutils literal notranslate"><span class="pre">fastdds</span> <span class="pre">shm</span> <span class="pre">clean</span></code> removes them.</p>
+</section>
+<section id="optional-planners">
+<h2>Optional planners<a class="headerlink" href="#optional-planners" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/PlanSys2/plansys2_tfd_plan_solver">TFD</a> is another plan solver plugin.
+Install TFD first, as its repository explains, then clone the plugin into the workspace (it
+has the branches <code class="docutils literal notranslate"><span class="pre">rolling</span></code>, <code class="docutils literal notranslate"><span class="pre">lyrical</span></code> and <code class="docutils literal notranslate"><span class="pre">humble</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/plansys2_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/PlanSys2/plansys2_tfd_plan_solver.git
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> to choose the planners PlanSys2 uses.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="plansys2-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> PlanSys2</span>
+    v: <span id="plansys2-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="plansys2-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>
