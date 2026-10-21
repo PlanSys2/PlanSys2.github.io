@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -261,7 +261,7 @@
 <li><p>A launcher that executes the actions and launches PlanSys2 with the appropriate domain.</p></li>
 <li><p>Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.</p></li>
 </ul>
-<p>In this tutorial we are going to run again and to analyze the package of the simple example shown in: ref: <cite>getting_started</cite>.</p>
+<p>In this tutorial we are going to run again and to analyze the package of the simple example shown in <a class="reference internal" href="../../getting_started/index.html#getting-started"><span class="std std-ref">Getting Started</span></a>.</p>
 </section>
 <section id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
@@ -271,7 +271,6 @@
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 </pre></div>
@@ -283,7 +282,7 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <ul>
 <li><p>Open a new terminal and run PlanSys2:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_simple_example<span class="w"> </span>plansys2_simple_example_launch.py
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_simple_example<span class="w"> </span>plansys2_simple_example.launch.yaml
 </pre></div>
 </div>
 <p>This launch PlanSys2 this <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_simple_example/pddl/simple_example.pddl">simple PDDL domain</a>,
@@ -348,16 +347,16 @@ soon as the plan execution finished, the terminal will be available again.</p>
 of this tutorial. The structure is the usual of a ROS2 package, with a <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as usual. Besides, we have the
 next directories:</p>
 <ul class="simple">
-<li><p><strong>pddl</strong> The directory with the PDDL file that contains the domain. It is the same of the ref: <cite>terminal_usage</cite>.</p></li>
+<li><p><strong>pddl</strong> The directory with the PDDL file that contains the domain. It is the same of the <a class="reference internal" href="terminal_usage.html#terminal-usage"><span class="std std-ref">Terminal Usage</span></a>.</p></li>
 <li><p><strong>launch</strong> It contains the launcher of this example:</p></li>
 <li><p><strong>src</strong> It contains the implementation of the three actions of the domain.</p></li>
 </ul>
 </section>
 <section id="actions-implementation">
 <h3>3- Actions implementation<a class="headerlink" href="#actions-implementation" title="Link to this heading"></a></h3>
-<p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>ask_charge</em>. It will contain a “fake” implementation. Each node that implements an action is called <em>action performer</em>. Each action will take some seconds
+<p>The actions in the domain are <em>move</em>, <em>charge</em> and <em>askcharge</em>. It will contain a “fake” implementation. Each node that implements an action is called <em>action performer</em>. Each action will take some seconds
 to execute, only incrementing a <code class="docutils literal notranslate"><span class="pre">progress</span></code> value and displaying it in the terminal. Each action in PlanSys2 is a
-<a class="reference external" href="https://design.ros2.org/articles/node_lifecycle.html">managed node</a> , also known as <em>lifecycle node</em>. When active, it will iterativelly call
+<a class="reference external" href="https://design.ros2.org/articles/node_lifecycle.html">managed node</a> , also known as <em>lifecycle node</em>. When active, it will iteratively call
 a function to perform the job. Let’s analyze the code of <em>move</em> action in <code class="docutils literal notranslate"><span class="pre">src/move_action_node.cpp</span></code>:</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MoveAction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
@@ -372,38 +371,40 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 <span class="linenos">10</span><span class="k">private</span><span class="o">:</span>
 <span class="linenos">11</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">do_work</span><span class="p">()</span>
 <span class="linenos">12</span><span class="w">  </span><span class="p">{</span>
-<span class="linenos">13</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">14</span><span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">;</span>
-<span class="linenos">15</span><span class="w">      </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Move running"</span><span class="p">);</span>
-<span class="linenos">16</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">17</span><span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">20</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="linenos">21</span><span class="w">    </span><span class="p">}</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\r</span><span class="s">\e[K"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
-<span class="linenos">24</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Moving ... ["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="n">progress_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"%]  "</span><span class="w"> </span><span class="o">&lt;&lt;</span>
-<span class="linenos">25</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
-<span class="linenos">26</span><span class="w">  </span><span class="p">}</span>
-<span class="linenos">27</span>
-<span class="linenos">28</span><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span>
-<span class="linenos">29</span><span class="p">};</span>
-<span class="linenos">30</span>
-<span class="linenos">31</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
-<span class="linenos">32</span><span class="p">{</span>
-<span class="linenos">33</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
-<span class="linenos">34</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
-<span class="linenos">35</span>
-<span class="linenos">36</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"move"</span><span class="p">));</span>
-<span class="linenos">37</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
-<span class="linenos">38</span>
-<span class="linenos">39</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+<span class="linenos">13</span><span class="w">    </span><span class="c1">// As long as the plan says it lasts</span>
+<span class="linenos">14</span><span class="w">    </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">get_planned_duration</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">get_parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">).</span><span class="n">as_double</span><span class="p">());</span>
+<span class="linenos">15</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1e-3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">16</span><span class="w">      </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Move running"</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">18</span><span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">      </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">22</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\r</span><span class="s">\e[K"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+<span class="linenos">25</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Moving ... ["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">100.0</span><span class="p">,</span><span class="w"> </span><span class="n">progress_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"%]  "</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="linenos">26</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+<span class="linenos">27</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span>
+<span class="linenos">30</span><span class="p">};</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
+<span class="linenos">33</span><span class="p">{</span>
+<span class="linenos">34</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="linenos">35</span><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"move"</span><span class="p">));</span>
+<span class="linenos">38</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0</span><span class="p">));</span>
+<span class="linenos">39</span><span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
 <span class="linenos">40</span>
-<span class="linenos">41</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+<span class="linenos">41</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
 <span class="linenos">42</span>
-<span class="linenos">43</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="linenos">44</span><span class="p">}</span>
+<span class="linenos">43</span><span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">46</span><span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -414,10 +415,11 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 </div>
 </li>
 </ul>
-<p>By default, <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called every 200ms (5Hz). This rate can be changed at runtime through the <code class="docutils literal notranslate"><span class="pre">rate</span></code> ROS parameter (in Hz), without having to modify the C++ code.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> will be called every 200ms (5Hz). The <code class="docutils literal notranslate"><span class="pre">rate</span></code> ROS parameter (in Hz) changes it, without modifying the C++ code: it is read when the node is configured, so set it before, in the launcher or with <code class="docutils literal notranslate"><span class="pre">set_parameter</span></code>, as this example does (4 Hz).</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">plansys2::ActionExecutorClient</span></code> has an API, with these relevant protected methods for the actions:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">();</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="nf">get_planned_duration</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 <span class="kt">void</span><span class="w"> </span><span class="n">send_feedback</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
 <span class="kt">void</span><span class="w"> </span><span class="n">finish</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
 </pre></div>
@@ -425,12 +427,13 @@ a function to perform the job. Let’s analyze the code of <em>move</em> action 
 </li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">get_arguments()</span></code> returns the list of arguments of an action. For example, when executing <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">leia</span> <span class="pre">chargingroom</span> <span class="pre">kitchen)</span></code>, it will return
-this vector of strings: <code class="docutils literal notranslate"><span class="pre">{&quot;leia&quot;,</span> <span class="pre">&quot;chargingroom&quot;,</span> <span class="pre">&quot;kitchen&quot;}</span></code></p>
+this vector of strings: <code class="docutils literal notranslate"><span class="pre">{&quot;leia&quot;,</span> <span class="pre">&quot;chargingroom&quot;,</span> <span class="pre">&quot;kitchen&quot;}</span></code>. <code class="docutils literal notranslate"><span class="pre">get_planned_duration()</span></code> returns the duration the
+plan gives the action: this example advances its progress so that it lasts as long.</p>
 <p>This code is sending feedback of its completion. When finished, <code class="docutils literal notranslate"><span class="pre">finish</span></code> method indicates that the action has finished, and send back if
-it succesfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.</p>
+it successfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">;</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">get_planned_duration</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">get_parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">).</span><span class="n">as_double</span><span class="p">());</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1e-3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Move running"</span><span class="p">);</span>
 <span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
@@ -446,6 +449,7 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MoveAction</span><span class="o">&gt;</span><span class="p">();</span>
 
 <span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"move"</span><span class="p">));</span>
+<span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0</span><span class="p">));</span>
 <span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
 
 <span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
@@ -453,66 +457,40 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
 </div>
 </li>
 </ul>
-<p>The parameter <code class="docutils literal notranslate"><span class="pre">action</span></code> sets what action implements the <code class="docutils literal notranslate"><span class="pre">node</span></code> object.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">action_name</span></code> sets what action implements the <code class="docutils literal notranslate"><span class="pre">node</span></code> object.</p>
 </section>
 <section id="launcher">
 <h3>4- Launcher<a class="headerlink" href="#launcher" title="Link to this heading"></a></h3>
-<p>The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:</p>
+<p>The launcher (<code class="docutils literal notranslate"><span class="pre">launch/plansys2_simple_example.launch.yaml</span></code>) includes the PlanSys2 launcher, selecting the domain, and runs the executables that implement the PDDL actions:</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">generate_launch_description</span><span class="p">():</span>
-<span class="linenos"> 2</span>    <span class="n">example_dir</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">'plansys2_simple_example'</span><span class="p">)</span>
-<span class="linenos"> 3</span>    <span class="n">namespace</span> <span class="o">=</span> <span class="n">LaunchConfiguration</span><span class="p">(</span><span class="s1">'namespace'</span><span class="p">)</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span>    <span class="n">declare_namespace_cmd</span> <span class="o">=</span> <span class="n">DeclareLaunchArgument</span><span class="p">(</span>
-<span class="linenos"> 6</span>        <span class="s1">'namespace'</span><span class="p">,</span>
-<span class="linenos"> 7</span>        <span class="n">default_value</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
-<span class="linenos"> 8</span>        <span class="n">description</span><span class="o">=</span><span class="s1">'Namespace'</span><span class="p">)</span>
-<span class="linenos"> 9</span>
-<span class="linenos">10</span>    <span class="n">plansys2_cmd</span> <span class="o">=</span> <span class="n">IncludeLaunchDescription</span><span class="p">(</span>
-<span class="linenos">11</span>        <span class="n">PythonLaunchDescriptionSource</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-<span class="linenos">12</span>            <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">'plansys2_bringup'</span><span class="p">),</span>
-<span class="linenos">13</span>            <span class="s1">'launch'</span><span class="p">,</span>
-<span class="linenos">14</span>            <span class="s1">'plansys2_bringup_launch_monolithic.py'</span><span class="p">)),</span>
-<span class="linenos">15</span>        <span class="n">launch_arguments</span><span class="o">=</span><span class="p">{</span>
-<span class="linenos">16</span>          <span class="s1">'model_file'</span><span class="p">:</span> <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">'/pddl/simple_example.pddl'</span><span class="p">,</span>
-<span class="linenos">17</span>          <span class="s1">'namespace'</span><span class="p">:</span> <span class="n">namespace</span>
-<span class="linenos">18</span>          <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-<span class="linenos">19</span>
-<span class="linenos">20</span>    <span class="n">move_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
-<span class="linenos">21</span>        <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_simple_example'</span><span class="p">,</span>
-<span class="linenos">22</span>        <span class="n">executable</span><span class="o">=</span><span class="s1">'move_action_node'</span><span class="p">,</span>
-<span class="linenos">23</span>        <span class="n">name</span><span class="o">=</span><span class="s1">'move_action_node'</span><span class="p">,</span>
-<span class="linenos">24</span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
-<span class="linenos">25</span>        <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
-<span class="linenos">26</span>        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
-<span class="linenos">27</span>
-<span class="linenos">28</span>    <span class="n">charge_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
-<span class="linenos">29</span>        <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_simple_example'</span><span class="p">,</span>
-<span class="linenos">30</span>        <span class="n">executable</span><span class="o">=</span><span class="s1">'charge_action_node'</span><span class="p">,</span>
-<span class="linenos">31</span>        <span class="n">name</span><span class="o">=</span><span class="s1">'charge_action_node'</span><span class="p">,</span>
-<span class="linenos">32</span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
-<span class="linenos">33</span>        <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
-<span class="linenos">34</span>        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
-<span class="linenos">35</span>
-<span class="linenos">36</span>    <span class="n">ask_charge_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
-<span class="linenos">37</span>        <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_simple_example'</span><span class="p">,</span>
-<span class="linenos">38</span>        <span class="n">executable</span><span class="o">=</span><span class="s1">'ask_charge_action_node'</span><span class="p">,</span>
-<span class="linenos">39</span>        <span class="n">name</span><span class="o">=</span><span class="s1">'ask_charge_action_node'</span><span class="p">,</span>
-<span class="linenos">40</span>        <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
-<span class="linenos">41</span>        <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
-<span class="linenos">42</span>        <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>   <span class="c1"># Create the launch description and populate</span>
-<span class="linenos">43</span>    <span class="n">ld</span> <span class="o">=</span> <span class="n">LaunchDescription</span><span class="p">()</span>
-<span class="linenos">44</span>
-<span class="linenos">45</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">declare_namespace_cmd</span><span class="p">)</span>
-<span class="linenos">46</span>
-<span class="linenos">47</span>    <span class="c1"># Declare the launch options</span>
-<span class="linenos">48</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">plansys2_cmd</span><span class="p">)</span>
-<span class="linenos">49</span>
-<span class="linenos">50</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">move_cmd</span><span class="p">)</span>
-<span class="linenos">51</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">charge_cmd</span><span class="p">)</span>
-<span class="linenos">52</span>    <span class="n">ld</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">ask_charge_cmd</span><span class="p">)</span>
-<span class="linenos">53</span>
-<span class="linenos">54</span>    <span class="k">return</span> <span class="n">ld</span>
+<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nt">launch</span><span class="p">:</span>
+<span class="linenos"> 2</span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">arg</span><span class="p">:</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">namespace</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">''</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+<span class="linenos"> 6</span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">include</span><span class="p">:</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(find-pkg-share plansys2_bringup)/launch/plansys2_bringup_launch_monolithic.py</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="nt">arg</span><span class="p">:</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">model_file</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">$(find-pkg-share plansys2_simple_example)/pddl/simple_example.pddl</span><span class="p p-Indicator">}</span>
+<span class="linenos">10</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">namespace</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">$(var namespace)</span><span class="p p-Indicator">}</span>
+<span class="linenos">11</span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">node</span><span class="p">:</span>
+<span class="linenos">12</span><span class="w">    </span><span class="nt">pkg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_simple_example</span>
+<span class="linenos">13</span><span class="w">    </span><span class="nt">exec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">move_action_node</span>
+<span class="linenos">14</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">move_action_node</span>
+<span class="linenos">15</span><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(var namespace)</span>
+<span class="linenos">16</span><span class="w">    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">screen</span>
+<span class="linenos">17</span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">node</span><span class="p">:</span>
+<span class="linenos">18</span><span class="w">    </span><span class="nt">pkg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_simple_example</span>
+<span class="linenos">19</span><span class="w">    </span><span class="nt">exec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">charge_action_node</span>
+<span class="linenos">20</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">charge_action_node</span>
+<span class="linenos">21</span><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(var namespace)</span>
+<span class="linenos">22</span><span class="w">    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">screen</span>
+<span class="linenos">23</span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">node</span><span class="p">:</span>
+<span class="linenos">24</span><span class="w">    </span><span class="nt">pkg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_simple_example</span>
+<span class="linenos">25</span><span class="w">    </span><span class="nt">exec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ask_charge_action_node</span>
+<span class="linenos">26</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ask_charge_action_node</span>
+<span class="linenos">27</span><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(var namespace)</span>
+<span class="linenos">28</span><span class="w">    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">screen</span>
 </pre></div>
 </div>
 </div></blockquote>

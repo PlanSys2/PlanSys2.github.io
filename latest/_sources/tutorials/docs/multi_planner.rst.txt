@@ -10,9 +10,11 @@ Overview
 ========
 
 The Planner node does not have to be limited to a single PDDL solver. You can configure it with several plan solver
-plugins at once, either different solvers (e.g. POPF and a third-party plugin such as OPTIC) or several instances of
+plugins at once, either different solvers (e.g. Kairos and POPF, or a third-party plugin such as OPTIC) or several instances of
 the same solver configured with different command-line arguments. When more than one plugin is configured, PlanSys2
-requests a plan from every plugin **in parallel** and keeps every plan that is found before the shared timeout expires.
+requests a plan **in parallel** from every plugin that supports the PDDL requirements of the task, and keeps every
+plan that is found before the shared timeout expires. If no plugin supports the task, the answer says which
+requirements are missing.
 
 This is useful because:
 
@@ -46,7 +48,8 @@ a corresponding block in the same YAML file declaring, at least, which plugin cl
   plugins run concurrently, so this is not a cumulative budget: with 5 plugins configured, the total time to get a
   result is still bounded by this same timeout, not five times it.
 * ``plan_solver_plugins`` [vector<string>]: The list of solver IDs to load. If left empty, PlanSys2 falls back to a
-  single default solver named ``POPF``.
+  single default solver named ``KAIROS`` (``plansys2/KairosPlanSolver``), which is also what the default parameters
+  file of ``plansys2_bringup`` sets.
 * For each ID in ``plan_solver_plugins``, a block named after that ID must declare at least the ``plugin`` key with
   the fully-qualified plugin class name (see :ref:`plugins` for the available planner plugins).
 
@@ -58,13 +61,14 @@ the **same** plugin several times with different options. For POPF (``plansys2/P
 per-solver parameters are available:
 
 * ``<id>.arguments`` [string]: Extra command-line flags passed to the ``popf`` executable. Defaults to ``""``.
-* ``<id>.output_dir`` [string]: Directory where the ``domain.pddl``, ``problem.pddl`` and ``plan.pddl`` files for
-  this solver are written. Defaults to the system's temporary directory. Each namespaced node gets its own
-  subdirectory under this path, so several PlanSys2 instances (e.g. simulating several robots) can safely share the
-  same ``output_dir``.
+* ``<id>.output_dir`` [string]: Directory under which each request writes its ``domain.pddl``, ``problem.pddl`` and
+  ``plan`` files, in a temporary ``popf_XXXXXX`` folder. Defaults to the system's temporary directory. Each namespaced
+  node gets its own subdirectory under this path, so several PlanSys2 instances (e.g. simulating several robots) can
+  safely share the same ``output_dir``.
+* ``<id>.keep_files`` [bool]: Keep the folder of each request after planning, instead of deleting it. Defaults to
+  ``false``.
 
-For example, the following configuration runs four instances of POPF with progressively more aggressive search
-settings, plus a fifth, differently-configured solver plugin, all queried in parallel every time a plan is requested:
+For example, the following configuration runs four instances of POPF with different search settings, plus a fifth, differently-configured solver plugin, all queried in parallel every time a plan is requested:
 
 .. code-block:: yaml
 
@@ -93,7 +97,7 @@ settings, plus a fifth, differently-configured solver plugin, all queried in par
          arguments: "-N"
          output_dir: "/tmp/OPTICS"
 
-.. note:: Unlike POPF, which ships with PlanSys2, ``OPTICPlanSolver`` (and other solvers such as ``TFDPlanSolver``)
+.. note:: Unlike Kairos and POPF, which ship with PlanSys2, ``OPTICPlanSolver`` (and other solvers such as ``TFDPlanSolver``)
   are separate, third-party plugin packages that must be installed independently. See :ref:`plugins` for the list of
   known planner plugins and where to get them. If a plugin package referenced in ``plan_solver_plugins`` is not
   installed, the planner node will fail to configure.
@@ -101,7 +105,7 @@ settings, plus a fifth, differently-configured solver plugin, all queried in par
 POPF arguments
 ^^^^^^^^^^^^^^
 
-The most commonly used POPF flags, from fastest/greediest to most thorough, are:
+The most commonly used POPF flags are:
 
 * ``-h``: Disable helpful-action pruning.
 * ``-E``: Skip Enforced Hill-Climbing (EHC) and go straight to best-first search.
@@ -119,10 +123,12 @@ Once several solvers are configured, two client calls are available:
 
 .. code-block:: c++
 
-     std::optional<plansys2_msgs::msg::Plan> getPlan(const std::string & domain, const std::string & problem);
-     plansys2_msgs::msg::PlanArray getPlanArray(const std::string & domain, const std::string & problem);
+     std::optional<plansys2_msgs::msg::Plan> getPlan(
+       const std::string & domain, const std::string & problem, const std::string & node_namespace = "");
+     plansys2_msgs::msg::PlanArray getPlanArray(
+       const std::string & domain, const std::string & problem, const std::string & node_namespace = "");
 
-* ``getPlan()`` queries every configured solver in parallel and returns only the **shortest** plan found (the plans
+* ``getPlan()`` queries every configured solver that supports the task, in parallel, and returns only the **shortest** plan found (the plans
   are sorted by number of actions before picking the first one). This is the call used internally whenever PlanSys2
   needs a single plan, for example from the terminal's ``get plan`` and ``run`` commands.
 * ``getPlanArray()`` returns **every** plan found by every solver, sorted from shortest to longest, as a
@@ -130,5 +136,5 @@ Once several solvers are configured, two client calls are available:
   (for instance, to prefer the plan that best matches the plan currently being executed, or to delegate the choice
   to an external evaluator).
 
-See the *Plan Repair and Multi-Planner Replanning* section of the :ref:`design` page for how this combines with
+See *Repairing a plan*, in the executor section of the :ref:`design` page, for how this combines with
 PlanSys2's automatic plan repair when a new plan is sent for execution while another one is still running.

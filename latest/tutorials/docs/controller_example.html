@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -266,14 +266,15 @@
 * Sets goals.
 * Makes requests to execute the plan.</p>
 <p>This program controls the robot’s mission. It is usually implemented as a finite state machine and decides what the next goal to be achieved is.</p>
-<p>In this tutorial, we will integrate PlanSys2 and Nav2 to make a robot patrol its environment. There are 5 waypoints: <code class="docutils literal notranslate"><span class="pre">wp_control</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_1</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_2</span></code>, <code class="docutils literal notranslate"><span class="pre">wp_3</span></code>, and <code class="docutils literal notranslate"><span class="pre">wp_4</span></code>. Each one has different coordinates.</p>
+<p>In this tutorial, we will integrate PlanSys2 and <a class="reference external" href="https://easynavigation.github.io">EasyNav</a> to make a robot patrol its environment. There are 5 waypoints: <code class="docutils literal notranslate"><span class="pre">wp_control</span></code>, <code class="docutils literal notranslate"><span class="pre">wp1</span></code>, <code class="docutils literal notranslate"><span class="pre">wp2</span></code>, <code class="docutils literal notranslate"><span class="pre">wp3</span></code>, and <code class="docutils literal notranslate"><span class="pre">wp4</span></code>. Each one has different coordinates.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">wp_control</span></code> is the junction to which all other waypoints are connected. A patrol always goes through wp_control, since the waypoints are not connected to each other.</p></li>
 <li><p>Patrolling a waypoint consists of moving to the waypoint and, once there, rotating for a few seconds to perceive the environment.</p></li>
 <li><p>During a patrol, all waypoints will be patrolled. Once patrolled, the patrol will begin again.</p></li>
 </ul>
-<p>In the tutorial’s first steps, we will use a test component that simulates the navigation process, and at the
-end of the tutorial, we will launch the real Nav2 and a simulator.</p>
+<p>In the tutorial’s first steps, we will use a node that simulates EasyNav (each navigation takes 10 s), and at the
+end of the tutorial, we will launch the real EasyNav and a simulator. The example needs EasyNav: without it, the
+navigation action is not built.</p>
 </section>
 <section id="tutorial-steps">
 <h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
@@ -283,7 +284,6 @@ end of the tutorial, we will launch the real Nav2 and a simulator.</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 </pre></div>
@@ -293,14 +293,14 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <section id="running-the-example">
 <h3>1- Running the example<a class="headerlink" href="#running-the-example" title="Link to this heading"></a></h3>
 <ul>
-<li><p>Open a new terminal and run PlanSys2 with a node that simulates de action of navigation. So, the execution of Nav2 will not take place in the first steps of this tutorial:</p>
+<li><p>Open a new terminal and run PlanSys2 with the action performers and a node that simulates EasyNav:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrol_example_fakesim_launch.py
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrol_example_fakesim.launch.yaml
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>Open a new terminal and run:</p>
+<li><p>Open a new terminal and run the controller:</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrolling_controller_node
 </pre></div>
@@ -308,231 +308,220 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 </div></blockquote>
 </li>
 </ul>
-<p>This will start the mission. You will see in the first terminal how the plans are calculated and how the actions are executed. In the last terminal you will see the execution of the actions too.</p>
+<p>This will start the mission. You will see in the first terminal how the plans are calculated and how the actions are executed. In the last terminal you will see the execution of the actions too, and every 2 s the navigation feedback of EasyNav.</p>
 </section>
 <section id="patrol-action-performer">
 <h3>2- Patrol action performer<a class="headerlink" href="#patrol-action-performer" title="Link to this heading"></a></h3>
-<p>The action <code class="docutils literal notranslate"><span class="pre">patrol</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrol_action_node.cpp</span></code>) contains the actions that makes the robot spin.</p>
+<p>The action <code class="docutils literal notranslate"><span class="pre">patrol</span></code> (<code class="docutils literal notranslate"><span class="pre">plansys2_patrol_navigation_example/src/patrol_action_node.cpp</span></code>) makes the robot spin.</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Patrol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos"> 3</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
-<span class="linenos"> 4</span><span class="w">   </span><span class="n">Patrol</span><span class="p">()</span>
-<span class="linenos"> 5</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">"patrol"</span><span class="p">)</span>
-<span class="linenos"> 6</span><span class="w">   </span><span class="p">{</span>
-<span class="linenos"> 7</span><span class="w">   </span><span class="p">}</span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="w">   </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
-<span class="linenos">10</span><span class="w">   </span><span class="n">on_activate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span>
-<span class="linenos">11</span><span class="w">   </span><span class="p">{</span>
-<span class="linenos">12</span><span class="w">     </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">13</span>
-<span class="linenos">14</span><span class="w">     </span><span class="n">cmd_vel_pub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"/cmd_vel"</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
-<span class="linenos">15</span><span class="w">     </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_activate</span><span class="p">();</span>
-<span class="linenos">16</span>
-<span class="linenos">17</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_activate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span>
-<span class="linenos">18</span><span class="w">   </span><span class="p">}</span>
-<span class="linenos">19</span>
-<span class="linenos">20</span><span class="w">   </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
-<span class="linenos">21</span><span class="w">   </span><span class="n">on_deactivate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span>
-<span class="linenos">22</span><span class="w">   </span><span class="p">{</span>
-<span class="linenos">23</span><span class="w">     </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_deactivate</span><span class="p">();</span>
-<span class="linenos">24</span>
-<span class="linenos">25</span><span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_deactivate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span>
-<span class="linenos">26</span><span class="w">   </span><span class="p">}</span>
-<span class="linenos">27</span>
-<span class="linenos">28</span><span class="w"> </span><span class="k">private</span><span class="o">:</span>
-<span class="linenos">29</span><span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="n">do_work</span><span class="p">()</span>
-<span class="linenos">30</span><span class="w">   </span><span class="p">{</span>
-<span class="linenos">31</span><span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">32</span><span class="w">       </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span>
-<span class="linenos">33</span>
-<span class="linenos">34</span><span class="w">       </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Patrol running"</span><span class="p">);</span>
-<span class="linenos">35</span>
-<span class="linenos">36</span><span class="w">       </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span>
-<span class="linenos">37</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">38</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">39</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">40</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">41</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">42</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span>
-<span class="linenos">43</span>
-<span class="linenos">44</span><span class="w">       </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
-<span class="linenos">45</span><span class="w">     </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">46</span><span class="w">       </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span>
-<span class="linenos">47</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">48</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">49</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">50</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">51</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">52</span><span class="w">       </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">53</span>
-<span class="linenos">54</span><span class="w">       </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
-<span class="linenos">55</span>
-<span class="linenos">56</span><span class="w">       </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Patrol completed"</span><span class="p">);</span>
-<span class="linenos">57</span><span class="w">     </span><span class="p">}</span>
-<span class="linenos">58</span><span class="w">   </span><span class="p">}</span>
-<span class="linenos">59</span>
-<span class="linenos">60</span><span class="w">   </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span>
-<span class="linenos">61</span>
-<span class="linenos">62</span><span class="w">   </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">LifecyclePublisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">cmd_vel_pub_</span><span class="p">;</span>
-<span class="linenos">63</span><span class="w"> </span><span class="p">};</span>
-<span class="linenos">64</span>
-<span class="linenos">65</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
-<span class="linenos">66</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">67</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
-<span class="linenos">68</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Patrol</span><span class="o">&gt;</span><span class="p">();</span>
-<span class="linenos">69</span>
-<span class="linenos">70</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"patrol"</span><span class="p">));</span>
-<span class="linenos">71</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">));</span><span class="w">  </span><span class="c1">// 1 Hz, replaces the old 1s ctor argument</span>
-<span class="linenos">72</span><span class="w">   </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
-<span class="linenos">73</span>
-<span class="linenos">74</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
-<span class="linenos">75</span>
-<span class="linenos">76</span><span class="w">   </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
-<span class="linenos">77</span>
-<span class="linenos">78</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="linenos">79</span><span class="w"> </span><span class="p">}</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>This action runs with a frequency of 1Hz when activated. In each step, it increases its progress by 10% (line 32), sending speed commands to the robot through the
-topic <code class="docutils literal notranslate"><span class="pre">/cmd_vel</span></code> that make it spin (lines 36-44). When it completes the action, it stops the robot (lines 47-54). In each cycle it sends a feedback (line 34)
-or declares that the action has already finished (line 56).</p>
-</section>
-<section id="move-action-performer">
-<h3>3- Move action performer<a class="headerlink" href="#move-action-performer" title="Link to this heading"></a></h3>
-<p>The action <code class="docutils literal notranslate"><span class="pre">move</span></code> (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/move_action_node.cpp</span></code>) contains the actions that sends navigation requests to Nav2 using the ROS2 action <code class="docutils literal notranslate"><span class="pre">navigate_to_pose</span></code>. This
-example is quite complex if you are not familiar with <a class="reference external" href="https://index.ros.org/doc/ros2/Tutorials/Actions/Writing-a-Cpp-Action-Server-Client/">ROS2 actions</a>, so we will not enter in details here, only selected pieces of code.</p>
-<blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">  </span><span class="n">MoveAction</span><span class="p">()</span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">"move"</span><span class="p">)</span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="p">{</span>
-<span class="linenos"> 4</span><span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
-<span class="linenos"> 5</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"/map"</span><span class="p">;</span>
-<span class="linenos"> 6</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos"> 7</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-2.0</span><span class="p">;</span>
-<span class="linenos"> 8</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos"> 9</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">10</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">11</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">12</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span>
-<span class="linenos">13</span><span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">"wp1"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.8</span><span class="p">;</span>
-<span class="linenos">16</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">17</span><span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">"wp2"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="linenos">20</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span>
-<span class="linenos">21</span><span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">"wp3"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-0.5</span><span class="p">;</span>
-<span class="linenos">24</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-0.5</span><span class="p">;</span>
-<span class="linenos">25</span><span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">"wp4"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
-<span class="linenos">26</span>
-<span class="linenos">27</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-2.0</span><span class="p">;</span>
-<span class="linenos">28</span><span class="w">    </span><span class="n">wp</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-0.4</span><span class="p">;</span>
-<span class="linenos">29</span><span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="s">"wp_control"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp</span><span class="p">;</span>
-<span class="linenos">30</span>
-<span class="linenos">31</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="o">::</span><span class="nn">placeholders</span><span class="p">;</span>
-<span class="linenos">32</span><span class="w">    </span><span class="n">pos_sub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_subscription</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseWithCovarianceStamped</span><span class="o">&gt;</span><span class="p">(</span>
-<span class="linenos">33</span><span class="w">      </span><span class="s">"/amcl_pose"</span><span class="p">,</span>
-<span class="linenos">34</span><span class="w">      </span><span class="mi">10</span><span class="p">,</span>
-<span class="linenos">35</span><span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MoveAction</span><span class="o">::</span><span class="n">current_pos_callback</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">_1</span><span class="p">));</span>
-<span class="linenos">36</span><span class="w">  </span><span class="p">}</span>
-<span class="linenos">37</span>
-<span class="linenos">38</span><span class="w">  </span><span class="p">...</span>
-<span class="linenos">39</span><span class="w">  </span><span class="k">private</span><span class="o">:</span>
-<span class="linenos">40</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="o">&gt;</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">;</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>The coordinates of each waypoint are initialized and inserted in <code class="docutils literal notranslate"><span class="pre">waypoints_</span></code>.</p>
-<blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="nf">on_activate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span>
-<span class="linenos"> 3</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos"> 4</span><span class="w">   </span><span class="p">...</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">wp_to_navigate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">()[</span><span class="mi">2</span><span class="p">];</span>
-<span class="linenos"> 7</span><span class="w">   </span><span class="n">goal_pos_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">[</span><span class="n">wp_to_navigate</span><span class="p">];</span>
-<span class="linenos"> 8</span><span class="w">   </span><span class="n">navigation_goal_</span><span class="p">.</span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">goal_pos_</span><span class="p">;</span>
-<span class="linenos"> 9</span>
-<span class="linenos">10</span><span class="w">   </span><span class="p">...</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="w">   </span><span class="n">send_goal_options</span><span class="p">.</span><span class="n">feedback_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="k">this</span><span class="p">](</span>
-<span class="linenos">13</span><span class="w">     </span><span class="n">NavigationGoalHandle</span><span class="o">::</span><span class="n">SharedPtr</span><span class="p">,</span>
-<span class="linenos">14</span><span class="w">     </span><span class="n">NavigationFeedback</span><span class="w"> </span><span class="n">feedback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">15</span><span class="w">       </span><span class="n">send_feedback</span><span class="p">(</span>
-<span class="linenos">16</span><span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">feedback</span><span class="o">-&gt;</span><span class="n">distance_remaining</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dist_to_move</span><span class="p">))),</span>
-<span class="linenos">17</span><span class="w">         </span><span class="s">"Move running"</span><span class="p">);</span>
-<span class="linenos">18</span><span class="w">     </span><span class="p">};</span>
-<span class="linenos">19</span>
-<span class="linenos">20</span><span class="w">   </span><span class="n">send_goal_options</span><span class="p">.</span><span class="n">result_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="k">auto</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">21</span><span class="w">       </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
-<span class="linenos">22</span><span class="w">     </span><span class="p">};</span>
-<span class="linenos">23</span>
-<span class="linenos">24</span><span class="w">  </span><span class="p">...</span>
-<span class="linenos">25</span><span class="w"> </span><span class="p">}</span>
-</pre></div>
-</div>
-</div></blockquote>
-<ul class="simple">
-<li><p>If we execute the action <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">leia</span> <span class="pre">wp_control</span> <span class="pre">wp_1)</span></code>, the third argument (<code class="docutils literal notranslate"><span class="pre">get_arguments()[2]</span></code>) is the waypoint to navigate, <code class="docutils literal notranslate"><span class="pre">wp_1</span></code>. We use this id to get the coordinate from <code class="docutils literal notranslate"><span class="pre">waypoints_</span></code> for sending it in the Nav2 action.</p></li>
-<li><p>When receiving feedback from the Nav2 ROS2 action, we send feedback about the execution of the <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
-<li><p>When Nav2 considers the navigation complete, we call <code class="docutils literal notranslate"><span class="pre">finish</span></code> to finalize the execution of <code class="docutils literal notranslate"><span class="pre">move</span></code> action.</p></li>
-</ul>
-</section>
-<section id="mission-controller">
-<h3>3- Mission controller<a class="headerlink" href="#mission-controller" title="Link to this heading"></a></h3>
-<p>The mission controller (<code class="docutils literal notranslate"><span class="pre">ros2_planning_system_examples/plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp</span></code>) initializes the knowledge in PlanSys2 and implements a FSM to run patrolling plans. It uses
-four PlanSys2 clients to interact with PlanSys2:</p>
-<blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Patrol</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Patrol</span><span class="p">()</span>
+<span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">"patrol"</span><span class="p">)</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// The clients work on this node: they create none</span>
-<span class="w">    </span><span class="n">domain_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
-<span class="w">    </span><span class="n">planner_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
-<span class="w">    </span><span class="n">problem_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
-<span class="w">    </span><span class="n">executor_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
-<span class="w">    </span><span class="n">init_knowledge</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
+<span class="w">  </span><span class="n">on_activate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="n">progress_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">cmd_vel_pub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"/cmd_vel"</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_activate</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_activate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">node_interfaces</span><span class="o">::</span><span class="n">LifecycleNodeInterface</span><span class="o">::</span><span class="n">CallbackReturn</span>
+<span class="w">  </span><span class="n">on_deactivate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">State</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">previous_state</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">on_deactivate</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ActionExecutorClient</span><span class="o">::</span><span class="n">on_deactivate</span><span class="p">(</span><span class="n">previous_state</span><span class="p">);</span>
 <span class="w">  </span><span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">domain_expert_</span><span class="p">;</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">planner_client_</span><span class="p">;</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">problem_expert_</span><span class="p">;</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">executor_client_</span><span class="p">;</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>Using these clients, we can add instances and predicates to PlanSys2:</p>
-<blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init_knowledge</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"r2d2"</span><span class="p">,</span><span class="w"> </span><span class="s">"robot"</span><span class="p">});</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"wp_control"</span><span class="p">,</span><span class="w"> </span><span class="s">"waypoint"</span><span class="p">});</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"wp1"</span><span class="p">,</span><span class="w"> </span><span class="s">"waypoint"</span><span class="p">});</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"wp2"</span><span class="p">,</span><span class="w"> </span><span class="s">"waypoint"</span><span class="p">});</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"wp3"</span><span class="p">,</span><span class="w"> </span><span class="s">"waypoint"</span><span class="p">});</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"wp4"</span><span class="p">,</span><span class="w"> </span><span class="s">"waypoint"</span><span class="p">});</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">do_work</span><span class="p">()</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// As long as the plan says it lasts</span>
+<span class="w">    </span><span class="n">progress_</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">get_planned_duration</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">get_parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">).</span><span class="n">as_double</span><span class="p">());</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">progress_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1e-3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">progress_</span><span class="p">,</span><span class="w"> </span><span class="s">"Patrol running"</span><span class="p">);</span>
 
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(robot_at r2d2 wp_control)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp_control wp1)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp1 wp_control)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp_control wp2)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp2 wp_control)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp_control wp3)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp3 wp_control)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp_control wp4)"</span><span class="p">));</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addPredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(connected wp4 wp_control)"</span><span class="p">));</span>
+<span class="w">      </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">      </span><span class="n">cmd</span><span class="p">.</span><span class="n">angular</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">cmd_vel_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Patrol completed"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">progress_</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">rclcpp_lifecycle</span><span class="o">::</span><span class="n">LifecyclePublisher</span><span class="o">&lt;</span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Twist</span><span class="o">&gt;::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">cmd_vel_pub_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Patrol</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"action_name"</span><span class="p">,</span><span class="w"> </span><span class="s">"patrol"</span><span class="p">));</span>
+<span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">set_parameter</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Parameter</span><span class="p">(</span><span class="s">"rate"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">));</span>
+<span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">trigger_transition</span><span class="p">(</span><span class="n">lifecycle_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Transition</span><span class="o">::</span><span class="n">TRANSITION_CONFIGURE</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">get_node_base_interface</span><span class="p">());</span>
+
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>In the <code class="docutils literal notranslate"><span class="pre">step</span></code> method (called at 5Hz) there is the implementation of the FSM. Each switch case contains:
-* The code to execute in the state</p>
+<p>The interesting part is <code class="docutils literal notranslate"><span class="pre">do_work()</span></code>: it publishes a rotation speed while the action runs, and stops the robot when it
+finishes. Its progress grows at each call so that the action lasts as long as the plan gives it
+(<code class="docutils literal notranslate"><span class="pre">get_planned_duration()</span></code>), at the rate of the node (1 Hz, set in <code class="docutils literal notranslate"><span class="pre">main</span></code>). <code class="docutils literal notranslate"><span class="pre">on_activate</span></code> and <code class="docutils literal notranslate"><span class="pre">on_deactivate</span></code>
+activate and deactivate the publisher, as in any lifecycle node, and then call those of <code class="docutils literal notranslate"><span class="pre">ActionExecutorClient</span></code>.</p>
+</section>
+<section id="move-action-performer">
+<h3>3- Move action performer<a class="headerlink" href="#move-action-performer" title="Link to this heading"></a></h3>
+<p>The action <code class="docutils literal notranslate"><span class="pre">move</span></code> (<code class="docutils literal notranslate"><span class="pre">plansys2_patrol_navigation_example/src/move_action_node.cpp</span></code>) navigates with EasyNav, through
+its <code class="docutils literal notranslate"><span class="pre">easynav::GoalManagerClient</span></code>. The coordinates of each waypoint come from parameters (<code class="docutils literal notranslate"><span class="pre">waypoints</span></code> and
+<code class="docutils literal notranslate"><span class="pre">waypoint_coords.&lt;waypoint&gt;</span></code>), which <code class="docutils literal notranslate"><span class="pre">params/waypoints_fakesim.yaml</span></code> sets:</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">MoveAction</span><span class="p">()</span>
+<span class="o">:</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">ActionExecutorClient</span><span class="p">(</span><span class="s">"move"</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// GoalManagerClient needs a plain node; without global arguments, so that the</span>
+<span class="w">  </span><span class="c1">// node name given in the launch does not apply to it</span>
+<span class="w">  </span><span class="n">nav_node_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="o">::</span><span class="n">make_shared</span><span class="p">(</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">get_name</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"_nav"</span><span class="p">,</span><span class="w"> </span><span class="n">get_namespace</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">NodeOptions</span><span class="p">().</span><span class="n">use_global_arguments</span><span class="p">(</span><span class="nb">false</span><span class="p">));</span>
+<span class="w">  </span><span class="n">navigation_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">easynav</span><span class="o">::</span><span class="n">GoalManagerClient</span><span class="o">::</span><span class="n">make_shared</span><span class="p">(</span><span class="n">nav_node_</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Only the goal manager publishes it: is_connected() also counts other clients</span>
+<span class="w">  </span><span class="n">manager_info_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_node_</span><span class="o">-&gt;</span><span class="n">create_subscription</span><span class="o">&lt;</span><span class="n">easynav_interfaces</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">GoalManagerInfo</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">    </span><span class="s">"easynav_manager_info"</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="n">easynav_interfaces</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">GoalManagerInfo</span><span class="o">::</span><span class="n">UniquePtr</span><span class="p">)</span><span class="w"> </span><span class="p">{});</span>
+
+<span class="w">  </span><span class="c1">// EasyNav may start late: wait for it this long before failing the action</span>
+<span class="w">  </span><span class="n">server_timeout_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">declare_parameter</span><span class="p">(</span><span class="s">"server_timeout"</span><span class="p">,</span><span class="w"> </span><span class="mf">30.0</span><span class="p">);</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">wp_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">declare_parameter</span><span class="p">(</span><span class="s">"waypoints"</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">{});</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">wp_names</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">declare_parameter</span><span class="p">(</span><span class="s">"waypoint_coords."</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wp</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">{});</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">coords</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">RCLCPP_ERROR</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">"Waypoint [%s] needs [x, y] or [x, y, yaw]"</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">pose</span><span class="p">;</span>
+<span class="w">    </span><span class="n">pose</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"map"</span><span class="p">;</span>
+<span class="w">    </span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">yaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coords</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">yaw</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="p">.</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">yaw</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">waypoints_</span><span class="p">[</span><span class="n">wp</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pose</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>When the action is activated, <code class="docutils literal notranslate"><span class="pre">on_activate</span></code> takes the destination, the third argument of the action
+(<code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r2d2</span> <span class="pre">wp_control</span> <span class="pre">wp1)</span></code>), and looks up its coordinates. <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> sends the goal once EasyNav is there,
+waiting up to <code class="docutils literal notranslate"><span class="pre">server_timeout</span></code> seconds for it, and then follows the navigation: it sends its progress as feedback
+and finishes when EasyNav does:</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">do_work</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">goal_pos_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">finish</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Unknown waypoint"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">elapsed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">phase_start_</span><span class="p">).</span><span class="n">count</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">goal_sent_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">manager_info_</span><span class="o">-&gt;</span><span class="n">get_publisher_count</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">navigation_</span><span class="o">-&gt;</span><span class="n">is_connected</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">navigation_</span><span class="o">-&gt;</span><span class="n">send_goal</span><span class="p">(</span><span class="o">*</span><span class="n">goal_pos_</span><span class="p">);</span>
+<span class="w">      </span><span class="n">goal_sent_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">      </span><span class="n">phase_start_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">elapsed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">server_timeout_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="s">"No EasyNav goal manager in easynav_control"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">RCLCPP_INFO_THROTTLE</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="o">*</span><span class="n">get_clock</span><span class="p">(),</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="s">"Waiting for EasyNav..."</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">navigation_</span><span class="o">-&gt;</span><span class="n">get_state</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">SENT_GOAL</span><span class="p">:</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">elapsed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">server_timeout_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">renew_client</span><span class="p">();</span>
+<span class="w">        </span><span class="n">finish</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="s">"EasyNav did not answer the navigation goal"</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">SENT_PREEMPT</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">ACCEPTED_AND_NAVIGATING</span><span class="p">:</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">navigation_</span><span class="o">-&gt;</span><span class="n">get_feedback</span><span class="p">().</span><span class="n">distance_to_goal</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">initial_distance_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">initial_distance_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">progress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initial_distance_</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="o">?</span>
+<span class="w">          </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">initial_distance_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">send_feedback</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">clamp</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">),</span><span class="w"> </span><span class="s">"Move running"</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_FINISHED</span><span class="p">:</span>
+<span class="w">      </span><span class="n">navigation_</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+<span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Move completed"</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">      </span><span class="n">navigation_</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+<span class="w">      </span><span class="n">finish</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="s">"Navigation failed"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="mission-controller">
+<h3>4- Mission controller<a class="headerlink" href="#mission-controller" title="Link to this heading"></a></h3>
+<p>The controller (<code class="docutils literal notranslate"><span class="pre">plansys2_patrol_navigation_example/src/patrolling_controller_node.cpp</span></code>) is a node that creates
+the PlanSys2 clients on itself, sets the knowledge, and runs a finite state machine that patrols each waypoint in turn:</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">domain_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">DomainExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+<span class="w">  </span><span class="n">planner_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">PlannerClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ProblemExpertClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+<span class="w">  </span><span class="n">executor_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">plansys2</span><span class="o">::</span><span class="n">ExecutorClient</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+<span class="w">  </span><span class="n">init_knowledge</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Each state checks the execution of the current plan, and when it ends, sets the next goal, plans and executes the new
+plan:</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="no">PATROL_WP1</span><span class="p">:</span>
 <span class="w">  </span><span class="p">{</span>
@@ -542,56 +531,106 @@ four PlanSys2 clients to interact with PlanSys2:</p>
 <span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">action_feedback</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">&lt;&lt;</span>
 <span class="w">        </span><span class="n">action_feedback</span><span class="p">.</span><span class="n">completion</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"%]"</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">execute_and_check_plan</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">plansys2_msgs</span><span class="o">::</span><span class="no">action</span><span class="o">::</span><span class="no">ExecutePlan</span><span class="o">::</span><span class="no">Result</span><span class="o">::</span><span class="no">SUCCESS</span><span class="p">:</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Cleanning up</span>
+<span class="w">            </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">removePredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(patrolled wp1)"</span><span class="p">));</span>
+
+<span class="w">            </span><span class="c1">// Set the goal for next state</span>
+<span class="w">            </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">setGoal</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Goal</span><span class="p">(</span><span class="s">"(and(patrolled wp2))"</span><span class="p">));</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">plansys2_msgs</span><span class="o">::</span><span class="no">action</span><span class="o">::</span><span class="no">ExecutePlan</span><span class="o">::</span><span class="no">Result</span><span class="o">::</span><span class="no">PREEMPT</span><span class="p">:</span>
+<span class="w">          </span><span class="n">RCLCPP_INFO</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">"Plan preempted"</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">plansys2_msgs</span><span class="o">::</span><span class="no">action</span><span class="o">::</span><span class="no">ExecutePlan</span><span class="o">::</span><span class="no">Result</span><span class="o">::</span><span class="no">FAILURE</span><span class="p">:</span>
+<span class="w">          </span><span class="n">RCLCPP_ERROR</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">"Plan finished with error. Retrying"</span><span class="p">);</span>
+<span class="w">          </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action_feedback</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">feedback</span><span class="p">.</span><span class="n">action_execution_status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action_feedback</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">ActionExecutionInfo</span><span class="o">::</span><span class="n">FAILED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="n">RCLCPP_ERROR_STREAM</span><span class="p">(</span>
+<span class="w">                </span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">"["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">action_feedback</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">                  </span><span class="s">"] finished with error: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">action_feedback</span><span class="p">.</span><span class="n">message_status</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="c1">// Compute the plan</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">domain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">domain_expert_</span><span class="o">-&gt;</span><span class="n">getDomain</span><span class="p">();</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">problem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">getProblem</span><span class="p">();</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">plan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">planner_client_</span><span class="o">-&gt;</span><span class="n">getPlan</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">plan</span><span class="p">.</span><span class="n">has_value</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Could not find plan to reach goal "</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">          </span><span class="n">parser</span><span class="o">::</span><span class="n">pddl</span><span class="o">::</span><span class="n">toString</span><span class="p">(</span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">getGoal</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="c1">// Execute the plan</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">result</span><span class="w"> </span><span class="o">==</span>
+<span class="w">        </span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">ExecutePlan</span><span class="o">::</span><span class="n">Result</span><span class="o">::</span><span class="n">SUCCESS</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">        </span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">start_plan_execution</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PATROL_WP2</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
 </pre></div>
 </div>
 </div></blockquote>
-<ul>
-<li><p>The condition to transitate to another state and the code executed before the start of the new state. The important part here is how we set the new goal for the new state (using <code class="docutils literal notranslate"><span class="pre">setGoal</span></code>), how we compute a new plan, and how we call the executor to execute the plan to achieve it (using the non-blocking call <code class="docutils literal notranslate"><span class="pre">start_plan_execution</span></code>):</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">getResult</span><span class="p">().</span><span class="n">value</span><span class="p">().</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Plan successful finished "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<p><code class="docutils literal notranslate"><span class="pre">main</span></code> calls <code class="docutils literal notranslate"><span class="pre">step()</span></code> at 5 Hz. The PlanSys2 clients bring their own answers, so the controller spins its node only
+for its own subscription, the navigation feedback of EasyNav, which it shows every 2 s:</p>
+<blockquote>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">PatrollingController</span><span class="o">&gt;</span><span class="p">();</span>
 
-<span class="w">  </span><span class="c1">// Cleanning up</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">removePredicate</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Predicate</span><span class="p">(</span><span class="s">"(patrolled wp1)"</span><span class="p">));</span>
+<span class="w">  </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">init</span><span class="p">();</span>
 
-<span class="w">  </span><span class="c1">// Set the goal for next state</span>
-<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">setGoal</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Goal</span><span class="p">(</span><span class="s">"(and(patrolled wp2))"</span><span class="p">));</span>
+<span class="w">  </span><span class="c1">// The clients bring their own answers: the executor is for the subscription of the controller</span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">executors</span><span class="o">::</span><span class="n">SingleThreadedExecutor</span><span class="w"> </span><span class="n">exec</span><span class="p">;</span>
+<span class="w">  </span><span class="n">exec</span><span class="p">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
 
-<span class="w">  </span><span class="c1">// Compute the plan</span>
-<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">domain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">domain_expert_</span><span class="o">-&gt;</span><span class="n">getDomain</span><span class="p">();</span>
-<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">problem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">getProblem</span><span class="p">();</span>
-<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">plan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">planner_client_</span><span class="o">-&gt;</span><span class="n">getPlan</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
-
-<span class="w">  </span><span class="c1">// Execute the plan</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">executor_client_</span><span class="o">-&gt;</span><span class="n">start_plan_execution</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PATROL_WP2</span><span class="p">;</span>
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Rate</span><span class="w"> </span><span class="n">rate</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">ok</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">step</span><span class="p">();</span>
+<span class="w">    </span><span class="n">exec</span><span class="p">.</span><span class="n">spin_some</span><span class="p">();</span>
+<span class="w">    </span><span class="n">rate</span><span class="p">.</span><span class="n">sleep</span><span class="p">();</span>
 <span class="w">  </span><span class="p">}</span>
-<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="p">...</span>
+
+<span class="w">  </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">shutdown</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</li>
-</ul>
+</div></blockquote>
 </section>
-<section id="running-the-example-with-nav2">
-<h3>4- Running the example with Nav2<a class="headerlink" href="#running-the-example-with-nav2" title="Link to this heading"></a></h3>
-<ul>
-<li><p>Make sure that Nav2 is <a class="reference external" href="https://navigation.ros.org/getting_started/index.html">correctly installed and it is working</a>.</p></li>
-<li><p>Open a new terminal and run PlanSys2 with a node that simulates de action of navigation. So, the execution of Nav2 will not take place in the first steps of this tutorial:</p>
+<section id="running-the-example-with-easynav-and-a-simulator">
+<h3>5- Running the example with EasyNav and a simulator<a class="headerlink" href="#running-the-example-with-easynav-and-a-simulator" title="Link to this heading"></a></h3>
+<p>The example also runs with a simulated Kobuki in Gazebo, with the kobuki playground of
+<a class="reference external" href="https://github.com/EasyNavigation/easynav_playgrounds">easynav_playgrounds</a> and the EasyNav plugins it uses.
+All at once (Gazebo, EasyNav, PlanSys2 and the controller; <code class="docutils literal notranslate"><span class="pre">gui:=false</span></code> runs Gazebo headless):</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrol_example_launch.py
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrol_example_kobuki.launch.yaml
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-<li><p>Open a new terminal and run:</p>
+<p>Or step by step, each in a terminal:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrolling_controller_node
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_costmap_rpp.launch.yaml
+ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrol_example.launch.yaml
+ros2<span class="w"> </span>run<span class="w"> </span>plansys2_patrol_navigation_example<span class="w"> </span>patrolling_controller_node
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-</ul>
+<p><code class="docutils literal notranslate"><span class="pre">patrol_example.launch.yaml</span></code> takes <code class="docutils literal notranslate"><span class="pre">waypoints_file</span></code> to set the waypoints of another map.</p>
 </section>
 </section>
 </section>

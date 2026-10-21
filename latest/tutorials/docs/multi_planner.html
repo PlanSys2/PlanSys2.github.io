@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -255,9 +255,11 @@
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>The Planner node does not have to be limited to a single PDDL solver. You can configure it with several plan solver
-plugins at once, either different solvers (e.g. POPF and a third-party plugin such as OPTIC) or several instances of
+plugins at once, either different solvers (e.g. Kairos and POPF, or a third-party plugin such as OPTIC) or several instances of
 the same solver configured with different command-line arguments. When more than one plugin is configured, PlanSys2
-requests a plan from every plugin <strong>in parallel</strong> and keeps every plan that is found before the shared timeout expires.</p>
+requests a plan <strong>in parallel</strong> from every plugin that supports the PDDL requirements of the task, and keeps every
+plan that is found before the shared timeout expires. If no plugin supports the task, the answer says which
+requirements are missing.</p>
 <p>This is useful because:</p>
 <ul class="simple">
 <li><p>Different solver configurations may succeed or fail on different problems, or find plans of different quality.</p></li>
@@ -288,7 +290,8 @@ a corresponding block in the same YAML file declaring, at least, which plugin cl
 plugins run concurrently, so this is not a cumulative budget: with 5 plugins configured, the total time to get a
 result is still bounded by this same timeout, not five times it.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> [vector&lt;string&gt;]: The list of solver IDs to load. If left empty, PlanSys2 falls back to a
-single default solver named <code class="docutils literal notranslate"><span class="pre">POPF</span></code>.</p></li>
+single default solver named <code class="docutils literal notranslate"><span class="pre">KAIROS</span></code> (<code class="docutils literal notranslate"><span class="pre">plansys2/KairosPlanSolver</span></code>), which is also what the default parameters
+file of <code class="docutils literal notranslate"><span class="pre">plansys2_bringup</span></code> sets.</p></li>
 <li><p>For each ID in <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code>, a block named after that ID must declare at least the <code class="docutils literal notranslate"><span class="pre">plugin</span></code> key with
 the fully-qualified plugin class name (see <a class="reference internal" href="../../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> for the available planner plugins).</p></li>
 </ul>
@@ -300,13 +303,14 @@ the <strong>same</strong> plugin several times with different options. For POPF 
 per-solver parameters are available:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;.arguments</span></code> [string]: Extra command-line flags passed to the <code class="docutils literal notranslate"><span class="pre">popf</span></code> executable. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;.output_dir</span></code> [string]: Directory where the <code class="docutils literal notranslate"><span class="pre">domain.pddl</span></code>, <code class="docutils literal notranslate"><span class="pre">problem.pddl</span></code> and <code class="docutils literal notranslate"><span class="pre">plan.pddl</span></code> files for
-this solver are written. Defaults to the system’s temporary directory. Each namespaced node gets its own
-subdirectory under this path, so several PlanSys2 instances (e.g. simulating several robots) can safely share the
-same <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;.output_dir</span></code> [string]: Directory under which each request writes its <code class="docutils literal notranslate"><span class="pre">domain.pddl</span></code>, <code class="docutils literal notranslate"><span class="pre">problem.pddl</span></code> and
+<code class="docutils literal notranslate"><span class="pre">plan</span></code> files, in a temporary <code class="docutils literal notranslate"><span class="pre">popf_XXXXXX</span></code> folder. Defaults to the system’s temporary directory. Each namespaced
+node gets its own subdirectory under this path, so several PlanSys2 instances (e.g. simulating several robots) can
+safely share the same <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;.keep_files</span></code> [bool]: Keep the folder of each request after planning, instead of deleting it. Defaults to
+<code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></li>
 </ul>
-<p>For example, the following configuration runs four instances of POPF with progressively more aggressive search
-settings, plus a fifth, differently-configured solver plugin, all queried in parallel every time a plan is requested:</p>
+<p>For example, the following configuration runs four instances of POPF with different search settings, plus a fifth, differently-configured solver plugin, all queried in parallel every time a plan is requested:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">planner</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">plan_solver_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
@@ -335,14 +339,14 @@ settings, plus a fifth, differently-configured solver plugin, all queried in par
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Unlike POPF, which ships with PlanSys2, <code class="docutils literal notranslate"><span class="pre">OPTICPlanSolver</span></code> (and other solvers such as <code class="docutils literal notranslate"><span class="pre">TFDPlanSolver</span></code>)
+<p>Unlike Kairos and POPF, which ship with PlanSys2, <code class="docutils literal notranslate"><span class="pre">OPTICPlanSolver</span></code> (and other solvers such as <code class="docutils literal notranslate"><span class="pre">TFDPlanSolver</span></code>)
 are separate, third-party plugin packages that must be installed independently. See <a class="reference internal" href="../../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> for the list of
 known planner plugins and where to get them. If a plugin package referenced in <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> is not
 installed, the planner node will fail to configure.</p>
 </div>
 <section id="popf-arguments">
 <h4>POPF arguments<a class="headerlink" href="#popf-arguments" title="Link to this heading"></a></h4>
-<p>The most commonly used POPF flags, from fastest/greediest to most thorough, are:</p>
+<p>The most commonly used POPF flags are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-h</span></code>: Disable helpful-action pruning.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-E</span></code>: Skip Enforced Hill-Climbing (EHC) and go straight to best-first search.</p></li>
@@ -357,12 +361,14 @@ thorough search, without having to pick a single strategy up front.</p>
 <section id="requesting-plans-from-all-configured-solvers">
 <h3>3- Requesting plans from all configured solvers<a class="headerlink" href="#requesting-plans-from-all-configured-solvers" title="Link to this heading"></a></h3>
 <p>Once several solvers are configured, two client calls are available:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPlan</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
-<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PlanArray</span><span class="w"> </span><span class="nf">getPlanArray</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Plan</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getPlan</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">node_namespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
+<span class="n">plansys2_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PlanArray</span><span class="w"> </span><span class="n">getPlanArray</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">problem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">node_namespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">getPlan()</span></code> queries every configured solver in parallel and returns only the <strong>shortest</strong> plan found (the plans
+<li><p><code class="docutils literal notranslate"><span class="pre">getPlan()</span></code> queries every configured solver that supports the task, in parallel, and returns only the <strong>shortest</strong> plan found (the plans
 are sorted by number of actions before picking the first one). This is the call used internally whenever PlanSys2
 needs a single plan, for example from the terminal’s <code class="docutils literal notranslate"><span class="pre">get</span> <span class="pre">plan</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span></code> commands.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">getPlanArray()</span></code> returns <strong>every</strong> plan found by every solver, sorted from shortest to longest, as a
@@ -370,7 +376,7 @@ needs a single plan, for example from the terminal’s <code class="docutils lit
 (for instance, to prefer the plan that best matches the plan currently being executed, or to delegate the choice
 to an external evaluator).</p></li>
 </ul>
-<p>See the <em>Plan Repair and Multi-Planner Replanning</em> section of the <a class="reference internal" href="../../design/index.html#design"><span class="std std-ref">PlanSys2 design</span></a> page for how this combines with
+<p>See <em>Repairing a plan</em>, in the executor section of the <a class="reference internal" href="../../design/index.html#design"><span class="std std-ref">PlanSys2 design</span></a> page, for how this combines with
 PlanSys2’s automatic plan repair when a new plan is sent for execution while another one is still running.</p>
 </section>
 </section>

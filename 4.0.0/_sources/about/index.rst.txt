@@ -11,8 +11,8 @@ and efficient PDDL-based planning system. It is implemented in ROS2, applying th
 
 We strive to create an open community and encourage new ROS users and experts alike to collaborate.
 However, that can't happen without your issues, pull requests, and support.
-Navigation, like all open-source projects, is kept going by a dedicated group of developers, maintainers, users, and collaborators.
-We would like to thank here our current and past contributors and maintainers.
+|PN|, like all open-source projects, is kept going by a dedicated group of developers, maintainers, users, and collaborators.
+We would like to thank here our current and past `contributors <https://github.com/PlanSys2/ros2_planning_system/graphs/contributors>`_ and maintainers.
 
 If you or your organization are interested in sponsoring PlanSys2 or any work around it, please reach out to the current project lead.
 

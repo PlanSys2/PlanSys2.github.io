@@ -27,7 +27,7 @@ selector, bottom left).
 
       .. code-block:: bash
 
-         sudo apt install ros-<distro>-plansys2-*
+         sudo apt install 'ros-<distro>-plansys2-*'
 
    .. note::
 
@@ -42,11 +42,12 @@ Build from source
    This is the development documentation: what it describes is in the ``rolling`` branches
    and is not released yet. Build it from source.
 
-|PN| needs some packages that are built with it from source:
+|PN| needs some packages that every distribution has as binaries, and that a source build of
+``rolling`` builds with it:
 
 * `Kairos <https://github.com/PlanSys2/kairos>`_, the default planner.
 * `cascade_lifecycle <https://github.com/fmrico/cascade_lifecycle>`_ and
-  `popf <https://github.com/fmrico/popf>`_, from the branches that match |PN|.
+  `popf <https://github.com/fmrico/popf>`_ (one version for every distribution, as |PN|).
 * For the examples, `EasyNav <https://github.com/EasyNavigation/EasyNavigation>`_ and
   `yaets <https://github.com/fmrico/yaets>`_.
 

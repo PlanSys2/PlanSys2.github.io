@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -307,12 +307,13 @@ problem.</p></td>
 </section>
 <section id="timed-execution">
 <h2>Timed execution<a class="headerlink" href="#timed-execution" title="Link to this heading"></a></h2>
-<p>Some plans only make sense at their times: a timed initial literal happens at its time, a
-process runs while time passes, a constraint has a deadline. The executor runs these plans
+<p>Some plans only make sense at their times: a process runs while time passes, a constraint has
+a deadline. The executor runs these plans
 <em>timed</em>: each action starts at its time in the plan, not before, and a durative action lasts
-its planned duration. It does so when the plan has timed initial literals or fluents,
-processes, events, continuous effects or constraints with times, or always if its
-<code class="docutils literal notranslate"><span class="pre">timed_execution</span></code> parameter is true.</p>
+its planned duration. It does so when the plan has processes,
+events, continuous effects, constraints with times or an end (a PDDL+ plan), or always if its
+<code class="docutils literal notranslate"><span class="pre">timed_execution</span></code> parameter is true. Timed initial literals and fluents alone do not make a
+plan timed: an action that needs one waits until the problem expert applies it.</p>
 <ul class="simple">
 <li><p>The plan counts from when its problem was read (<code class="docutils literal notranslate"><span class="pre">Plan.stamp</span></code>, set by the planner), so the
 timed literals and the plan share their clock.</p></li>
@@ -323,7 +324,7 @@ between actions hold. The execution trace says by how much and why (see
 </section>
 <section id="pddl-dynamics">
 <h2>PDDL+ dynamics<a class="headerlink" href="#pddl-dynamics" title="Link to this heading"></a></h2>
-<p>While a plan runs, the problem expert simulates the world every 50 ms: the active processes
+<p>While the problem expert is active, it simulates the world every 50 ms: the active processes
 and the continuous effects of the running actions change the functions for the time passed,
 and then the events whose conditions hold happen.</p>
 <ul class="simple">
@@ -338,8 +339,9 @@ from perception.</p></li>
 <p>The planner gives a task only to the plan solvers that support what it uses: see
 <a class="reference internal" href="../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a>. Kairos plans everything on this page. POPF plans STRIPS with typing,
 equality, <code class="docutils literal notranslate"><span class="pre">forall</span></code> in conditions, numeric fluents, durative actions and timed initial
-literals: a domain with conditional effects, derived predicates, object fluents, <code class="docutils literal notranslate"><span class="pre">exists</span></code>,
-preferences, PDDL+ or constraints is not sent to it.</p>
+literals: a domain that uses conditional effects, derived predicates, object fluents, negative
+preconditions, <code class="docutils literal notranslate"><span class="pre">or</span></code>, <code class="docutils literal notranslate"><span class="pre">imply</span></code>, <code class="docutils literal notranslate"><span class="pre">exists</span></code>, <code class="docutils literal notranslate"><span class="pre">either</span></code>, duration inequalities, timed initial
+fluents, action costs, preferences, PDDL+ or constraints is not sent to it.</p>
 </section>
 <section id="known-limits">
 <h2>Known limits<a class="headerlink" href="#known-limits" title="Link to this heading"></a></h2>

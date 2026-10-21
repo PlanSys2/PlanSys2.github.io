@@ -153,7 +153,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -177,8 +177,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -502,7 +502,9 @@ says what. See <a class="reference internal" href="../pddl_support/index.html#pd
 <p><code class="docutils literal notranslate"><span class="pre">change_domain</span></code> is rejected if the node is not active, the domain is empty, or another change
 is in progress. The new domain is validated and offered first to the problem expert
 (<code class="docutils literal notranslate"><span class="pre">problem_expert/update_domain</span></code>), which adapts the problem to it: only if it accepts, the
-domain changes and is published. A plan in execution is aborted when the domain changes.</p>
+domain changes and is published. With no problem expert running, the domain changes anyway; if
+the problem expert does not answer within 5 s, the change is rejected. A plan in execution is
+aborted when the domain changes.</p>
 </section>
 <section id="topics">
 <h3>Topics<a class="headerlink" href="#topics" title="Link to this heading"></a></h3>
@@ -564,8 +566,9 @@ if it cannot read or load it.</p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p></td>
 <td><p>A file where the node keeps its problem (written at most every 100 ms after a change).
-Started again, the node loads it when it configures, before <code class="docutils literal notranslate"><span class="pre">problem_file</span></code>, and
-comes back with the problem it had. Empty: not kept. The bringups set one per launch.</p></td>
+Started again, the node loads it when it configures, instead of <code class="docutils literal notranslate"><span class="pre">problem_file</span></code>, and
+comes back with the problem it had. A leading <code class="docutils literal notranslate"><span class="pre">~</span></code> is the home folder; the file is
+deleted when the node is cleaned up. Empty: not kept. The bringups set one per launch.</p></td>
 </tr>
 </tbody>
 </table>
@@ -596,7 +599,8 @@ comes back with the problem it had. Empty: not kept. The bringups set one per la
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/clear_problem_knowledge</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ClearProblemKnowledge</span></code></p></td>
-<td><p>Removes instances, predicates, functions, goal, metric and constraints.</p></td>
+<td><p>Removes instances, predicates, functions, goal, metric and constraints, and the timed
+facts and continuous effects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_instance</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectParam</span></code></p></td>
@@ -736,8 +740,8 @@ executor).</p></td>
 <section id="planner">
 <h2>Planner<a class="headerlink" href="#planner" title="Link to this heading"></a></h2>
 <p>It computes plans for a domain and a problem with its plan solver plugins, in parallel, and
-returns the plans found in time, shortest first. Each plan carries the time it was requested
-(<code class="docutils literal notranslate"><span class="pre">Plan.stamp</span></code>), which the executor uses to anchor timed plans.</p>
+returns the plans found in time, shortest first. Each plan carries the time the planner got its
+problem (<code class="docutils literal notranslate"><span class="pre">Plan.stamp</span></code>), which the executor uses to anchor timed plans.</p>
 <p>A task goes only to the plugins that support the PDDL requirements it uses; if none does, the
 answer says what is missing. See <a class="reference internal" href="../plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> and <a class="reference internal" href="../tutorials/docs/multi_planner.html#multi-planner"><span class="std std-ref">Configuring Multiple Planners</span></a>.</p>
 <a class="reference internal image-reference" href="../_images/plansys2_planner.png"><img alt="../_images/plansys2_planner.png" class="align-center" src="../_images/plansys2_planner.png" style="width: 300px;" />
@@ -970,7 +974,7 @@ actions that started and did not end.</p></td>
 <td><p>double</p></td>
 <td><p>30.0</p></td>
 <td><p>Seconds a plan waits for a component that is not active (gone, or started again)
-before it fails and says which one.</p></td>
+before it fails and says which one (0: no limit).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plan_end_goal_timeout</span></code></p></td>
 <td><p>double</p></td>
@@ -985,7 +989,8 @@ before it fails and says which one.</p></td>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">action_time_precision</span></code></p></td>
 <td><p>int</p></td>
 <td><p>3</p></td>
-<td><p>Decimals of the plan time in the action ids, e.g. <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r1</span> <span class="pre">a</span> <span class="pre">b):3000</span></code>.</p></td>
+<td><p>Decimals of the plan time in the action ids, e.g. <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r1</span> <span class="pre">a</span> <span class="pre">b):3000</span></code> (0 to 9;
+outside, 3).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stn_relaxed_timing</span></code></p></td>
 <td><p>bool</p></td>
@@ -1051,8 +1056,8 @@ the result have the state of each action (<code class="docutils literal notransl
 <ul class="simple">
 <li><p>Goals are rejected unless the executor is active.</p></li>
 <li><p>An empty plan succeeds at once.</p></li>
-<li><p>A goal sent while a plan runs <em>replaces</em> it: the previous goal ends with <code class="docutils literal notranslate"><span class="pre">PREEMPT</span></code> and the
-plan is repaired (see below).</p></li>
+<li><p>A goal sent while a plan runs <em>replaces</em> it: the previous goal is aborted with <code class="docutils literal notranslate"><span class="pre">PREEMPT</span></code>
+and the plan is repaired (see below). A cancelled goal ends canceled, with <code class="docutils literal notranslate"><span class="pre">FAILURE</span></code>.</p></li>
 <li><p>A change of the domain aborts the plan.</p></li>
 </ul>
 </section>
@@ -1124,7 +1129,8 @@ effects of the running actions undone, so the new plan can keep them.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dot_graph</span></code> (published)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">std_msgs/msg/String</span></code>, depth 1</p></td>
-<td><p>The plan graph in DOT, when there are subscribers.</p></td>
+<td><p>The plan graph in DOT: once when the tree is built, then at <code class="docutils literal notranslate"><span class="pre">feedback_rate</span></code> while
+someone subscribes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">actions_hub</span></code> (published and subscribed)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">plansys2_msgs/msg/ActionExecution</span></code>, depth 100, reliable</p></td>
@@ -1162,9 +1168,11 @@ the plan.</p>
 </section>
 <section id="timed-execution">
 <h3>Timed execution<a class="headerlink" href="#timed-execution" title="Link to this heading"></a></h3>
-<p>A plan with timed initial literals or fluents, processes, events, continuous effects or
-constraints with times runs <em>timed</em> (also any plan, with <code class="docutils literal notranslate"><span class="pre">timed_execution</span></code>): each action
-starts at its time in the plan, not before, and a durative action lasts its planned duration.</p>
+<p>A plan runs <em>timed</em> when its domain has processes or events, an action has continuous effects,
+the plan has an end (a PDDL+ plan), or the problem has constraints with times (also any plan,
+with <code class="docutils literal notranslate"><span class="pre">timed_execution</span></code>): each action starts at its time in the plan, not before, and a
+durative action lasts its planned duration. Timed initial literals and fluents alone do not
+make a plan timed: an action that needs one waits until the problem expert applies it.</p>
 <ul class="simple">
 <li><p>The plan counts from when its problem was read (<code class="docutils literal notranslate"><span class="pre">Plan.stamp</span></code>), so timed facts and plan
 share the clock.</p></li>
@@ -1177,10 +1185,12 @@ share the clock.</p></li>
 <ol class="arabic simple">
 <li><p>Builds the behavior tree of the new plan.</p></li>
 <li><p>Keeps the running actions that the new plan starts with (same action at time 0): they go on
-without interruption, their continuous effects included, and their performer is told their
-new duration (<code class="docutils literal notranslate"><span class="pre">ActionExecution.UPDATE</span></code>).</p></li>
+without interruption, their continuous effects included. In timed execution, their performer
+is told their new duration: the time they have run plus what the new plan gives them
+(<code class="docutils literal notranslate"><span class="pre">ActionExecution.UPDATE</span></code>).</p></li>
 <li><p>Stops the others, undoes their at start effects and stops their continuous effects.</p></li>
-<li><p>Keeps the history of the constraint monitor.</p></li>
+<li><p>Keeps the history of the constraint monitor, if the new problem has the same constraints.</p></li>
+<li><p>Takes as done the actions that already ended and that the new plan still has.</p></li>
 </ol>
 <p>To replan while a plan runs, ask the problem to plan from to the executor
 (<code class="docutils literal notranslate"><span class="pre">executor/get_replanning_problem</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecutorClient::get_replanning_problem()</span></code>): it is the
@@ -1195,7 +1205,7 @@ in <a class="reference external" href="https://github.com/IntelligentRoboticsLab
 <h3>Constraints<a class="headerlink" href="#constraints" title="Link to this heading"></a></h3>
 <p>The hard trajectory constraints of the problem (<code class="docutils literal notranslate"><span class="pre">always</span></code>, <code class="docutils literal notranslate"><span class="pre">sometime</span></code>, <code class="docutils literal notranslate"><span class="pre">within</span></code>,
 <code class="docutils literal notranslate"><span class="pre">at-most-once</span></code>, <code class="docutils literal notranslate"><span class="pre">sometime-before</span></code>…) are checked while the plan runs: when the knowledge
-changes, and at their deadlines. A violation fails the plan and says which constraint
+changes, at their deadlines, and when the plan ends. A violation fails the plan and says which constraint
 (<code class="docutils literal notranslate"><span class="pre">VIOLATION</span></code> in the trace). Preferences are only for the planner.</p>
 </section>
 </section>
@@ -1223,11 +1233,14 @@ with no answer, the request is repeated every second.</p></li>
 <li><p><strong>FEEDBACK</strong> (performer): progress and status, from <code class="docutils literal notranslate"><span class="pre">send_feedback()</span></code>.</p></li>
 <li><p><strong>FINISH</strong> (performer): success or failure, from <code class="docutils literal notranslate"><span class="pre">finish()</span></code>.</p></li>
 <li><p><strong>CANCEL</strong> (executor): stop the action, for instance when the plan is cancelled.</p></li>
-<li><p><strong>UPDATE</strong> (executor): a repaired plan gives the running action another duration
-(<code class="docutils literal notranslate"><span class="pre">get_planned_duration()</span></code> returns it).</p></li>
+<li><p><strong>UPDATE</strong> (executor): in timed execution, a repaired plan gives the running action another
+duration (<code class="docutils literal notranslate"><span class="pre">get_planned_duration()</span></code> returns it).</p></li>
 </ol>
-<p>Each side watches the other: the executor fails the action if its performer disappears, and a
-performer stops if the node that asked for the action disappears.</p>
+<p>Each side watches the other, once a second: the executor fails the action if its performer is
+missing three checks in a row, and a performer stops if the node that asked for the action is.
+A request that no performer takes within 30 s fails the action (“no performer took it in
+30 s”). A performer that finishes with failure without progress (it could not start) has its
+action offered again, up to three times.</p>
 </section>
 <section id="id9">
 <h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
@@ -1286,17 +1299,20 @@ reliable): its state every second (not ready, ready, running, failure), for the 
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Constructor: the node name</span>
 <span class="n">ActionExecutorClient</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">node_name</span><span class="p">);</span>
 
+<span class="c1">// For the class that inherits (protected)</span>
 <span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">do_work</span><span class="p">();</span><span class="w">                 </span><span class="c1">// To implement: called at `rate` while running</span>
-<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">();</span><span class="w">  </span><span class="c1">// The arguments of the action</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_arguments</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">  </span><span class="c1">// The arguments of the action</span>
 <span class="kt">double</span><span class="w"> </span><span class="nf">get_planned_duration</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">    </span><span class="c1">// The duration the plan gives it (0 if instantaneous)</span>
-<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nf">get_action_name</span><span class="p">();</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">get_action_name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 <span class="kt">void</span><span class="w"> </span><span class="n">send_feedback</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
 <span class="kt">void</span><span class="w"> </span><span class="n">finish</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">completion</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">);</span>
 </pre></div>
 </div>
+<p>A performer whose work is a behavior tree is a <code class="docutils literal notranslate"><span class="pre">plansys2::BTAction</span></code>
+(<code class="docutils literal notranslate"><span class="pre">plansys2_bt_actions</span></code>): see <a class="reference internal" href="../tutorials/docs/bt_actions.html#bt-actions"><span class="std std-ref">Implement actions as Behavior Trees</span></a>.</p>
 <p>In Python (<code class="docutils literal notranslate"><span class="pre">plansys2_support_py.ActionExecutorClient</span></code>), the constructor is
-<code class="docutils literal notranslate"><span class="pre">ActionExecutorClient(node_name,</span> <span class="pre">period)</span></code> (<code class="docutils literal notranslate"><span class="pre">period</span></code> in seconds; the <code class="docutils literal notranslate"><span class="pre">rate</span></code> parameter, in
-Hz, overrides it) and the methods are <code class="docutils literal notranslate"><span class="pre">do_work()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_planned_duration()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ActionExecutorClient(node_name,</span> <span class="pre">rate)</span></code> (<code class="docutils literal notranslate"><span class="pre">rate</span></code> is the period of <code class="docutils literal notranslate"><span class="pre">do_work()</span></code> in seconds,
+despite its name; the <code class="docutils literal notranslate"><span class="pre">rate</span></code> parameter, in Hz, overrides it) and the methods are <code class="docutils literal notranslate"><span class="pre">do_work()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_planned_duration()</span></code>,
 <code class="docutils literal notranslate"><span class="pre">send_feedback(completion,</span> <span class="pre">status)</span></code> and <code class="docutils literal notranslate"><span class="pre">finish(success,</span> <span class="pre">completion,</span> <span class="pre">status)</span></code>.</p>
 </section>
 </section>
@@ -1318,7 +1334,8 @@ callback group of its own, which the executor of the node does not take, and the
 that group, and only it, while it waits for an answer; feedback, results and the problem
 published meanwhile come at the next call. So the application spins its node as it likes, or
 not at all: a call works from <code class="docutils literal notranslate"><span class="pre">main</span></code> before any spin, and from a callback of any executor,
-single threaded too. The client does not own the node: it must not outlive it.</p>
+single threaded too. The client does not own the node: once the node is gone, its calls get
+no answer.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MyController</span><span class="o">&gt;</span><span class="p">();</span><span class="w">  </span><span class="c1">// its clients take *this</span>
 <span class="n">node</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">();</span><span class="w">  </span><span class="c1">// calls the clients: nothing to spin</span>
 
@@ -1326,8 +1343,8 @@ single threaded too. The client does not own the node: it must not outlive it.</
 <span class="n">rclcpp</span><span class="o">::</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>As any blocking call, a call from a callback keeps its thread while it waits; the migration guide
-shows how a controller with subscriptions of its own spins its node. Inside PlanSys2, only
+<p>As any blocking call, a call from a callback keeps its thread while it waits; the <a class="reference internal" href="../migration/index.html#migration"><span class="std std-ref">Migrating to 4.0.0</span></a>
+guide shows how a controller with subscriptions of its own spins its node. Inside PlanSys2, only
 <code class="docutils literal notranslate"><span class="pre">plansys2_node</span></code> (and, in the distributed bringup, the main of each node) spins, with a
 <code class="docutils literal notranslate"><span class="pre">MultiThreadedExecutor</span></code> per node.</p>
 <p>Every call of a client waits until its component is active, however long it takes while ROS
@@ -1338,7 +1355,8 @@ then the next call waits for it again, so the application also goes on after Pla
 <code class="docutils literal notranslate"><span class="pre">wait_active()</span></code> is the same wait alone, for code that must not start before (the greenhouse
 example, whose world evolves from the moment its problem is loaded). Call the clients from a
 thread of their own if the application must not block.</p>
-<p>A request without answer is sent again, up to three times, each with a new client: some
+<p>A request without answer is sent up to three times in all (planning requests, twice), each
+time with a new client: some
 middlewares lose every answer to a client whose connection was set up badly while many
 processes started at once, and waiting longer on the same client does not help. Only requests
 that can be repeated are sent again: queries, and changes that leave the same state when
@@ -1385,7 +1403,8 @@ long as the planner plans (the planner’s <code class="docutils literal notrans
 <code class="docutils literal notranslate"><span class="pre">PlannerClient</span></code> and <code class="docutils literal notranslate"><span class="pre">ExecutorClient</span></code>, with snake case methods named after the services
 (<code class="docutils literal notranslate"><span class="pre">get_domain_types()</span></code>, <code class="docutils literal notranslate"><span class="pre">add_problem_instance()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_plan()</span></code>,
 <code class="docutils literal notranslate"><span class="pre">start_plan_execution()</span></code>…), plus <code class="docutils literal notranslate"><span class="pre">validate_domain()</span></code> in <code class="docutils literal notranslate"><span class="pre">PlannerClient</span></code> and
-<code class="docutils literal notranslate"><span class="pre">get_replanning_problem()</span></code> in <code class="docutils literal notranslate"><span class="pre">ExecutorClient</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">get_replanning_problem()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_feedback()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_result()</span></code> in <code class="docutils literal notranslate"><span class="pre">ExecutorClient</span></code>.
+The queries of processes and events are only in C++.</p>
 <p>They also take the node of the application (<code class="docutils literal notranslate"><span class="pre">DomainExpertClient(node)</span></code>) and bring their own
 answers. rclpy executors take whole nodes, not callback groups, so each Python client has a node
 of its own, <code class="docutils literal notranslate"><span class="pre">&lt;node&gt;_&lt;component&gt;_client</span></code> in the namespace of the node of the application, which
@@ -1397,7 +1416,7 @@ it serves while it waits.</p>
 <p><code class="docutils literal notranslate"><span class="pre">plansys2_bringup</span></code> starts the four nodes and brings them to active:</p>
 <ul class="simple">
 <li><p><strong>Monolithic</strong> (<code class="docutils literal notranslate"><span class="pre">plansys2_bringup_launch_monolithic.py</span></code>): one process, <code class="docutils literal notranslate"><span class="pre">plansys2_node</span></code>,
-with the four nodes, each on its own thread.</p></li>
+with the four nodes, each with an executor of its own.</p></li>
 <li><p><strong>Distributed</strong> (<code class="docutils literal notranslate"><span class="pre">plansys2_bringup_launch_distributed.py</span></code>): one process per node, and the
 <code class="docutils literal notranslate"><span class="pre">lifecycle_manager</span></code> node that configures and activates them, and then keeps watching them.</p></li>
 </ul>
@@ -1447,8 +1466,8 @@ priority, and stops if the system does not allow it. In the monolithic bringup, 
 arguments (<code class="docutils literal notranslate"><span class="pre">use_real_time:=true</span></code>, <code class="docutils literal notranslate"><span class="pre">startup_timeout:=10</span></code>), passed to <code class="docutils literal notranslate"><span class="pre">plansys2_node</span></code> as
 <code class="docutils literal notranslate"><span class="pre">--use-real-time</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">--startup-timeout</span> <span class="pre">10</span></code>: it has no node of its own to read them
 from. In the distributed one, <code class="docutils literal notranslate"><span class="pre">startup_timeout</span></code> is a parameter of <code class="docutils literal notranslate"><span class="pre">lifecycle_manager</span></code>.</p>
-<p>When something dies, the bringups bring it back. A process that ends starts again
-(<code class="docutils literal notranslate"><span class="pre">respawn</span></code>), and the problem expert comes back with the problem it had (<code class="docutils literal notranslate"><span class="pre">state_file</span></code>). In
+<p>When something dies, the bringups bring it back. A process of the four nodes that ends starts
+again (<code class="docutils literal notranslate"><span class="pre">respawn</span></code>), and the problem expert comes back with the problem it had (<code class="docutils literal notranslate"><span class="pre">state_file</span></code>). In
 the distributed bringup, <code class="docutils literal notranslate"><span class="pre">lifecycle_manager</span></code> keeps watching the four nodes once they are
 active: it brings up a node that starts again, and if one is gone for longer than a grace
 time, it deactivates the executor, so that the plan fails, until the node is back. Its
@@ -1468,25 +1487,31 @@ parameters:</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">supervise</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">startup_timeout</span></code></p></td>
+<td><p>int</p></td>
+<td><p>5</p></td>
+<td><p>Seconds each transition of the startup waits for its answer, and again for the new state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">supervise</span></code></p></td>
 <td><p>bool</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
-<td><p>Keep watching the nodes once they are active.</p></td>
+<td><p>Keep watching the nodes once they are active. If the startup fails, it keeps trying to
+bring them up instead of exiting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">supervise_period</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">supervise_period</span></code></p></td>
 <td><p>double</p></td>
 <td><p>0.5</p></td>
 <td><p>Seconds between two looks at the nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lost_after</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lost_after</span></code></p></td>
 <td><p>double</p></td>
 <td><p>3.0</p></td>
 <td><p>Seconds without an answer before a node is taken as gone.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">grace</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">grace</span></code></p></td>
 <td><p>double</p></td>
 <td><p>10.0</p></td>
-<td><p>Seconds a node may be gone before the executor is deactivated.</p></td>
+<td><p>Seconds since a node last answered before the executor is deactivated.</p></td>
 </tr>
 </tbody>
 </table>

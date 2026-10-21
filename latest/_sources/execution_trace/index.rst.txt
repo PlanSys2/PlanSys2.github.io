@@ -54,7 +54,8 @@ detail.
    * - ``REPLAN``
      - A new plan replaces the running one: which running actions go on, which are dropped.
    * - ``PLAN_END``
-     - How the plan ended: succeeded, failed, cancelled, aborted.
+     - How the plan ended: succeeded, failed, cancelled, aborted, or an error setting up the
+       new plan.
 
 The message also carries ``planned_time`` and ``shift`` for ``START`` and ``END``: the action
 is late by ``plan_time - planned_time - shift``.
@@ -78,8 +79,9 @@ shifted: the rest is what the previous actions took.
 An example
 **********
 
-The PDDL+ greenhouse of ``plansys2_pddlplus_example``, in the TUI. The recharge fails on
-purpose, and the controller replans from where the world is:
+The PDDL+ greenhouse of ``plansys2_pddlplus_example``, in the TUI, launched so that the recharge
+fails (``ros2 launch plansys2_pddlplus_example plansys2_pddlplus_example.launch.yaml
+recharge_fails_at:=0.5``); the controller replans from where the world is:
 
 .. code-block:: text
 

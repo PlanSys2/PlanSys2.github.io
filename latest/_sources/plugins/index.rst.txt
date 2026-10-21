@@ -11,7 +11,7 @@ The planner node runs the plan solver plugins of its ``plan_solver_plugins`` par
 
 A plugin may say which PDDL requirements it plans with. The planner gives a task only to the
 plugins that support everything the domain and the problem use, and answers with the reason
-when none does (for instance, a domain with ``:conditional-effects`` is not sent to POPF).
+when none does (for instance, a domain that uses ``when`` is not sent to POPF).
 A plugin that says nothing gets every task.
 
 +------------------+----------------------+------------------------------------------+
@@ -61,7 +61,7 @@ A plugin that says nothing gets every task.
 .. _MIPSPlanSolver: https://github.com/isacg5/ros2_planning_system_mips
 .. _LPG-TD: https://lpg.unibs.it/lpg/
 .. _LPGTDPlanSolver: https://github.com/Nuriadj/plansys2_lpgtd_plugin/tree/main
-.. _Fast Downward: https://www.fast-downward.org/HomePage
+.. _Fast Downward: https://www.fast-downward.org/
 .. _DownwardPlanner: https://github.com/kas-lab/downward_ros
 .. _SymK: https://github.com/speckdavid/symk
 .. _SymkPlanner: https://github.com/kas-lab/symk_ros
@@ -81,8 +81,8 @@ The executor turns each plan into a behavior tree with the plugin of its
 * `SequentialBTBuilder`_. The actions run one after the other, in the order of the plan.
 
 Whatever the builder, a timed plan runs each action at its time in the plan, not before: plans
-with timed initial literals, processes, events, continuous effects or constraints with times,
-or any plan when the executor's ``timed_execution`` parameter is true.
+with processes, events, continuous effects, constraints with times or an end (PDDL+), or any
+plan when the executor's ``timed_execution`` parameter is true.
 
 The assembly with arms of ``plansys2_bt_example`` runs the same plan with STN and Simple to
 compare them.

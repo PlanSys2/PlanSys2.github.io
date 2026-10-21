@@ -50,12 +50,13 @@ What |PN| executes
 Timed execution
 ***************
 
-Some plans only make sense at their times: a timed initial literal happens at its time, a
-process runs while time passes, a constraint has a deadline. The executor runs these plans
+Some plans only make sense at their times: a process runs while time passes, a constraint has
+a deadline. The executor runs these plans
 *timed*: each action starts at its time in the plan, not before, and a durative action lasts
-its planned duration. It does so when the plan has timed initial literals or fluents,
-processes, events, continuous effects or constraints with times, or always if its
-``timed_execution`` parameter is true.
+its planned duration. It does so when the plan has processes,
+events, continuous effects, constraints with times or an end (a PDDL+ plan), or always if its
+``timed_execution`` parameter is true. Timed initial literals and fluents alone do not make a
+plan timed: an action that needs one waits until the problem expert applies it.
 
 * The plan counts from when its problem was read (``Plan.stamp``, set by the planner), so the
   timed literals and the plan share their clock.
@@ -66,7 +67,7 @@ processes, events, continuous effects or constraints with times, or always if it
 PDDL+ dynamics
 **************
 
-While a plan runs, the problem expert simulates the world every 50 ms: the active processes
+While the problem expert is active, it simulates the world every 50 ms: the active processes
 and the continuous effects of the running actions change the functions for the time passed,
 and then the events whose conditions hold happen.
 
@@ -81,8 +82,9 @@ What each planner plans
 The planner gives a task only to the plan solvers that support what it uses: see
 :ref:`plugins`. Kairos plans everything on this page. POPF plans STRIPS with typing,
 equality, ``forall`` in conditions, numeric fluents, durative actions and timed initial
-literals: a domain with conditional effects, derived predicates, object fluents, ``exists``,
-preferences, PDDL+ or constraints is not sent to it.
+literals: a domain that uses conditional effects, derived predicates, object fluents, negative
+preconditions, ``or``, ``imply``, ``exists``, ``either``, duration inequalities, timed initial
+fluents, action costs, preferences, PDDL+ or constraints is not sent to it.
 
 Known limits
 ************

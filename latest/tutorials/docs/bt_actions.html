@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -276,8 +276,7 @@ learn more control nodes and so more sophisticated actions.</p>
 <p>If you haven’t done yet, clone in your workspace and build the PlanSys2 <a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system_examples">examples</a></p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;your_workspace&gt;
-git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;-devel<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>&lt;ros2-distro&gt;<span class="w"> </span>https://github.com/PlanSys2/ros2_planning_system_examples.git<span class="w"> </span>src/ros2_planning_system_examples
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 </pre></div>
@@ -289,15 +288,16 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <ul>
 <li><p>Open a new terminal and run PlanSys2:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_bt_example<span class="w"> </span>plansys2_bt_example_launch.py
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_bt_example<span class="w"> </span>plansys2_bt_example.launch.yaml
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>You have two options: you can use the real Nav2 package with a simulation or using a Nav2 fake node:</p>
+<li><p>The robots navigate with <a class="reference external" href="https://easynavigation.github.io">EasyNav</a> (the example needs it: without it, the
+<code class="docutils literal notranslate"><span class="pre">Move</span></code> BT node is not built). Open a new terminal and run a node that simulates it, in which each navigation
+takes 10 s; or run the real EasyNav with a simulator instead:</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>nav2_bringup<span class="w"> </span>tb3_simulation_launch.py<span class="w">  </span><span class="c1"># For real Nav2 and Simulation</span>
-ros2<span class="w"> </span>run<span class="w"> </span>plansys2_bt_example<span class="w"> </span>nav2_sim_node<span class="w">  </span><span class="c1"># For fake Nav2 node</span>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_bt_example<span class="w"> </span>easynav_sim_node
 </pre></div>
 </div>
 </div></blockquote>
@@ -370,42 +370,43 @@ ros2<span class="w"> </span>run<span class="w"> </span>plansys2_bt_example<span 
 <h3>2- Using Behavior Trees<a class="headerlink" href="#using-behavior-trees" title="Link to this heading"></a></h3>
 <a class="reference internal image-reference" href="../../_images/demoDiag2.png"><img alt="../../_images/demoDiag2.png" class="align-center" src="../../_images/demoDiag2.png" style="width: 600px;" />
 </a>
-<p>In the PDDL domain we have three actions: assemble, move and transport. We will implement the assemble action without using BTs, as we have done in the previous tutorials.
-We will implement the other two PDDL actions, <code class="docutils literal notranslate"><span class="pre">Move</span></code> and <code class="docutils literal notranslate"><span class="pre">Transport</span></code>, using BTs. For this, each action will have a BT encoded in an XML file. This XML file contains
-the control structures (sequences, fallbacks, …) and the nodes that carry out the action. In this tutorial, 4 BT nodes have been implemented (<code class="docutils literal notranslate"><span class="pre">Move</span></code>, <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>,
-<code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code>) that can be included in the BTs of the PDDL actions.</p>
-<p>In PlanSys2 there is a generic executable that any BT can run. This executable is <code class="docutils literal notranslate"><span class="pre">bt_action_node</span></code> from the package `` plansys2_bt_actions``. To use it, we should add it in
-the launch file, specifying as parameter the XML file that contains the BT and the PDDL action name:</p>
+<p>In the PDDL domain we have four actions: assemble, move, transport and recharge. We will implement the assemble action without using BTs, as we have done in the previous tutorials.
+We will implement the other three PDDL actions, <code class="docutils literal notranslate"><span class="pre">move</span></code>, <code class="docutils literal notranslate"><span class="pre">transport</span></code> and <code class="docutils literal notranslate"><span class="pre">recharge</span></code>, using BTs. For this, each action will have a BT encoded in an XML file. This XML file contains
+the control structures (sequences, fallbacks, …) and the nodes that carry out the action. In this tutorial, 5 BT nodes have been implemented (<code class="docutils literal notranslate"><span class="pre">Move</span></code>, <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>,
+<code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code> and <code class="docutils literal notranslate"><span class="pre">Recharge</span></code>) that can be included in the BTs of the PDDL actions.</p>
+<p>In PlanSys2 there is a generic executable that any BT can run. This executable is <code class="docutils literal notranslate"><span class="pre">bt_action_node</span></code> from the package <code class="docutils literal notranslate"><span class="pre">plansys2_bt_actions</span></code>. To use it, we should add it in
+the launch file (<code class="docutils literal notranslate"><span class="pre">launch/plansys2_bt_example.launch.yaml</span></code>), specifying as parameters the XML file that contains the BT and the PDDL action name. The example starts three
+performers of <code class="docutils literal notranslate"><span class="pre">move</span></code>, one per robot; this is the first:</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">move_cmd</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
-    <span class="n">package</span><span class="o">=</span><span class="s1">'plansys2_bt_actions'</span><span class="p">,</span>
-    <span class="n">executable</span><span class="o">=</span><span class="s1">'bt_action_node'</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">'move'</span><span class="p">,</span>
-    <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
-    <span class="n">output</span><span class="o">=</span><span class="s1">'screen'</span><span class="p">,</span>
-    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
-      <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">'/config/params.yaml'</span><span class="p">,</span>
-      <span class="p">{</span>
-        <span class="s1">'action_name'</span><span class="p">:</span> <span class="s1">'move'</span><span class="p">,</span>
-        <span class="s1">'bt_xml_file'</span><span class="p">:</span> <span class="n">example_dir</span> <span class="o">+</span> <span class="s1">'/behavior_trees_xml/move.xml'</span>
-      <span class="p">}</span>
-    <span class="p">])</span>
+<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">node</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pkg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_bt_actions</span>
+<span class="w">    </span><span class="nt">exec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bt_action_node</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">move_1</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(var namespace)</span>
+<span class="w">    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">screen</span>
+<span class="w">    </span><span class="nt">param</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$(find-pkg-share plansys2_bt_example)/config/params.yaml</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">action_name</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">move</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">enable_groot_monitoring</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">server_port</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">1700</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">bt_xml_file</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">$(find-pkg-share plansys2_bt_example)/behavior_trees_xml/move.xml</span><span class="p p-Indicator">}</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>The <code class="docutils literal notranslate"><span class="pre">params.yaml</span></code> contains the BT nodes that will be used in the BT. As we implement each BT as plugins, it is necessary to specify each custom node used. We can also include
-any parameter needed by the specific BT node. In this case, the coordinates of each room is specified to the BT node <code class="docutils literal notranslate"><span class="pre">move</span></code> using parameters:</p>
+any parameter needed by the specific BT node. In this case, the coordinates (x, y and yaw) of each zone are given to the BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code> with parameters of the performer:</p>
 <blockquote>
-<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">move</span><span class="p">:</span>
+<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">move_1</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">plugins</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_move_bt_node</span>
-<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"wheels_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"steering_wheels_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"body_car_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"assembly_zone"</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"wheels_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"steering_wheels_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"body_car_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"assembly_zone"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"recharge_zone"</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">waypoint_coords</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">wheels_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
 <span class="w">      </span><span class="nt">steering_wheels_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1.8</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
 <span class="w">      </span><span class="nt">body_car_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
 <span class="w">      </span><span class="nt">assembly_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">recharge_zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -425,7 +426,7 @@ It is composed only by one BT node <code class="docutils literal notranslate"><s
 </div>
 </div></blockquote>
 <p>In PlanSys2, the arguments of the PDDL action are accessible in the XML through values in the blackboard whose identifiers are <code class="docutils literal notranslate"><span class="pre">arg0</span></code>, <code class="docutils literal notranslate"><span class="pre">arg1</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code>, and so on. If executing the
-PDDL action <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r2d2</span> <span class="pre">corridor</span> <span class="pre">kitchen)</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code> is the destiny room <code class="docutils literal notranslate"><span class="pre">kitchen</span></code>.</p>
+PDDL action <code class="docutils literal notranslate"><span class="pre">(move</span> <span class="pre">r2d2</span> <span class="pre">wheels_zone</span> <span class="pre">assembly_zone)</span></code>, <code class="docutils literal notranslate"><span class="pre">arg2</span></code> is the destination, <code class="docutils literal notranslate"><span class="pre">assembly_zone</span></code>.</p>
 </section>
 <section id="pddl-action-transport">
 <h4>2.2 PDDL Action transport<a class="headerlink" href="#pddl-action-transport" title="Link to this heading"></a></h4>
@@ -448,7 +449,7 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 </section>
 <section id="bt-nodes">
 <h4>2.3 BT Nodes<a class="headerlink" href="#bt-nodes" title="Link to this heading"></a></h4>
-<p>We implemented 4 BT nodes for this tutorial. <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, and <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code> have a similar implementation, showing only a message in the terminal when executing:</p>
+<p>We implemented 5 BT nodes for this tutorial. <code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenGripper</span></code>, <code class="docutils literal notranslate"><span class="pre">CloseGripper</span></code> and <code class="docutils literal notranslate"><span class="pre">Recharge</span></code> have a similar implementation, showing only a message in the terminal when executing:</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ApproachObject</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">ActionNodeBase</span>
 <span class="p">{</span>
@@ -488,10 +489,13 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 <span class="p">{</span>
 <span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"ApproachObject tick "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">counter_</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
+<span class="w">  </span><span class="c1">// Its progress, for the feedback of the action</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">counter_</span><span class="o">++</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">config</span><span class="p">().</span><span class="n">blackboard</span><span class="o">-&gt;</span><span class="n">set</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"completion"</span><span class="p">,</span><span class="w"> </span><span class="n">counter_</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">5.0f</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">counter_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">().</span><span class="n">blackboard</span><span class="o">-&gt;</span><span class="n">set</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"completion"</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -506,71 +510,82 @@ PDDL action <code class="docutils literal notranslate"><span class="pre">(move</
 </pre></div>
 </div>
 </div></blockquote>
-<p>For implementing the BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code>, we make it to inherit from <code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> to simplify the implementation when the node calls a ROS2 action. In this case, <code class="docutils literal notranslate"><span class="pre">nav2_msgs::action::NavigateToPose</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ApproachObject</span></code> also writes its progress in the <code class="docutils literal notranslate"><span class="pre">completion</span></code> key of the blackboard: the performer sends it as the
+feedback of the action.</p>
+<p>The BT node <code class="docutils literal notranslate"><span class="pre">Move</span></code> navigates with EasyNav, through its <code class="docutils literal notranslate"><span class="pre">easynav::GoalManagerClient</span></code>. It is a
+<code class="docutils literal notranslate"><span class="pre">BT::StatefulActionNode</span></code>: <code class="docutils literal notranslate"><span class="pre">onStart()</span></code> is called when the node starts, <code class="docutils literal notranslate"><span class="pre">onRunning()</span></code> while it runs, and
+<code class="docutils literal notranslate"><span class="pre">onHalted()</span></code> if it is stopped (for instance, when the action is cancelled).</p>
 <blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Move</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">plansys2</span><span class="o">::</span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">nav2_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">NavigateToPose</span><span class="o">&gt;</span>
+<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Navigates to a waypoint with EasyNav</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Move</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">StatefulActionNode</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
-<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">Move</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">xml_tag_name</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action_name</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">conf</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Move</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">xml_tag_name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">conf</span><span class="p">);</span>
 
-<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
-<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">on_success</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">onStart</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="nf">onRunning</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">onHalted</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="w"> </span><span class="nf">providedPorts</span><span class="p">()</span>
 <span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"goal"</span><span class="p">)</span>
+<span class="w">      </span><span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"goal"</span><span class="p">),</span>
+<span class="w">      </span><span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="s">"server_timeout"</span><span class="p">,</span><span class="w"> </span><span class="mf">30.0</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"Seconds to wait for EasyNav to be connected and to accept (it may start late)"</span><span class="p">)</span>
 <span class="w">    </span><span class="p">};</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="k">private</span><span class="o">:</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">goal_reached_</span><span class="p">;</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span><span class="o">&gt;</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">;</span>
-<span class="p">};</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">BtActionNode&lt;&gt;</span></code> hides all the complexity, and only it is necessary to implement the method <code class="docutils literal notranslate"><span class="pre">on_tick</span></code>, called each time the BT node is ticked. In this BT node, we get the destination id from
-the input <code class="docutils literal notranslate"><span class="pre">goal</span></code> parameter. Remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span>&#160;&#160;&#160; <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;{arg3}&quot;/&gt;</span></code>.</p>
+<p>In its constructor, <code class="docutils literal notranslate"><span class="pre">Move</span></code> reads the coordinates of the waypoints from the parameters of the performer, which it
+gets from the blackboard (<code class="docutils literal notranslate"><span class="pre">node</span></code>, a <code class="docutils literal notranslate"><span class="pre">rclcpp_lifecycle::LifecycleNode</span></code>). <code class="docutils literal notranslate"><span class="pre">onStart()</span></code> takes the destination from
+the input port <code class="docutils literal notranslate"><span class="pre">goal</span></code> (remember the line in the XML <code class="docutils literal notranslate"><span class="pre">&lt;Move</span> <span class="pre">name=&quot;move&quot;</span> <span class="pre">goal=&quot;{arg3}&quot;/&gt;</span></code>):</p>
 <blockquote>
 <div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span>
-<span class="nf">Move::on_tick</span><span class="p">()</span>
+<span class="nf">Move::onStart</span><span class="p">()</span>
 <span class="p">{</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">IDLE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">node</span><span class="p">;</span>
-<span class="w">    </span><span class="n">config</span><span class="p">().</span><span class="n">blackboard</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">"node"</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">goal</span><span class="p">;</span>
-<span class="w">    </span><span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"goal"</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Pose2D</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">pose2nav</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"No coordinate for waypoint ["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">goal</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"]"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">goal_pos</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"map"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
-<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="n">goal_pos</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tf2</span><span class="o">::</span><span class="n">toMsg</span><span class="p">(</span><span class="n">tf2</span><span class="o">::</span><span class="n">Quaternion</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">},</span><span class="w"> </span><span class="n">pose2nav</span><span class="p">.</span><span class="n">theta</span><span class="p">));</span>
-
-<span class="w">    </span><span class="n">goal_</span><span class="p">.</span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">goal_pos</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">goal</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">getInput</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"goal"</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">RCLCPP_ERROR</span><span class="p">(</span><span class="n">node_</span><span class="o">-&gt;</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">"No coordinates for waypoint [%s]"</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">FAILURE</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">getInput</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"server_timeout"</span><span class="p">,</span><span class="w"> </span><span class="n">server_timeout_</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">navigator_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">FAILURE</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">RUNNING</span><span class="p">;</span>
+<span class="w">  </span><span class="n">navigator_</span><span class="o">-&gt;</span><span class="n">spin</span><span class="p">();</span>
+<span class="w">  </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">navigator_</span><span class="o">-&gt;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">get_state</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">IDLE</span><span class="p">:</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_FINISHED</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_REJECTED</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_FAILED</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_CANCELLED</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">State</span><span class="o">::</span><span class="no">ERROR</span><span class="p">:</span>
+<span class="w">      </span><span class="n">navigator_</span><span class="o">-&gt;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span><span class="w">  </span><span class="c1">// A navigation of a previous tree still running</span>
+<span class="w">      </span><span class="n">renew_navigator</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">goal_</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"map"</span><span class="p">;</span>
+<span class="w">  </span><span class="n">goal_</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node_</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
+<span class="w">  </span><span class="n">goal_</span><span class="p">.</span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waypoints_</span><span class="p">[</span><span class="n">goal</span><span class="p">];</span>
+
+<span class="w">  </span><span class="n">goal_sent_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="n">phase_start_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+<span class="w">  </span><span class="n">renewed_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phase_start_</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">onRunning</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>There are also more methods that we can implement if needed (<code class="docutils literal notranslate"><span class="pre">on_success</span></code>, <code class="docutils literal notranslate"><span class="pre">on_aborted</span></code>, <code class="docutils literal notranslate"><span class="pre">on_cancelled</span></code>, and so on).</p>
+<p><code class="docutils literal notranslate"><span class="pre">onRunning()</span></code> sends the goal once EasyNav is there (waiting up to <code class="docutils literal notranslate"><span class="pre">server_timeout</span></code> seconds), follows the
+navigation and returns <code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code> when EasyNav reaches the goal, or <code class="docutils literal notranslate"><span class="pre">FAILURE</span></code> if it fails. For BT nodes that call
+a ROS 2 action, <code class="docutils literal notranslate"><span class="pre">plansys2::BtActionNode&lt;&gt;</span></code> (<code class="docutils literal notranslate"><span class="pre">plansys2_bt_actions</span></code>) hides that complexity: it is enough to implement
+<code class="docutils literal notranslate"><span class="pre">on_tick()</span></code>, and, if needed, <code class="docutils literal notranslate"><span class="pre">on_success()</span></code>, <code class="docutils literal notranslate"><span class="pre">on_aborted()</span></code> or <code class="docutils literal notranslate"><span class="pre">on_cancelled()</span></code>.</p>
 </section>
 </section>
 </section>

@@ -204,7 +204,9 @@ All of type ``plansys2_msgs/srv/...``:
 ``change_domain`` is rejected if the node is not active, the domain is empty, or another change
 is in progress. The new domain is validated and offered first to the problem expert
 (``problem_expert/update_domain``), which adapts the problem to it: only if it accepts, the
-domain changes and is published. A plan in execution is aborted when the domain changes.
+domain changes and is published. With no problem expert running, the domain changes anyway; if
+the problem expert does not answer within 5 s, the change is rejected. A plan in execution is
+aborted when the domain changes.
 
 Topics
 ------
@@ -258,8 +260,9 @@ Parameters
      - string
      - ``""``
      - A file where the node keeps its problem (written at most every 100 ms after a change).
-       Started again, the node loads it when it configures, before ``problem_file``, and
-       comes back with the problem it had. Empty: not kept. The bringups set one per launch.
+       Started again, the node loads it when it configures, instead of ``problem_file``, and
+       comes back with the problem it had. A leading ``~`` is the home folder; the file is
+       deleted when the node is cleaned up. Empty: not kept. The bringups set one per launch.
 
 Services
 --------
@@ -281,7 +284,8 @@ All of type ``plansys2_msgs/srv/...``:
      - The problem as PDDL text, with the time it was read.
    * - ``problem_expert/clear_problem_knowledge``
      - ``ClearProblemKnowledge``
-     - Removes instances, predicates, functions, goal, metric and constraints.
+     - Removes instances, predicates, functions, goal, metric and constraints, and the timed
+       facts and continuous effects.
    * - ``problem_expert/add_problem_instance``
      - ``AffectParam``
      - Adds an instance.
@@ -383,8 +387,8 @@ Planner
 *******
 
 It computes plans for a domain and a problem with its plan solver plugins, in parallel, and
-returns the plans found in time, shortest first. Each plan carries the time it was requested
-(``Plan.stamp``), which the executor uses to anchor timed plans.
+returns the plans found in time, shortest first. Each plan carries the time the planner got its
+problem (``Plan.stamp``), which the executor uses to anchor timed plans.
 
 A task goes only to the plugins that support the PDDL requirements it uses; if none does, the
 answer says what is missing. See :ref:`plugins` and :ref:`multi_planner`.
@@ -567,7 +571,7 @@ Parameters
      - double
      - 30.0
      - Seconds a plan waits for a component that is not active (gone, or started again)
-       before it fails and says which one.
+       before it fails and says which one (0: no limit).
    * - ``plan_end_goal_timeout``
      - double
      - 5.0
@@ -579,7 +583,8 @@ Parameters
    * - ``action_time_precision``
      - int
      - 3
-     - Decimals of the plan time in the action ids, e.g. ``(move r1 a b):3000``.
+     - Decimals of the plan time in the action ids, e.g. ``(move r1 a b):3000`` (0 to 9;
+       outside, 3).
    * - ``stn_relaxed_timing``
      - bool
      - ``true``
@@ -633,8 +638,8 @@ the result have the state of each action (``ActionExecutionInfo``); the result s
 
 * Goals are rejected unless the executor is active.
 * An empty plan succeeds at once.
-* A goal sent while a plan runs *replaces* it: the previous goal ends with ``PREEMPT`` and the
-  plan is repaired (see below).
+* A goal sent while a plan runs *replaces* it: the previous goal is aborted with ``PREEMPT``
+  and the plan is repaired (see below). A cancelled goal ends canceled, with ``FAILURE``.
 * A change of the domain aborts the plan.
 
 Services
@@ -685,7 +690,8 @@ Topics
      - What the executor does and why (see :ref:`execution_trace`).
    * - ``dot_graph`` (published)
      - ``std_msgs/msg/String``, depth 1
-     - The plan graph in DOT, when there are subscribers.
+     - The plan graph in DOT: once when the tree is built, then at ``feedback_rate`` while
+       someone subscribes.
    * - ``actions_hub`` (published and subscribed)
      - ``plansys2_msgs/msg/ActionExecution``, depth 100, reliable
      - The protocol with the action performers (see below).
@@ -728,9 +734,11 @@ the plan.
 Timed execution
 ---------------
 
-A plan with timed initial literals or fluents, processes, events, continuous effects or
-constraints with times runs *timed* (also any plan, with ``timed_execution``): each action
-starts at its time in the plan, not before, and a durative action lasts its planned duration.
+A plan runs *timed* when its domain has processes or events, an action has continuous effects,
+the plan has an end (a PDDL+ plan), or the problem has constraints with times (also any plan,
+with ``timed_execution``): each action starts at its time in the plan, not before, and a
+durative action lasts its planned duration. Timed initial literals and fluents alone do not
+make a plan timed: an action that needs one waits until the problem expert applies it.
 
 * The plan counts from when its problem was read (``Plan.stamp``), so timed facts and plan
   share the clock.
@@ -743,10 +751,12 @@ A new goal for ``execute_plan`` while a plan runs does not start from scratch. T
 
 1. Builds the behavior tree of the new plan.
 2. Keeps the running actions that the new plan starts with (same action at time 0): they go on
-   without interruption, their continuous effects included, and their performer is told their
-   new duration (``ActionExecution.UPDATE``).
+   without interruption, their continuous effects included. In timed execution, their performer
+   is told their new duration: the time they have run plus what the new plan gives them
+   (``ActionExecution.UPDATE``).
 3. Stops the others, undoes their at start effects and stops their continuous effects.
-4. Keeps the history of the constraint monitor.
+4. Keeps the history of the constraint monitor, if the new problem has the same constraints.
+5. Takes as done the actions that already ended and that the new plan still has.
 
 To replan while a plan runs, ask the problem to plan from to the executor
 (``executor/get_replanning_problem``, ``ExecutorClient::get_replanning_problem()``): it is the
@@ -764,7 +774,7 @@ Constraints
 
 The hard trajectory constraints of the problem (``always``, ``sometime``, ``within``,
 ``at-most-once``, ``sometime-before``...) are checked while the plan runs: when the knowledge
-changes, and at their deadlines. A violation fails the plan and says which constraint
+changes, at their deadlines, and when the plan ends. A violation fails the plan and says which constraint
 (``VIOLATION`` in the trace). Preferences are only for the planner.
 
 Action performers
@@ -796,11 +806,14 @@ Each request has its own id, carried by every message about it.
 4. **FEEDBACK** (performer): progress and status, from ``send_feedback()``.
 5. **FINISH** (performer): success or failure, from ``finish()``.
 6. **CANCEL** (executor): stop the action, for instance when the plan is cancelled.
-7. **UPDATE** (executor): a repaired plan gives the running action another duration
-   (``get_planned_duration()`` returns it).
+7. **UPDATE** (executor): in timed execution, a repaired plan gives the running action another
+   duration (``get_planned_duration()`` returns it).
 
-Each side watches the other: the executor fails the action if its performer disappears, and a
-performer stops if the node that asked for the action disappears.
+Each side watches the other, once a second: the executor fails the action if its performer is
+missing three checks in a row, and a performer stops if the node that asked for the action is.
+A request that no performer takes within 30 s fails the action ("no performer took it in
+30 s"). A performer that finishes with failure without progress (it could not start) has its
+action offered again, up to three times.
 
 Parameters
 ----------
@@ -851,16 +864,20 @@ In C++ (``plansys2_executor/ActionExecutorClient.hpp``):
    // Constructor: the node name
    ActionExecutorClient(const std::string & node_name);
 
+   // For the class that inherits (protected)
    virtual void do_work();                 // To implement: called at `rate` while running
-   const std::vector<std::string> & get_arguments();  // The arguments of the action
+   const std::vector<std::string> & get_arguments() const;  // The arguments of the action
    double get_planned_duration() const;    // The duration the plan gives it (0 if instantaneous)
-   const std::string & get_action_name();
+   const std::string get_action_name() const;
    void send_feedback(float completion, const std::string & status = "");
    void finish(bool success, float completion, const std::string & status = "");
 
+A performer whose work is a behavior tree is a ``plansys2::BTAction``
+(``plansys2_bt_actions``): see :ref:`bt_actions`.
+
 In Python (``plansys2_support_py.ActionExecutorClient``), the constructor is
-``ActionExecutorClient(node_name, period)`` (``period`` in seconds; the ``rate`` parameter, in
-Hz, overrides it) and the methods are ``do_work()``, ``get_planned_duration()``,
+``ActionExecutorClient(node_name, rate)`` (``rate`` is the period of ``do_work()`` in seconds,
+despite its name; the ``rate`` parameter, in Hz, overrides it) and the methods are ``do_work()``, ``get_planned_duration()``,
 ``send_feedback(completion, status)`` and ``finish(success, completion, status)``.
 
 Client libraries
@@ -884,7 +901,8 @@ callback group of its own, which the executor of the node does not take, and the
 that group, and only it, while it waits for an answer; feedback, results and the problem
 published meanwhile come at the next call. So the application spins its node as it likes, or
 not at all: a call works from ``main`` before any spin, and from a callback of any executor,
-single threaded too. The client does not own the node: it must not outlive it.
+single threaded too. The client does not own the node: once the node is gone, its calls get
+no answer.
 
 .. code-block:: c++
 
@@ -894,8 +912,8 @@ single threaded too. The client does not own the node: it must not outlive it.
    // Or with callbacks of its own: step() in a timer, the calls in it
    rclcpp::spin(node);
 
-As any blocking call, a call from a callback keeps its thread while it waits; the migration guide
-shows how a controller with subscriptions of its own spins its node. Inside |PN|, only
+As any blocking call, a call from a callback keeps its thread while it waits; the :ref:`migration`
+guide shows how a controller with subscriptions of its own spins its node. Inside |PN|, only
 ``plansys2_node`` (and, in the distributed bringup, the main of each node) spins, with a
 ``MultiThreadedExecutor`` per node.
 
@@ -908,7 +926,8 @@ then the next call waits for it again, so the application also goes on after |PN
 example, whose world evolves from the moment its problem is loaded). Call the clients from a
 thread of their own if the application must not block.
 
-A request without answer is sent again, up to three times, each with a new client: some
+A request without answer is sent up to three times in all (planning requests, twice), each
+time with a new client: some
 middlewares lose every answer to a client whose connection was set up badly while many
 processes started at once, and waiting longer on the same client does not help. Only requests
 that can be repeated are sent again: queries, and changes that leave the same state when
@@ -960,7 +979,8 @@ Python
 ``PlannerClient`` and ``ExecutorClient``, with snake case methods named after the services
 (``get_domain_types()``, ``add_problem_instance()``, ``get_plan()``,
 ``start_plan_execution()``...), plus ``validate_domain()`` in ``PlannerClient`` and
-``get_replanning_problem()`` in ``ExecutorClient``.
+``get_replanning_problem()``, ``get_feedback()`` and ``get_result()`` in ``ExecutorClient``.
+The queries of processes and events are only in C++.
 
 They also take the node of the application (``DomainExpertClient(node)``) and bring their own
 answers. rclpy executors take whole nodes, not callback groups, so each Python client has a node
@@ -973,7 +993,7 @@ Running |PN|
 ``plansys2_bringup`` starts the four nodes and brings them to active:
 
 * **Monolithic** (``plansys2_bringup_launch_monolithic.py``): one process, ``plansys2_node``,
-  with the four nodes, each on its own thread.
+  with the four nodes, each with an executor of its own.
 * **Distributed** (``plansys2_bringup_launch_distributed.py``): one process per node, and the
   ``lifecycle_manager`` node that configures and activates them, and then keeps watching them.
 
@@ -1011,8 +1031,8 @@ arguments (``use_real_time:=true``, ``startup_timeout:=10``), passed to ``plansy
 ``--use-real-time true`` and ``--startup-timeout 10``: it has no node of its own to read them
 from. In the distributed one, ``startup_timeout`` is a parameter of ``lifecycle_manager``.
 
-When something dies, the bringups bring it back. A process that ends starts again
-(``respawn``), and the problem expert comes back with the problem it had (``state_file``). In
+When something dies, the bringups bring it back. A process of the four nodes that ends starts
+again (``respawn``), and the problem expert comes back with the problem it had (``state_file``). In
 the distributed bringup, ``lifecycle_manager`` keeps watching the four nodes once they are
 active: it brings up a node that starts again, and if one is gone for longer than a grace
 time, it deactivates the executor, so that the plan fails, until the node is back. Its
@@ -1026,10 +1046,15 @@ parameters:
      - Type
      - Default
      - Meaning
+   * - ``startup_timeout``
+     - int
+     - 5
+     - Seconds each transition of the startup waits for its answer, and again for the new state.
    * - ``supervise``
      - bool
      - ``true``
-     - Keep watching the nodes once they are active.
+     - Keep watching the nodes once they are active. If the startup fails, it keeps trying to
+       bring them up instead of exiting.
    * - ``supervise_period``
      - double
      - 0.5
@@ -1041,7 +1066,7 @@ parameters:
    * - ``grace``
      - double
      - 10.0
-     - Seconds a node may be gone before the executor is deactivated.
+     - Seconds since a node last answered before the executor is deactivated.
 
 In the monolithic bringup the four nodes are one process: started again, it brings itself up.
 

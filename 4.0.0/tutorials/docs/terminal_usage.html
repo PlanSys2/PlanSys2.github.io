@@ -153,7 +153,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -177,8 +177,8 @@
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -290,7 +290,8 @@ the PDDL domain file to use is specified.</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>If all went well, all components of PlanSys2 will have been launched and awaits requests.</p>
+<p>If all went well, all components of PlanSys2 will have been launched and awaits requests. They plan with Kairos,
+the default planner.</p>
 </section>
 <section id="execute-plansys2-terminal">
 <h3>2- Execute PlanSys2 terminal<a class="headerlink" href="#execute-plansys2-terminal" title="Link to this heading"></a></h3>
@@ -307,30 +308,35 @@ autocompletion with the <code class="docutils literal notranslate"><span class="
 reopen (or even use several terminals), and the system’s state persists. If you want to reset the system, press <code class="docutils literal notranslate"><span class="pre">Ctrl-C</span></code> in the terminal
 where you launched PlanSys2, and relaunch it.</p>
 <blockquote>
-<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nv">ROS2</span><span class="w"> </span><span class="nv">Planning</span><span class="w"> </span><span class="nv">System</span><span class="w"> </span><span class="nv">console.</span><span class="w"> </span><span class="nv">Type</span><span class="w"> </span><span class="s">"quit"</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">finish</span>
+<div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nv">ROS2</span><span class="w"> </span><span class="nv">Planning</span><span class="w"> </span><span class="nv">System</span><span class="w"> </span><span class="nv">console.</span><span class="w"> </span><span class="nv">Type</span><span class="w"> </span><span class="s">"quit"</span><span class="w"> </span><span class="nb">or</span><span class="w"> </span><span class="nv">Ctrl-D</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">finish</span>
 <span class="nb">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
 </section>
 <section id="interactive-session">
-<h3>2- Interactive session<a class="headerlink" href="#interactive-session" title="Link to this heading"></a></h3>
+<h3>3- Interactive session<a class="headerlink" href="#interactive-session" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>The first thing is to check the domain that is being used. In the PlanSys2 terminal window type:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span><span class="w"> </span><span class="nv">domain</span>
+<span class="nv">domain:</span>
+<span class="p">(</span><span class="nv">define</span><span class="w"> </span><span class="p">(</span><span class="nv">domain</span><span class="w"> </span><span class="nv">simple</span><span class="p">)</span>
+<span class="p">(</span><span class="ss">:requirements</span><span class="w"> </span><span class="ss">:adl</span><span class="w"> </span><span class="ss">:durative-actions</span><span class="w"> </span><span class="ss">:fluents</span><span class="w"> </span><span class="ss">:strips</span><span class="w"> </span><span class="ss">:typing</span><span class="w"> </span><span class="p">)</span>
 
-<span class="p">(</span><span class="w"> </span><span class="nv">define</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nv">domain</span><span class="w"> </span><span class="nv">simple</span><span class="w"> </span><span class="p">)</span>
-<span class="p">(</span><span class="w"> </span><span class="ss">:requirements</span><span class="w"> </span><span class="ss">:strips</span><span class="w"> </span><span class="ss">:adl</span><span class="w"> </span><span class="ss">:typing</span><span class="w"> </span><span class="ss">:durative-actions</span><span class="w"> </span><span class="ss">:fluents</span><span class="w"> </span><span class="p">)</span>
-<span class="p">(</span><span class="w"> </span><span class="ss">:types</span>
-<span class="w">  </span><span class="nv">robot</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">object</span>
-<span class="w">  </span><span class="nb">room</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">object</span>
+<span class="p">(</span><span class="ss">:types</span>
+<span class="nv">robot</span>
+<span class="nb">room</span>
 <span class="p">)</span>
-<span class="p">(</span><span class="w"> </span><span class="ss">:predicates</span>
-<span class="w">  </span><span class="p">(</span><span class="w"> </span><span class="nv">robot_at</span><span class="w"> </span><span class="nv">?robot0</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="w"> </span><span class="nv">?room1</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span><span class="w"> </span><span class="p">)</span>
-<span class="w">  </span><span class="p">(</span><span class="w"> </span><span class="nv">connected</span><span class="w"> </span><span class="nv">?room0</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span><span class="w"> </span><span class="nv">?room1</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span><span class="w"> </span><span class="p">)</span>
-<span class="w">  </span><span class="p">(</span><span class="w"> </span><span class="nv">battery_full</span><span class="w"> </span><span class="nv">?robot0</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="w"> </span><span class="p">)</span>
+
+<span class="p">(</span><span class="ss">:predicates</span>
+<span class="p">(</span><span class="nv">battery_full</span><span class="w"> </span><span class="nv">?r</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">battery_low</span><span class="w"> </span><span class="nv">?r</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">charging_point_at</span><span class="w"> </span><span class="nv">?ro</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">?ro1</span><span class="w"> </span><span class="nv">?ro2</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">robot_at</span><span class="w"> </span><span class="nv">?r</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="w"> </span><span class="nv">?ro</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="w">  </span><span class="o">...</span>
 </pre></div>
@@ -341,7 +347,8 @@ where you launched PlanSys2, and relaunch it.</p>
 </ol>
 <blockquote>
 <div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="nv">types</span>
-<span class="nv">Types:</span><span class="w"> </span><span class="mi">2</span>
+<span class="nv">Types:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">          </span><span class="nv">object</span>
 <span class="w">          </span><span class="nv">robot</span>
 <span class="w">          </span><span class="nb">room</span>
 </pre></div>
@@ -359,11 +366,11 @@ where you launched PlanSys2, and relaunch it.</p>
 
 <span class="nb">get</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="nv">predicates</span>
 <span class="nv">Predicates:</span><span class="w"> </span><span class="mi">5</span>
-<span class="w">  </span><span class="nv">robot_at</span>
-<span class="w">  </span><span class="nv">connected</span>
 <span class="w">  </span><span class="nv">battery_full</span>
 <span class="w">  </span><span class="nv">battery_low</span>
 <span class="w">  </span><span class="nv">charging_point_at</span>
+<span class="w">  </span><span class="nv">connected</span>
+<span class="w">  </span><span class="nv">robot_at</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -382,6 +389,7 @@ where you launched PlanSys2, and relaunch it.</p>
 <span class="w"> </span><span class="nv">?0</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span>
 <span class="w"> </span><span class="nv">?1</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span>
 <span class="w"> </span><span class="nv">?2</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">room</span>
+<span class="nv">Duration:</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="nv">?duration</span><span class="w"> </span><span class="mf">5.000000</span><span class="p">))</span>
 <span class="nv">AtStart</span><span class="w"> </span><span class="nv">requirements:</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="p">(</span><span class="nv">connected</span><span class="w"> </span><span class="nv">?1</span><span class="w"> </span><span class="nv">?2</span><span class="p">)(</span><span class="nv">robot_at</span><span class="w"> </span><span class="nv">?0</span><span class="w"> </span><span class="nv">?1</span><span class="p">))</span>
 <span class="nv">OverAll</span><span class="w"> </span><span class="nv">requirements:</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="p">(</span><span class="nv">battery_full</span><span class="w"> </span><span class="nv">?0</span><span class="p">))</span>
 <span class="nv">AtEnd</span><span class="w"> </span><span class="nv">requirements:</span>
@@ -419,7 +427,7 @@ this, the robot must have a battery, and the rooms must be connected. Therefore,
 </pre></div>
 </div>
 </div></blockquote>
-<p>If no errros, these instances can be checked by typing:</p>
+<p>If no errors, these instances can be checked by typing:</p>
 <blockquote>
 <div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span><span class="w"> </span><span class="nv">problem</span><span class="w"> </span><span class="nv">instances</span>
 <span class="nv">Instances:</span><span class="w"> </span><span class="mi">7</span>
@@ -492,22 +500,18 @@ to end up being true. It is usually a predicate that we want to add to the knowl
 <blockquote>
 <div><div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="nb">get</span><span class="w"> </span><span class="nv">plan</span>
 <span class="nv">plan:</span>
-<span class="mi">0</span><span class="w">        </span><span class="p">(</span><span class="nv">askcharge</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">entrance</span><span class="w"> </span><span class="nv">chargingroom</span><span class="p">)</span><span class="w">  </span><span class="mi">5</span>
-<span class="mf">0.001</span><span class="w">    </span><span class="p">(</span><span class="nv">charge</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">chargingroom</span><span class="p">)</span><span class="w">      </span><span class="mi">5</span>
-<span class="mf">5.002</span><span class="w">    </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">chargingroom</span><span class="w"> </span><span class="nv">kitchen</span><span class="p">)</span><span class="w">        </span><span class="mi">5</span>
-<span class="mf">10.003</span><span class="w">   </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">kitchen</span><span class="w"> </span><span class="nv">dinning</span><span class="p">)</span><span class="w">     </span><span class="mi">5</span>
-<span class="mf">15.004</span><span class="w">   </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">dinning</span><span class="w"> </span><span class="nv">bedroom</span><span class="p">)</span><span class="w">     </span><span class="mi">5</span>
-<span class="mf">20.005</span><span class="w">   </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">bedroom</span><span class="w"> </span><span class="nv">bathroom</span><span class="p">)</span><span class="w">    </span><span class="mi">5</span>
+<span class="nv">0:</span><span class="w">       </span><span class="p">(</span><span class="nv">askcharge</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">entrance</span><span class="w"> </span><span class="nv">chargingroom</span><span class="p">)</span><span class="w">  </span><span class="nv">[5]</span>
+<span class="nv">5.001:</span><span class="w">   </span><span class="p">(</span><span class="nv">charge</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">chargingroom</span><span class="p">)</span><span class="w">      </span><span class="nv">[5]</span>
+<span class="nv">10.001:</span><span class="w">  </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">chargingroom</span><span class="w"> </span><span class="nv">kitchen</span><span class="p">)</span><span class="w">        </span><span class="nv">[5]</span>
+<span class="nv">15.002:</span><span class="w">  </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">kitchen</span><span class="w"> </span><span class="nv">dinning</span><span class="p">)</span><span class="w">     </span><span class="nv">[5]</span>
+<span class="nv">20.003:</span><span class="w">  </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">dinning</span><span class="w"> </span><span class="nv">bedroom</span><span class="p">)</span><span class="w">     </span><span class="nv">[5]</span>
+<span class="nv">25.004:</span><span class="w">  </span><span class="p">(</span><span class="nv">move</span><span class="w"> </span><span class="nv">leia</span><span class="w"> </span><span class="nv">bedroom</span><span class="w"> </span><span class="nv">bathroom</span><span class="p">)</span><span class="w">    </span><span class="nv">[5]</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>To create the plan, the first thing to do is generate two files: <code class="docutils literal notranslate"><span class="pre">`/tmp/domain.pddl`</span></code> and <code class="docutils literal notranslate"><span class="pre">`/tmp/problem.pddl`</span></code>.
-You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>popf<span class="w"> </span>popf<span class="w"> </span>/tmp/domain.pddl<span class="w"> </span>/tmp/problem.pddl
-</pre></div>
-</div>
-</div></blockquote>
+<p>Each line is the time of the action in the plan, the action and its duration. Kairos plans inside the planner node and
+writes no files. To get the task it receives, set its <code class="docutils literal notranslate"><span class="pre">KAIROS.dump_dir</span></code> parameter to a folder (see <a class="reference internal" href="../../design/index.html#design"><span class="std std-ref">PlanSys2 design</span></a>):
+you can then run the planner yourself on those files, with <code class="docutils literal notranslate"><span class="pre">kairos</span> <span class="pre">&lt;domain</span> <span class="pre">file&gt;</span> <span class="pre">&lt;problem</span> <span class="pre">file&gt;</span></code>.</p>
 <ol class="arabic simple" start="10">
 <li><p>We can also delete instances, predicates or the goal:</p></li>
 </ol>
@@ -519,7 +523,8 @@ You can check that they are there from the last planning. In fact, we can run th
 </div>
 </div></blockquote>
 <p>11. What we will not be able to do is execute the plan (we would do it with the <code class="docutils literal notranslate"><span class="pre">run</span></code> command) because there is no node
-running right now that implements the domain actions. We will see that in the next tutorial.</p>
+running right now that implements the domain actions. We will see that in the next tutorial. <code class="docutils literal notranslate"><span class="pre">Ctrl-C</span></code> in the terminal
+cancels a plan in execution, or clears the line at the prompt.</p>
 </section>
 </section>
 </section>

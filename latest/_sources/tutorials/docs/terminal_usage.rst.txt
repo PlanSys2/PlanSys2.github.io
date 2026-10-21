@@ -51,7 +51,8 @@ the PDDL domain file to use is specified.
 
       ros2 launch plansys2_bringup plansys2_bringup_launch_distributed.py model_file:=/tmp/simple_example.pddl
 
-If all went well, all components of PlanSys2 will have been launched and awaits requests.
+If all went well, all components of PlanSys2 will have been launched and awaits requests. They plan with Kairos,
+the default planner.
 
 2- Execute PlanSys2 terminal
 ----------------------------
@@ -72,10 +73,10 @@ where you launched PlanSys2, and relaunch it.
 
   .. code-block:: lisp
 
-      ROS2 Planning System console. Type "quit" to finish
+      ROS2 Planning System console. Type "quit" or Ctrl-D to finish
       > 
 
-2- Interactive session
+3- Interactive session
 ----------------------
 
 1. The first thing is to check the domain that is being used. In the PlanSys2 terminal window type:
@@ -83,17 +84,22 @@ where you launched PlanSys2, and relaunch it.
   .. code-block:: lisp
 
       get domain
+      domain:
+      (define (domain simple)
+      (:requirements :adl :durative-actions :fluents :strips :typing )
 
-      ( define ( domain simple )
-      ( :requirements :strips :adl :typing :durative-actions :fluents )
-      ( :types
-      	robot - object
-      	room - object
+      (:types
+      robot
+      room
       )
-      ( :predicates
-      	( robot_at ?robot0 - robot ?room1 - room )
-      	( connected ?room0 - room ?room1 - room )
-      	( battery_full ?robot0 - robot )
+
+      (:predicates
+      (battery_full ?r - robot)
+      (battery_low ?r - robot)
+      (charging_point_at ?ro - room)
+      (connected ?ro1 ?ro2 - room)
+      (robot_at ?r - robot ?ro - room)
+      )
 
         ...
 
@@ -102,7 +108,8 @@ where you launched PlanSys2, and relaunch it.
   .. code-block:: lisp
 
       get model types
-      Types: 2
+      Types: 3
+	        object
 	        robot
 	        room
 
@@ -118,11 +125,11 @@ where you launched PlanSys2, and relaunch it.
       
       get model predicates 
       Predicates: 5
-      	robot_at
-      	connected
       	battery_full
       	battery_low
       	charging_point_at
+      	connected
+      	robot_at
 
 4. It is also possible to get the details of a predicate or an action:
 
@@ -139,6 +146,7 @@ where you launched PlanSys2, and relaunch it.
        	?0 - robot
        	?1 - room
        	?2 - room
+       Duration: (and (= ?duration 5.000000))
        AtStart requirements: (and (connected ?1 ?2)(robot_at ?0 ?1))
        OverAll requirements: (and (battery_full ?0))
        AtEnd requirements: 
@@ -174,7 +182,7 @@ this, the robot must have a battery, and the rooms must be connected. Therefore,
        set instance bathroom room
        set instance chargingroom room
 
-If no errros, these instances can be checked by typing:
+If no errors, these instances can be checked by typing:
 
   .. code-block:: lisp
 
@@ -244,20 +252,17 @@ to end up being true. It is usually a predicate that we want to add to the knowl
   .. code-block:: lisp
 
        get plan
-       plan: 
-       0	(askcharge leia entrance chargingroom)	5
-       0.001	(charge leia chargingroom)	5
-       5.002	(move leia chargingroom kitchen)	5
-       10.003	(move leia kitchen dinning)	5
-       15.004	(move leia dinning bedroom)	5
-       20.005	(move leia bedroom bathroom)	5
+       plan:
+       0:	(askcharge leia entrance chargingroom)	[5]
+       5.001:	(charge leia chargingroom)	[5]
+       10.001:	(move leia chargingroom kitchen)	[5]
+       15.002:	(move leia kitchen dinning)	[5]
+       20.003:	(move leia dinning bedroom)	[5]
+       25.004:	(move leia bedroom bathroom)	[5]
 
-To create the plan, the first thing to do is generate two files: ```/tmp/domain.pddl``` and ```/tmp/problem.pddl```. 
-You can check that they are there from the last planning. In fact, we can run the planner directly by typing in a shell in another terminal:
-
-  .. code-block:: bash
-       
-       ros2 run popf popf /tmp/domain.pddl /tmp/problem.pddl
+Each line is the time of the action in the plan, the action and its duration. Kairos plans inside the planner node and
+writes no files. To get the task it receives, set its ``KAIROS.dump_dir`` parameter to a folder (see :ref:`design`):
+you can then run the planner yourself on those files, with ``kairos <domain file> <problem file>``.
 
 10. We can also delete instances, predicates or the goal:
 
@@ -268,4 +273,5 @@ You can check that they are there from the last planning. In fact, we can run th
        remove goal 
 
 11. What we will not be able to do is execute the plan (we would do it with the ``run`` command) because there is no node 
-running right now that implements the domain actions. We will see that in the next tutorial.
+running right now that implements the domain actions. We will see that in the next tutorial. ``Ctrl-C`` in the terminal
+cancels a plan in execution, or clears the line at the prompt.

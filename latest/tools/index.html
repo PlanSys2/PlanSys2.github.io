@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -275,7 +275,8 @@ constraints, from <code class="docutils literal notranslate"><span class="pre">p
 <li><p><strong>Plan log</strong> (key <code class="docutils literal notranslate"><span class="pre">2</span></code>): the execution trace as sentences, one per event; <code class="docutils literal notranslate"><span class="pre">c</span></code> clears it.
 See <a class="reference internal" href="../execution_trace/index.html#execution-trace"><span class="std std-ref">Reading an execution</span></a>.</p></li>
 </ul>
-<p>A panel says when the node that feeds it is not running, and keeps its last data.</p>
+<p>The Plan Monitor and Knowledge panels say when the node that feeds them is not running, and keep
+their last data. The TUI does not run on Humble (see <a class="reference internal" href="../migration/index.html#migration"><span class="std std-ref">Migrating to 4.0.0</span></a>).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_tui_cli<span class="w"> </span>plansys2_tui
 </pre></div>
 </div>

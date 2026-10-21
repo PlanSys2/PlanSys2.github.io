@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -294,9 +294,10 @@ too. See <a class="reference internal" href="#spinning-the-node-of-a-controller"
 <li><p>Every call waits until its component is active, however long it takes: an application no
 longer needs a wait of its own for PlanSys2 (the examples had one), and a call no longer fails
 after some seconds because PlanSys2 is not there yet. <code class="docutils literal notranslate"><span class="pre">wait_active()</span></code> waits alone.</p></li>
-<li><p>A request without answer is sent again, up to three times, with a new client each time: a
-call without answer takes about three seconds to give up, instead of one.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ExecutorClient</span></code> has a single constructor; the one with a node name is gone.</p></li>
+<li><p>A request that can be repeated (queries, and changes that leave the same state) is sent up to
+three times in all when it gets no answer, with a new client after the first: a call without
+answer takes about three seconds to give up, instead of one.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExecutorClient</span></code> only has constructors that take a node; the one with a node name is gone.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PlannerClient</span></code> declares <code class="docutils literal notranslate"><span class="pre">plan_solver_timeout</span></code> on the node, unless it is declared already.</p></li>
 </ul>
 <p>Python:</p>
@@ -361,9 +362,9 @@ on the node of the manager and the name of the managed node, and <code class="do
 <ul class="simple">
 <li><p>The monolithic bringup has no <code class="docutils literal notranslate"><span class="pre">plansys2</span></code> node and no <code class="docutils literal notranslate"><span class="pre">*_lc_mngr</span></code> nodes: PlanSys2 has four
 nodes, <code class="docutils literal notranslate"><span class="pre">domain_expert</span></code>, <code class="docutils literal notranslate"><span class="pre">problem_expert</span></code>, <code class="docutils literal notranslate"><span class="pre">planner</span></code> and <code class="docutils literal notranslate"><span class="pre">executor</span></code>. In the distributed
-bringup, <code class="docutils literal notranslate"><span class="pre">lifecycle_manager</span></code> keeps watching them once they are active (<code class="docutils literal notranslate"><span class="pre">supervise:=false</span></code>
-makes it exit, as before).</p></li>
-<li><p>Both bringups start again a process that ends (<code class="docutils literal notranslate"><span class="pre">respawn</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code> by default; <code class="docutils literal notranslate"><span class="pre">respawn:=false</span></code>
+bringup, <code class="docutils literal notranslate"><span class="pre">lifecycle_manager</span></code> keeps watching them once they are active (<code class="docutils literal notranslate"><span class="pre">supervise:</span> <span class="pre">false</span></code>
+in its section of the parameters file makes it exit, as before).</p></li>
+<li><p>Both bringups start again a component process that ends (<code class="docutils literal notranslate"><span class="pre">respawn</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code> by default; <code class="docutils literal notranslate"><span class="pre">respawn:=false</span></code>
 as before), and give the problem expert a <code class="docutils literal notranslate"><span class="pre">state_file</span></code> of their own launch, so that it comes
 back with its problem. Applications that launch the nodes themselves get none of this unless
 they set it.</p></li>

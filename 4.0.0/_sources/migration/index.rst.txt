@@ -44,9 +44,10 @@ C++:
 * Every call waits until its component is active, however long it takes: an application no
   longer needs a wait of its own for |PN| (the examples had one), and a call no longer fails
   after some seconds because |PN| is not there yet. ``wait_active()`` waits alone.
-* A request without answer is sent again, up to three times, with a new client each time: a
-  call without answer takes about three seconds to give up, instead of one.
-* ``ExecutorClient`` has a single constructor; the one with a node name is gone.
+* A request that can be repeated (queries, and changes that leave the same state) is sent up to
+  three times in all when it gets no answer, with a new client after the first: a call without
+  answer takes about three seconds to give up, instead of one.
+* ``ExecutorClient`` only has constructors that take a node; the one with a node name is gone.
 * ``PlannerClient`` declares ``plan_solver_timeout`` on the node, unless it is declared already.
 
 Python:
@@ -117,9 +118,9 @@ The bringup
 
 * The monolithic bringup has no ``plansys2`` node and no ``*_lc_mngr`` nodes: |PN| has four
   nodes, ``domain_expert``, ``problem_expert``, ``planner`` and ``executor``. In the distributed
-  bringup, ``lifecycle_manager`` keeps watching them once they are active (``supervise:=false``
-  makes it exit, as before).
-* Both bringups start again a process that ends (``respawn``, ``true`` by default; ``respawn:=false``
+  bringup, ``lifecycle_manager`` keeps watching them once they are active (``supervise: false``
+  in its section of the parameters file makes it exit, as before).
+* Both bringups start again a component process that ends (``respawn``, ``true`` by default; ``respawn:=false``
   as before), and give the problem expert a ``state_file`` of their own launch, so that it comes
   back with its problem. Applications that launch the nodes themselves get none of this unless
   they set it.

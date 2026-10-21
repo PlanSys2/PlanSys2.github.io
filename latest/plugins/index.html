@@ -152,7 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -176,8 +176,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -253,7 +253,7 @@
 <a class="reference external" href="https://github.com/PlanSys2/kairos">Kairos</a> is the default: it plans every PDDL feature PlanSys2 executes (see <a class="reference internal" href="../pddl_support/index.html#pddl-support"><span class="std std-ref">PDDL support</span></a>).</p>
 <p>A plugin may say which PDDL requirements it plans with. The planner gives a task only to the
 plugins that support everything the domain and the problem use, and answers with the reason
-when none does (for instance, a domain with <code class="docutils literal notranslate"><span class="pre">:conditional-effects</span></code> is not sent to POPF).
+when none does (for instance, a domain that uses <code class="docutils literal notranslate"><span class="pre">when</span></code> is not sent to POPF).
 A plugin that says nothing gets every task.</p>
 <table class="docutils align-default">
 <thead>
@@ -300,7 +300,7 @@ Metrics; Negative Preconditions.</p></td>
 Metrics; Negative Preconditions;
 Disjunctive preconditions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://www.fast-downward.org/HomePage">Fast Downward</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.fast-downward.org/">Fast Downward</a></p></td>
 <td><p><a class="reference external" href="https://github.com/kas-lab/downward_ros">DownwardPlanner</a></p></td>
 <td><p>Derived predicates; Existential
 preconditions; Disjunctive preconditions</p></td>
@@ -329,8 +329,8 @@ what another one does at its start.</p></li>
 <li><p><a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/sequential_bt_builder.cpp">SequentialBTBuilder</a>. The actions run one after the other, in the order of the plan.</p></li>
 </ul>
 <p>Whatever the builder, a timed plan runs each action at its time in the plan, not before: plans
-with timed initial literals, processes, events, continuous effects or constraints with times,
-or any plan when the executor’s <code class="docutils literal notranslate"><span class="pre">timed_execution</span></code> parameter is true.</p>
+with processes, events, continuous effects, constraints with times or an end (PDDL+), or any
+plan when the executor’s <code class="docutils literal notranslate"><span class="pre">timed_execution</span></code> parameter is true.</p>
 <p>The assembly with arms of <code class="docutils literal notranslate"><span class="pre">plansys2_bt_example</span></code> runs the same plan with STN and Simple to
 compare them.</p>
 </section>

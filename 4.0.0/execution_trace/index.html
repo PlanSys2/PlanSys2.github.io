@@ -153,7 +153,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#requisites">0- Requisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">2- Interactive session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/terminal_usage.html#interactive-session">3- Interactive session</a></li>
 </ul>
 </li>
 </ul>
@@ -177,8 +177,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example">1- Running the example</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#move-action-performer">3- Move action performer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">3- Mission controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-nav2">4- Running the example with Nav2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
 </ul>
 </li>
 </ul>
@@ -310,7 +310,8 @@ planned time and how late it is.</p></td>
 <td><p>A new plan replaces the running one: which running actions go on, which are dropped.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PLAN_END</span></code></p></td>
-<td><p>How the plan ended: succeeded, failed, cancelled, aborted.</p></td>
+<td><p>How the plan ended: succeeded, failed, cancelled, aborted, or an error setting up the
+new plan.</p></td>
 </tr>
 </tbody>
 </table>
@@ -332,8 +333,9 @@ shifted: the rest is what the previous actions took.</p>
 </section>
 <section id="an-example">
 <h2>An example<a class="headerlink" href="#an-example" title="Link to this heading"></a></h2>
-<p>The PDDL+ greenhouse of <code class="docutils literal notranslate"><span class="pre">plansys2_pddlplus_example</span></code>, in the TUI. The recharge fails on
-purpose, and the controller replans from where the world is:</p>
+<p>The PDDL+ greenhouse of <code class="docutils literal notranslate"><span class="pre">plansys2_pddlplus_example</span></code>, in the TUI, launched so that the recharge
+fails (<code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">launch</span> <span class="pre">plansys2_pddlplus_example</span> <span class="pre">plansys2_pddlplus_example.launch.yaml</span>
+<span class="pre">recharge_fails_at:=0.5</span></code>); the controller replans from where the world is:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>━━ 06:24:44 Plan starts: timed, each action at its time, its problem read 1.605 s before, 9 actions, STNBTBuilder
     1.606  (recharge rover) waits for its time in the plan, 7.999
     8.013  (recharge rover) starts on time (planned at 7.999, the plan 0.013 s later)

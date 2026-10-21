@@ -16,7 +16,7 @@ Installation
 
       .. code-block:: bash
 
-         sudo apt install ros-<distro>-plansys2-*
+         sudo apt install 'ros-<distro>-plansys2-*'
 
       .. note::
 
@@ -89,6 +89,6 @@ What next
 *********
 
 * :ref:`terminal_usage` explains every command of the terminal.
-* The other tools show what |PN| knows and does while a plan runs: the TUI with its plan log,
-  and the execution trace.
+* The other tools show what |PN| knows and does while a plan runs: the TUI with its plan log
+  (:ref:`tools`), and the :ref:`execution_trace`.
 * :ref:`tutorials` build robot behaviors step by step.
