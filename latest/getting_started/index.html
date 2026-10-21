@@ -285,12 +285,23 @@ set goal (and(robot_at leia bathroom))
 </pre></div>
 </div>
 </li>
-<li><p>Ask for a plan, and run it:</p>
+<li><p>To watch the plan run, open the TUI in a third terminal (it does not run on Humble: see
+<a class="reference internal" href="../migration/index.html#migration"><span class="std std-ref">Migrating to 4.0.0</span></a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/plansys2_ws/install/setup.bash
+ros2<span class="w"> </span>run<span class="w"> </span>plansys2_tui_cli<span class="w"> </span>plansys2_tui
+</pre></div>
+</div>
+<p>Its <em>Plan Monitor</em> panel shows the plan being executed and the progress of each action,
+<em>Action Execution</em> which performer runs each action, and <em>Knowledge</em> how the problem changes.
+The <em>Plan log</em> tab (key <code class="docutils literal notranslate"><span class="pre">2</span></code>) tells, as they happen, what the executor does and why.</p>
+</li>
+<li><p>In the PlanSys2 terminal, ask for a plan, and run it:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>get plan
 run
 </pre></div>
 </div>
-<p>The terminal shows the progress of each action, and <code class="docutils literal notranslate"><span class="pre">Successfully</span> <span class="pre">finished</span></code> at the end.</p>
+<p>The terminal shows the progress of each action, and <code class="docutils literal notranslate"><span class="pre">Successfully</span> <span class="pre">finished</span></code> at the end;
+the TUI shows the same, action by action.</p>
 </li>
 </ol>
 </section>

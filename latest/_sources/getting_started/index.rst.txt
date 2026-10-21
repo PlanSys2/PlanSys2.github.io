@@ -21,7 +21,8 @@ Installation
       .. note::
 
          4.0.0 reaches the binaries of each distribution with its next sync: until then, ``apt``
-         installs the previous release.
+         installs the previous release. To use 4.0.0 now, build it from source as
+         :ref:`build-instructions` explains.
 
    3. Clone the `examples <https://github.com/PlanSys2/ros2_planning_system_examples>`_ in a
       workspace and build them:
@@ -76,14 +77,27 @@ Running the example
       set predicate (robot_at leia entrance)
       set goal (and(robot_at leia bathroom))
 
-4. Ask for a plan, and run it:
+4. To watch the plan run, open the TUI in a third terminal (it does not run on Humble: see
+   :ref:`migration`):
+
+   .. code-block:: bash
+
+      source ~/plansys2_ws/install/setup.bash
+      ros2 run plansys2_tui_cli plansys2_tui
+
+   Its *Plan Monitor* panel shows the plan being executed and the progress of each action,
+   *Action Execution* which performer runs each action, and *Knowledge* how the problem changes.
+   The *Plan log* tab (key ``2``) tells, as they happen, what the executor does and why.
+
+5. In the |PN| terminal, ask for a plan, and run it:
 
    .. code-block:: text
 
       get plan
       run
 
-   The terminal shows the progress of each action, and ``Successfully finished`` at the end.
+   The terminal shows the progress of each action, and ``Successfully finished`` at the end;
+   the TUI shows the same, action by action.
 
 What next
 *********

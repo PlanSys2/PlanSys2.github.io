@@ -32,7 +32,9 @@ selector, bottom left).
    .. note::
 
       4.0.0 reaches the binaries of each distribution with its next sync: until then, ``apt``
-      installs the previous release.
+      installs the previous release. To use 4.0.0 now, build it from source as the next
+      section explains, with the ``<distro>-devel`` branch of |PN| and the ``<distro>`` branch
+      of the examples.
 
 Build from source
 *****************
