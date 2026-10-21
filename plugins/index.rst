@@ -6,12 +6,25 @@ Plugins
 Planner plugins
 ***************
 
-This page lists the known planner plugins for PlanSys2.
+The planner node runs the plan solver plugins of its ``plan_solver_plugins`` parameter.
+`Kairos`_ is the default: it plans every PDDL feature |PN| executes (see :ref:`pddl_support`).
+
+A plugin may say which PDDL requirements it plans with. The planner gives a task only to the
+plugins that support everything the domain and the problem use, and answers with the reason
+when none does (for instance, a domain with ``:conditional-effects`` is not sent to POPF).
+A plugin that says nothing gets every task.
 
 +------------------+----------------------+------------------------------------------+
 | Planner          | Plugin               | Highlights                               |
 +==================+======================+==========================================+
-| `POPF`_          | `POPFPlanSolver`_    | Numeric fluents; Durative actions.       |
+| `Kairos`_        | `KairosPlanSolver`_  | Default. Everything |PN| executes:       |
+|  (default)       |                      | ADL, numeric and object fluents,         |
+|                  |                      | durative actions, timed initial literals |
+|                  |                      | and fluents, derived predicates, PDDL+,  |
+|                  |                      | constraints, preferences, metrics.       |
++------------------+----------------------+------------------------------------------+
+| `POPF`_          | `POPFPlanSolver`_    | Numeric fluents; Durative actions;       |
+|                  |                      | Timed initial literals.                  |
 +------------------+----------------------+------------------------------------------+
 | `TFD`_           | `TFDPlanSolver`_     | Numeric fluents; Durative actions.       |
 +------------------+----------------------+------------------------------------------+
@@ -36,6 +49,8 @@ This page lists the known planner plugins for PlanSys2.
 +------------------+----------------------+------------------------------------------+
 
 
+.. _Kairos: https://github.com/PlanSys2/kairos
+.. _KairosPlanSolver: https://github.com/PlanSys2/ros2_planning_system/tree/rolling/plansys2_kairos_plan_solver
 .. _POPF: https://planning.wiki/ref/planners/popf
 .. _POPFPlanSolver: https://github.com/PlanSys2/ros2_planning_system/tree/rolling/plansys2_popf_plan_solver
 .. _TFD: https://tfd.informatik.uni-freiburg.de/
@@ -56,15 +71,22 @@ This page lists the known planner plugins for PlanSys2.
 Behavior tree builder plugins
 *****************************
 
-This page lists the available BT builder plugins.
+The executor turns each plan into a behavior tree with the plugin of its
+``bt_builder_plugin`` parameter:
 
-+----------------------+
-| Plugin               |
-+======================+
-| `SimpleBTBuilder`_   |
-+----------------------+
-| `STNBTBuilder`_      |
-+----------------------+
+* `STNBTBuilder`_, the default. It follows the time network of the plan, the start and the end
+  of each action: an action starts as soon as what it needs is done, also when it only needs
+  what another one does at its start.
+* `SimpleBTBuilder`_. It waits for whole actions to end: simpler, less parallel.
+* `SequentialBTBuilder`_. The actions run one after the other, in the order of the plan.
+
+Whatever the builder, a timed plan runs each action at its time in the plan, not before: plans
+with timed initial literals, processes, events, continuous effects or constraints with times,
+or any plan when the executor's ``timed_execution`` parameter is true.
+
+The assembly with arms of ``plansys2_bt_example`` runs the same plan with STN and Simple to
+compare them.
 
 .. _SimpleBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/simple_bt_builder.cpp
 .. _STNBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/stn_bt_builder.cpp
+.. _SequentialBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/sequential_bt_builder.cpp

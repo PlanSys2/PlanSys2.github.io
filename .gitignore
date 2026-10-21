@@ -4,3 +4,4 @@ bin/
 pyvenv.cfg
 .DS_Store
 venv/
+_site/

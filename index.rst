@@ -54,6 +54,10 @@ If you use this software, consider citing our work;
    getting_started/index.rst
    build_instructions/index.rst
    design/index.rst
+   migration/index.rst
+   pddl_support/index.rst
+   execution_trace/index.rst
+   tools/index.rst
    tutorials/index.rst
    plugins/index.rst
    about/index.rst

@@ -1,0 +1,8 @@
+{
+  "default": "4.0.0",
+  "versions": [
+    {"name": "latest", "ref": "HEAD", "title": "latest (development)"},
+    {"name": "4.0.0", "ref": "4.0.0", "title": "4.0.0"},
+    {"name": "3.1.0", "ref": "3.1.0", "title": "3.1.0 and earlier"}
+  ]
+}

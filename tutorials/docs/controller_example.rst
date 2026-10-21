@@ -260,10 +260,11 @@ four PlanSys2 clients to interact with PlanSys2:
          
          void init()
            {
-             domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
-             planner_client_ = std::make_shared<plansys2::PlannerClient>();
-             problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
-             executor_client_ = std::make_shared<plansys2::ExecutorClient>();
+             // The clients work on this node: they create none
+             domain_expert_ = std::make_shared<plansys2::DomainExpertClient>(*this);
+             planner_client_ = std::make_shared<plansys2::PlannerClient>(*this);
+             problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>(*this);
+             executor_client_ = std::make_shared<plansys2::ExecutorClient>(*this);
              init_knowledge();
            }
 
