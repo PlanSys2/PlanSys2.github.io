@@ -17,7 +17,7 @@ It is common for PlanSys2 to have a package that contains all the elements to pl
 * Possibly (not in this tutorial) a node that initiates knowledge and manages when to execute a plan and its goals.
 
 
-In this tutorial we are going to run again and to analyze the package of the simple example shown in: ref: `getting_started`.
+In this tutorial we are going to run again and to analyze the package of the simple example shown in :ref:`getting_started`.
 
 Tutorial Steps
 ==============
@@ -31,7 +31,6 @@ Clone in your workspace and build the |PN| `examples <https://github.com/PlanSys
 
       cd <your_workspace>
       git clone -b <ros2-distro> https://github.com/PlanSys2/ros2_planning_system_examples.git src/ros2_planning_system_examples
-      colcon build --symlink-install
       rosdep install --from-paths src --ignore-src -r -y
       colcon build --symlink-install
 
@@ -42,7 +41,7 @@ Clone in your workspace and build the |PN| `examples <https://github.com/PlanSys
 
    .. code-block:: bash
 
-      ros2 launch plansys2_simple_example plansys2_simple_example_launch.py
+      ros2 launch plansys2_simple_example plansys2_simple_example.launch.yaml
 
    This launch PlanSys2 this `simple PDDL domain <https://github.com/PlanSys2/ros2_planning_system_examples/blob/rolling/plansys2_simple_example/pddl/simple_example.pddl>`_,
    and some processes that implements a fake version of the domain's actions.
@@ -102,16 +101,16 @@ Go to ``<your_workspace>/src/ros2_planning_system_examples/plansys2_simple_examp
 of this tutorial. The structure is the usual of a ROS2 package, with a ``package.xml`` and a ``CMakeLists.txt`` as usual. Besides, we have the 
 next directories:
 
-* **pddl** The directory with the PDDL file that contains the domain. It is the same of the ref: `terminal_usage`.
+* **pddl** The directory with the PDDL file that contains the domain. It is the same of the :ref:`terminal_usage`.
 * **launch** It contains the launcher of this example:
 * **src** It contains the implementation of the three actions of the domain.
 
 3- Actions implementation
 -------------------------
 
-The actions in the domain are *move*, *charge* and *ask_charge*. It will contain a "fake" implementation. Each node that implements an action is called *action performer*. Each action will take some seconds
+The actions in the domain are *move*, *charge* and *askcharge*. It will contain a "fake" implementation. Each node that implements an action is called *action performer*. Each action will take some seconds
 to execute, only incrementing a ``progress`` value and displaying it in the terminal. Each action in PlanSys2 is a 
-`managed node <https://design.ros2.org/articles/node_lifecycle.html>`_ , also known as *lifecycle node*. When active, it will iterativelly call 
+`managed node <https://design.ros2.org/articles/node_lifecycle.html>`_ , also known as *lifecycle node*. When active, it will iteratively call 
 a function to perform the job. Let's analyze the code of *move* action in ``src/move_action_node.cpp``:
 
 
@@ -126,40 +125,42 @@ a function to perform the job. Let's analyze the code of *move* action in ``src/
          {
            progress_ = 0.0;
          }
-       
+
        private:
          void do_work()
          {
-           if (progress_ < 1.0) {
-             progress_ += 0.02;
+           // As long as the plan says it lasts
+           progress_ += 1.0 / std::max(1.0, get_planned_duration() * get_parameter("rate").as_double());
+           if (progress_ < 1.0 - 1e-3) {
              send_feedback(progress_, "Move running");
            } else {
              finish(true, 1.0, "Move completed");
-       
+
              progress_ = 0.0;
              std::cout << std::endl;
            }
-       
+
            std::cout << "\r\e[K" << std::flush;
            std::cout << "Moving ... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
              std::flush;
          }
-       
+
          float progress_;
        };
-       
+
        int main(int argc, char ** argv)
        {
          rclcpp::init(argc, argv);
          auto node = std::make_shared<MoveAction>();
-       
+
          node->set_parameter(rclcpp::Parameter("action_name", "move"));
+         node->set_parameter(rclcpp::Parameter("rate", 4.0));
          node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-       
+
          rclcpp::spin(node->get_node_base_interface());
-       
+
          rclcpp::shutdown();
-       
+
          return 0;
        }
 
@@ -170,26 +171,28 @@ a function to perform the job. Let's analyze the code of *move* action in ``src/
 
        : plansys2::ActionExecutorClient("move")
 
-By default, ``do_work()`` will be called every 200ms (5Hz). This rate can be changed at runtime through the ``rate`` ROS parameter (in Hz), without having to modify the C++ code.
+By default, ``do_work()`` will be called every 200ms (5Hz). The ``rate`` ROS parameter (in Hz) changes it, without modifying the C++ code: it is read when the node is configured, so set it before, in the launcher or with ``set_parameter``, as this example does (4 Hz).
 
 * ``plansys2::ActionExecutorClient`` has an API, with these relevant protected methods for the actions:
 
   .. code-block:: c++
        
-       const std::vector<std::string> & get_arguments();
+       const std::vector<std::string> & get_arguments() const;
+       double get_planned_duration() const;
        void send_feedback(float completion, const std::string & status = "");
        void finish(bool success, float completion, const std::string & status = "");
 
 ``get_arguments()`` returns the list of arguments of an action. For example, when executing ``(move leia chargingroom kitchen)``, it will return 
-this vector of strings: ``{"leia", "chargingroom", "kitchen"}``
+this vector of strings: ``{"leia", "chargingroom", "kitchen"}``. ``get_planned_duration()`` returns the duration the
+plan gives the action: this example advances its progress so that it lasts as long.
 
 This code is sending feedback of its completion. When finished, ``finish`` method indicates that the action has finished, and send back if 
-it succesfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.
+it successfully finished, the completion value in [0-1] and optional info. Then, the node will pass to inactive state.
 
   .. code-block:: c++
 
-           if (progress_ < 1.0) {
-             progress_ += 0.02;
+           progress_ += 1.0 / std::max(1.0, get_planned_duration() * get_parameter("rate").as_double());
+           if (progress_ < 1.0 - 1e-3) {
              send_feedback(progress_, "Move running");
            } else {
              finish(true, 1.0, "Move completed");
@@ -205,72 +208,47 @@ it succesfully finished, the completion value in [0-1] and optional info. Then, 
        auto node = std::make_shared<MoveAction>();
      
        node->set_parameter(rclcpp::Parameter("action_name", "move"));
+       node->set_parameter(rclcpp::Parameter("rate", 4.0));
        node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
        rclcpp::spin(node->get_node_base_interface());
 
-The parameter ``action`` sets what action implements the ``node`` object. 
+The parameter ``action_name`` sets what action implements the ``node`` object. 
 
 4- Launcher
 -----------
 
-The launcher must include the PlanSys2 launcher, selecting the domain, and it runs the executables that implements the PDDL actions:
+The launcher (``launch/plansys2_simple_example.launch.yaml``) includes the PlanSys2 launcher, selecting the domain, and runs the executables that implement the PDDL actions:
 
-  .. code-block:: python
+  .. code-block:: yaml
        :linenos:
 
-       def generate_launch_description():
-           example_dir = get_package_share_directory('plansys2_simple_example')
-           namespace = LaunchConfiguration('namespace')
-       
-           declare_namespace_cmd = DeclareLaunchArgument(
-               'namespace',
-               default_value='',
-               description='Namespace')
-       
-           plansys2_cmd = IncludeLaunchDescription(
-               PythonLaunchDescriptionSource(os.path.join(
-                   get_package_share_directory('plansys2_bringup'),
-                   'launch',
-                   'plansys2_bringup_launch_monolithic.py')),
-               launch_arguments={
-                 'model_file': example_dir + '/pddl/simple_example.pddl',
-                 'namespace': namespace
-                 }.items())
-       
-           move_cmd = Node(
-               package='plansys2_simple_example',
-               executable='move_action_node',
-               name='move_action_node',
-               namespace=namespace,
-               output='screen',
-               parameters=[])
-       
-           charge_cmd = Node(
-               package='plansys2_simple_example',
-               executable='charge_action_node',
-               name='charge_action_node',
-               namespace=namespace,
-               output='screen',
-               parameters=[])
-       
-           ask_charge_cmd = Node(
-               package='plansys2_simple_example',
-               executable='ask_charge_action_node',
-               name='ask_charge_action_node',
-               namespace=namespace,
-               output='screen',
-               parameters=[])   # Create the launch description and populate
-           ld = LaunchDescription()
-       
-           ld.add_action(declare_namespace_cmd)
-       
-           # Declare the launch options
-           ld.add_action(plansys2_cmd)
-       
-           ld.add_action(move_cmd)
-           ld.add_action(charge_cmd)
-           ld.add_action(ask_charge_cmd)
-       
-           return ld
+       launch:
+       - arg:
+           name: namespace
+           default: ''
+           description: Namespace
+       - include:
+           file: $(find-pkg-share plansys2_bringup)/launch/plansys2_bringup_launch_monolithic.py
+           arg:
+           - {name: model_file, value: $(find-pkg-share plansys2_simple_example)/pddl/simple_example.pddl}
+           - {name: namespace, value: $(var namespace)}
+       - node:
+           pkg: plansys2_simple_example
+           exec: move_action_node
+           name: move_action_node
+           namespace: $(var namespace)
+           output: screen
+       - node:
+           pkg: plansys2_simple_example
+           exec: charge_action_node
+           name: charge_action_node
+           namespace: $(var namespace)
+           output: screen
+       - node:
+           pkg: plansys2_simple_example
+           exec: ask_charge_action_node
+           name: ask_charge_action_node
+           namespace: $(var namespace)
+           output: screen
 

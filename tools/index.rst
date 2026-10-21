@@ -34,7 +34,8 @@ TUI
 * **Plan log** (key ``2``): the execution trace as sentences, one per event; ``c`` clears it.
   See :ref:`execution_trace`.
 
-A panel says when the node that feeds it is not running, and keeps its last data.
+The Plan Monitor and Knowledge panels say when the node that feeds them is not running, and keep
+their last data. The TUI does not run on Humble (see :ref:`migration`).
 
 .. code-block:: bash
 
