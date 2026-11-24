@@ -623,11 +623,11 @@ Parameters
    * - ``enable_groot_monitoring``
      - bool
      - ``false``
-     - Publish the behavior tree for Groot2.
+     - Publish the behavior tree for Groot2 and the TUI (see :ref:`tui_behavior_tree`).
    * - ``server_port``
      - int
      - 1800
-     - Port for Groot2.
+     - Port for Groot2 and the TUI.
 
 Action
 ------
