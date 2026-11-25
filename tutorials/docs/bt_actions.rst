@@ -124,6 +124,16 @@ If you haven't done yet, clone in your workspace and build the |PN| `examples <h
     
     source commands.txt
 
+* To watch the trees while they run, open the TUI in another terminal and press ``3`` (tab
+  *Behavior tree*). The example launches the executor with ``enable_groot_monitoring``, so the tab
+  shows the tree of the plan at once (port 1800). To see the BT of an action instead, press ``p``
+  and type the port of its performer: ``1700`` for ``move_1``, ``1702`` for ``move_2``, ...
+  (see below). See :ref:`tui_behavior_tree`.
+
+   .. code-block:: bash
+
+      ros2 run plansys2_tui_cli plansys2_tui
+
 2- Using Behavior Trees
 -----------------------
 

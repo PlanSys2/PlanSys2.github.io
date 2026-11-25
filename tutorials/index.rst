@@ -13,3 +13,4 @@ PlanSys2 Tutorials
    docs/controller_example.rst
    docs/bt_actions.rst
    docs/multi_planner.rst
+   docs/state_updater.rst

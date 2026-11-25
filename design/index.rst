@@ -228,6 +228,16 @@ simulates the PDDL+ dynamics: the active processes and the continuous effects of
 actions change the functions for the time passed, and then the events whose conditions hold
 happen.
 
+The problem can also follow the world by itself. The problem expert loads *updater plugins*
+(``plansys2::ProblemUpdater``, listed in ``updater_plugins``): each one gets the node and the
+problem, and changes the problem directly, inside the problem expert, without going through its
+services. |PN| comes with one, the **state updater**, that keeps the problem in sync with the
+sensors of the robot from rules in a YAML file: see :ref:`state_updater`.
+
+A batch of changes (``problem_expert/apply_changes``; ``applyChanges`` in the C++ client,
+``apply_problem_changes`` in the Python one) is made all or none, with a single notification: one
+replanning and one check of the over all conditions, not one per change.
+
 Parameters
 ----------
 
@@ -263,6 +273,12 @@ Parameters
        Started again, the node loads it when it configures, instead of ``problem_file``, and
        comes back with the problem it had. A leading ``~`` is the home folder; the file is
        deleted when the node is cleaned up. Empty: not kept. The bringups set one per launch.
+   * - ``updater_plugins``
+     - string[]
+     - ``[]``
+     - Names of the updater plugins to load. Each name has its class in ``<name>.plugin`` and
+       its parameters under ``<name>``. The problem expert fails to configure if one of them
+       cannot be loaded or configured. See :ref:`state_updater`.
 
 Services
 --------
@@ -282,6 +298,11 @@ All of type ``plansys2_msgs/srv/...``:
    * - ``problem_expert/get_problem``
      - ``GetProblem``
      - The problem as PDDL text, with the time it was read.
+   * - ``problem_expert/apply_changes``
+     - ``ApplyProblemChanges``
+     - Adds and removes instances, predicates and functions (``ProblemChange``) in order, all or
+       none, with a single notification. Instance removals go last. If one fails, nothing is
+       changed, and ``error_info`` says which one and why.
    * - ``problem_expert/clear_problem_knowledge``
      - ``ClearProblemKnowledge``
      - Removes instances, predicates, functions, goal, metric and constraints, and the timed
@@ -623,11 +644,11 @@ Parameters
    * - ``enable_groot_monitoring``
      - bool
      - ``false``
-     - Publish the behavior tree for Groot2.
+     - Publish the behavior tree for Groot2 and the TUI (see :ref:`tui_behavior_tree`).
    * - ``server_port``
      - int
      - 1800
-     - Port for Groot2.
+     - Port for Groot2 and the TUI.
 
 Action
 ------
@@ -1022,6 +1043,9 @@ Both take these launch arguments:
    * - ``state_file``
      - Where the problem expert keeps its problem; by default a file of this launch in the
        temporary folder, so a new launch does not take the problem of another. Empty: not kept.
+   * - ``state_updater_config``
+     - The YAML with the rules of the state updater (see :ref:`state_updater`). Empty (the
+       default): no state updater.
 
 The nodes are configured in the order planner, domain expert, problem expert, executor, and
 activated in the order domain expert, problem expert, planner, executor; each transition
@@ -1088,3 +1112,340 @@ The main messages of ``plansys2_msgs``:
   completion and message.
 * ``ExecutionEvent``: an event of the execution trace (see :ref:`execution_trace`).
 * ``ActionPerformerStatus``: the state of a performer.
+* ``ProblemChange``: one change of ``problem_expert/apply_changes`` (``ADD_INSTANCE``,
+  ``REMOVE_INSTANCE``, ``ADD_PREDICATE``, ``REMOVE_PREDICATE``, ``SET_FUNCTION``,
+  ``REMOVE_FUNCTION``), with its ``instance`` or ``node``.
+* ``StateUpdate``: a change of a fact made by the state updater, and why (see
+  :ref:`state_updater`).
+
+.. _state_updater:
+
+State updater
+*************
+
+``plansys2_state_updater`` keeps the problem in sync with the sensors of the robot, configured
+only by YAML. Each rule reads one field of one topic, transforms it, and writes one fact of the
+problem with a write policy: a function (``(energy)``), a predicate (``(leak_detected)``), many
+facts from a list, or the objects the messages speak of. When a fact changes, the executor
+checks the over all conditions of the running actions, and a mission can replan. There is a
+tutorial: :ref:`state_updater_tutorial`.
+
+It is an updater plugin of the problem expert (``plansys2_state_updater/RulesUpdater``): it runs
+inside it and changes the problem directly. Give the bringup the rules:
+
+.. code-block:: bash
+
+   ros2 launch plansys2_bringup plansys2_bringup_launch_monolithic.py \
+     model_file:=/path/domain.pddl state_updater_config:=/path/rules.yaml
+
+which is the same as these parameters of the problem expert (in ``params_file``):
+
+.. code-block:: yaml
+
+   problem_expert:
+     ros__parameters:
+       updater_plugins: [state_updater]
+       state_updater:
+         plugin: plansys2_state_updater/RulesUpdater
+         config_file: /path/rules.yaml
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 14 11 50
+
+   * - Name (under ``state_updater.``)
+     - Type
+     - Default
+     - Meaning
+   * - ``config_file``
+     - string
+     - ``""``
+     - The YAML with the rules. Required.
+   * - ``dry_run``
+     - bool
+     - ``false``
+     - Log what it would write, without touching the problem.
+   * - ``check_domain``
+     - bool
+     - ``true``
+     - Check the rules against the domain, the problem and the plan.
+   * - ``resync_period``
+     - double
+     - 2.0
+     - Seconds between two checks of its facts against the problem: what the problem lost, or
+       someone else changed, is written again. 0: never.
+   * - ``timer_period``
+     - double
+     - 0.1
+     - Period of ``debounce``, ``min_period``, ``stale_after`` and ``expire_after``.
+   * - ``disabled_rules``
+     - string[]
+     - ``[]``
+     - Rules that write nothing, by name. It can be changed while it runs.
+   * - ``retry_after``
+     - double
+     - 5.0
+     - Seconds before a change the problem did not take is tried again.
+
+Rules
+-----
+
+.. code-block:: yaml
+
+   state_updater:
+     rules:
+       - name: battery                          # unique
+         topic: /robot/battery
+         type: sensor_msgs/msg/BatteryState     # optional: else, seen in the graph
+         field: percentage                      # also pose.pose.position.z, cells[2].voltage;
+                                                # without it, the whole message
+         transform: {linear: {scale: 100.0}}    # optional
+         target: {function: "(energy)"}         # or predicate, set, enum, instance
+         policy: {mode: correct, min_change: 2.0}
+         qos: {reliability: auto}               # optional
+
+The messages are read by introspection: any type works, known only by its name, with no code
+generated for it. The ``target`` says what the rule writes:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 78
+
+   * - Target
+     - Writes
+   * - ``function``
+     - The value of a function: a number, or an object for an object fluent
+       (``(:functions (location) - waypoint)``, written as ``(= (location) wp2)``).
+   * - ``predicate``
+     - A predicate, true or false. With a ``[*]`` field (``status[*]``) and parameters taken from
+       the message (``"(sensor_ok {name})"``), it is a **template**: each element writes its own
+       fact, with its own policy state. An element that does not come in a message is left as it
+       was.
+   * - ``set``
+     - The elements of a list are the facts that hold (``"(reachable {})"``): the new ones are
+       added, the ones that leave the list are removed. With a list of structs, ``{from}`` is
+       its field.
+   * - ``enum``
+     - One of several facts holds at a time, the one of the value (``"(mode_is {})"``). The one
+       that held goes before the new one holds, so that two never hold at once.
+   * - ``instance``
+     - Creates the objects the messages speak of, with some facts on them
+       (``facts: ["(contact_at {self} {waypoint})"]``), and removes them when they are not seen
+       for ``expire_after``, or at once when the message is the whole list and they are not in
+       it (``remove_when_missing``). An object that the goal or the rest of the plan uses is
+       kept until they no longer use it. The type may come from the message (``type: "{class}"``).
+
+The values written must be valid PDDL names of objects of the problem: only instance rules
+create objects. Each fact has a single owner: two rules cannot write the same fact, and a
+template, a set, an enum or an instance rule owns the whole predicates it writes.
+
+Transforms
+^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 45 40
+
+   * - Transform
+     - Arguments
+     - Gives
+   * - (none)
+     -
+     - The field as it is.
+   * - ``linear``
+     - ``scale`` (1), ``offset`` (0), ``round`` (decimals)
+     - A number.
+   * - ``compare``
+     - ``op`` (``<`` ``<=`` ``>`` ``>=`` ``==`` ``!=``), ``value``
+     - A boolean.
+   * - ``map``
+     - ``values: {sensor value: fact value}``, ``default``
+     - What it maps to.
+   * - ``range``
+     - ``limits: [5, 30]``, ``values: [shallow, mid, deep]`` (one more than limits)
+     - The value of its interval.
+   * - ``hysteresis``
+     - ``on_below`` + ``off_above``, or ``on_above`` + ``off_below``
+     - A boolean.
+   * - ``plugin``
+     - ``function: "package/Class"``, ``args: {...}``
+     - What the plugin gives.
+
+Every transform takes ``field``, a field of the value: with ``status[*]``, the ``level`` of each
+entry. A **plugin** is a C++ class (``plansys2_state_updater::TransformPlugin``) of any package,
+loaded with pluginlib: for what the other transforms cannot do. It gets the value of the field and
+the ``args`` of the rule; the YAML is never evaluated. ``plansys2_state_updater/MinOf`` comes with
+the package: the lowest of a list, of a field of its elements, not below a minimum.
+
+Policy
+^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 18 14 68
+
+   * - Key
+     - For
+     - Meaning
+   * - ``mode``
+     - functions
+     - ``write`` (default): compares with what it wrote. ``correct``: compares with the value
+       in the problem, which the plan also changes (``#t``), and writes only when the sensor is
+       ``min_change`` away from it.
+   * - ``min_change``
+     - functions
+     - Writes only changes at least this big (default: any change).
+   * - ``debounce``
+     - predicates
+     - The new value must hold this many seconds before it is written: a glitch of a sensor does
+       not abort an action.
+   * - ``min_period``
+     - all
+     - At most one write every this many seconds; the last value is written later.
+   * - ``stale_after``
+     - all
+     - Seconds without messages to take the topic as stale.
+   * - ``on_stale``
+     - all but sets
+     - ``keep`` (default) the last value; a predicate such as ``"(sensor_stale battery)"``, true
+       while stale; ``{value: 0.0}``, a value for the fact; or both,
+       ``{predicate: ..., value: ...}``.
+   * - ``sample_period``
+     - all
+     - A message every this many seconds at most is read; the others are not even read (a
+       100 Hz IMU, in the problem expert).
+   * - ``stamp``
+     - all
+     - The field with the time of the reading (``header.stamp``, or seconds): stale counts from
+       it, and a reading older than one already taken is not taken.
+
+An instance rule takes ``expire_after``, ``remove_when_missing``, ``max_instances``,
+``sample_period`` and ``stamp``.
+
+A function with continuous effects (``#t``) is either predicted by the model and corrected by a
+rule in mode ``correct``, or listed in ``measured_functions`` of the problem expert and written
+by a rule in mode ``write``.
+
+QoS
+^^^
+
+How the topic of a rule is subscribed. A reading lost under load is a fact that is not updated,
+so the subscription is reliable whenever its publishers are:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 45 35
+
+   * - Key
+     - Values
+     - Default
+   * - ``reliability``
+     - ``auto``, ``reliable``, ``best_effort``
+     - ``auto``
+   * - ``durability``
+     - ``auto``, ``volatile``, ``transient_local``
+     - ``volatile``
+   * - ``depth``
+     - Messages kept (keep last)
+     - 5
+
+``auto`` takes the most that all the publishers of the topic offer: reliable if all of them are
+reliable, best effort if one of them is not (most sensor drivers publish with
+``SensorDataQoS``, and a reliable subscription gets nothing from a best-effort publisher);
+transient local only if all of them are. The topic is subscribed once it has a publisher, and
+again when the publishers change what they offer. ``BEST_AVAILABLE`` of ROS 2 would not do it:
+it is resolved once, when the subscription is created, usually before the sensors start. With
+``reliable`` or ``best_effort`` the subscription is the one given, and a publisher that does not
+match it is warned of once.
+
+A topic is subscribed once for all its rules: the rules of a topic that give ``qos`` must give the
+same, and the ones that do not give it take it. Each subscription logs the QoS it took:
+``Subscribed to '/robot/battery' (sensor_msgs/msg/BatteryState; reliability reliable, durability
+volatile, depth 5)``.
+
+How it writes
+-------------
+
+Checks
+   On configure, the rules are checked against the domain and the problem, and the problem
+   expert does not configure if one is wrong, with every error found: a predicate or function
+   that is not in the domain, or has another number of parameters; an object of another type; a
+   predicate that the actions of the plan change (it would fight the executor); a function they
+   change, without mode ``correct``. When the domain changes, the rules that no longer fit write
+   nothing, and say why in their status, until a domain fits them again.
+
+Batches
+   The changes of each cycle are made at once (``applyChanges``): all or none, with one
+   notification, so one replanning. If they cannot be made at once, they are made one by one,
+   and the one that fails is tried again ``retry_after`` seconds later.
+
+Threads
+   The subscriptions run in a callback group of their own, and only put what they receive in an
+   inbox, keeping at most ``depth`` messages of each topic. The rules and the writes run in the
+   callback group of the problem expert, never at the same time as its services, so the problem
+   is never read half changed; and a burst of readings does not make the services wait. The
+   readings are taken in the order they came.
+
+Resync
+   Every ``resync_period`` it checks its facts and objects against the problem, and writes again
+   what it lost or someone else changed (the problem was cleared or replaced).
+
+Topics and services
+-------------------
+
+The names start with the name of the plugin in ``updater_plugins`` (``state_updater``):
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 25 45
+
+   * - Name
+     - Type
+     - Meaning
+   * - ``state_updater/events`` (published)
+     - ``plansys2_msgs/msg/StateUpdate``, depth 100
+     - Each write, with its rule, the fact, the new and the previous value, and the reason
+       (``battery: 95 → 82, deviation 13 ≥ 2``). The signal for a mission to replan on: unlike
+       ``problem_expert/update_notify``, the PDDL+ dynamics do not publish it.
+   * - ``state_updater/status`` (published)
+     - ``std_msgs/msg/String``, once a second
+     - The state of each rule and of each of its facts and objects, as JSON: enabled, stale,
+       the last value and what was written.
+   * - ``state_updater/reload`` (service)
+     - ``std_srvs/srv/Trigger``
+     - Loads the rules again from ``config_file``. They are checked as on configure, and the old
+       ones stay if the new ones are not valid. A rule that is the same keeps what it knew.
+
+.. code-block:: bash
+
+   # Disable some rules (their facts stay as they are); [] enables them all again
+   ros2 param set /problem_expert state_updater.disabled_rules "['battery', 'leak']"
+   ros2 service call /state_updater/reload std_srvs/srv/Trigger
+
+A mission that replans
+----------------------
+
+The state updater changes the problem, and the executor cuts an action whose over all conditions
+no longer hold. What to do then is up to the mission. ``replanning_mission.py`` of the package
+plans for the goal of the problem, runs the plan, plans again when it fails, and when no plan
+reaches the goal, waits for the world to change (``state_updater/events``) before asking the
+planner again:
+
+.. code-block:: bash
+
+   ros2 run plansys2_state_updater replanning_mission.py
+
+Updater plugins of your own
+---------------------------
+
+The problem expert loads any ``plansys2::ProblemUpdater`` listed in ``updater_plugins``: a class
+of yours, exported for ``plansys2_problem_expert``, gets the node, the problem and the domain,
+subscribes to what it wants and changes the problem. It is configured, activated and deactivated
+with the problem expert, and told when the domain changes. Its callbacks go in the default
+callback group of the node, never at the same time as the services of the problem expert, unless
+it creates a group of its own; then it must not touch the problem from there, as the state updater
+does. To keep the policies of the state updater and only compute a value in a way of your own, a
+transform plugin is enough.
+
+A rule reads one topic: a fact made of two sensors needs a plugin of your own, or a node that
+fuses them and publishes the result.
