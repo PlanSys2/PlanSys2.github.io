@@ -23,6 +23,8 @@ currently de-facto standard in Robotics.
 This project is the result of several years of experience in the development of robotic behaviors using 
 `ROSPlan <https://kcl-planning.github.io/ROSPlan/>`_. ROSPlan has greatly inspired this project. In addition to the migration 
 to ROS2, we contribute to key aspects: ease of use, efficiency, and new tools, such as our terminal.
+|PN| also plans with hierarchies of tasks, in HDDL (see :ref:`hddl_support`).
+
 To learn more about this project, such as related projects, and maintainers, see :ref:`about`.
 
 We hope that this software helps to include planning in more Robotics projects, offering simple and powerful software to 
@@ -56,6 +58,7 @@ If you use this software, consider citing our work;
    design/index.rst
    migration/index.rst
    pddl_support/index.rst
+   hddl_support/index.rst
    execution_trace/index.rst
    tools/index.rst
    tutorials/index.rst

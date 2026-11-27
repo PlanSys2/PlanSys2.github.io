@@ -11,6 +11,8 @@ A domain or a problem with something |PN| cannot represent fails when it is load
 message that says what (for instance ``PlanSys2 does not handle ...``). It is never loaded in
 part.
 
+For hierarchical problems, with tasks and methods, see :ref:`hddl_support`.
+
 What |PN| executes
 ******************
 

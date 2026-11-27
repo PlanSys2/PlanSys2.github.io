@@ -14,3 +14,4 @@ PlanSys2 Tutorials
    docs/bt_actions.rst
    docs/multi_planner.rst
    docs/state_updater.rst
+   docs/hddl_example.rst
