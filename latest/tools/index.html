@@ -107,6 +107,19 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html#running-pn">Running PlanSys2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html#messages">Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#state-updater">State updater</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#rules">Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../design/index.html#transforms">Transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../design/index.html#policy">Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../design/index.html#qos">QoS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#how-it-writes">How it writes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#topics-and-services">Topics and services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#a-mission-that-replans">A mission that replans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#updater-plugins-of-your-own">Updater plugins of your own</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../migration/index.html">Migrating to 4.0.0</a><ul>
@@ -129,6 +142,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#known-limits">Known limits</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../hddl_support/index.html">HDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#hddl-mode">HDDL mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#what-klimax-plans">What Klimax plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#the-task-network">The task network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#how-a-hierarchical-plan-is-executed">How a hierarchical plan is executed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#replanning">Replanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#following-a-plan">Following a plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../execution_trace/index.html">Reading an execution</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#the-events">The events</a></li>
@@ -139,7 +162,10 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#terminal">Terminal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tui">TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tui">TUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#behavior-tree-tab">Behavior tree tab</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#command-line">Command line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rqt-plugins">rqt plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#logger">Logger</a></li>
@@ -202,6 +228,32 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/state_updater.html">Keep the problem in sync with the sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/state_updater.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/state_updater.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#the-rules">1- The rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#running-pn-with-the-state-updater">2- Running PlanSys2 with the state updater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#the-sensors-speak">3- The sensors speak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#while-it-runs">4- While it runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#next">5- Next</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/hddl_example.html">Hierarchical planning with HDDL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/hddl_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/hddl_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#the-domain">1- The domain</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#from-the-terminal">2- From the terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#from-a-controller">3- From a controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#when-a-method-no-longer-applies">4- When a method no longer applies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#other-examples-in-hddl">5- Other examples in HDDL</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a><ul>
@@ -259,27 +311,97 @@ commands of a file. <a class="reference internal" href="../tutorials/docs/termin
 </section>
 <section id="tui">
 <h2>TUI<a class="headerlink" href="#tui" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">plansys2_tui</span></code> shows PlanSys2 in a terminal window, in two tabs:</p>
+<p><code class="docutils literal notranslate"><span class="pre">plansys2_tui</span></code> shows PlanSys2 in a terminal window, in three tabs:</p>
 <ul class="simple">
 <li><p><strong>Overview</strong> (key <code class="docutils literal notranslate"><span class="pre">1</span></code>): four panels.</p>
 <ul>
 <li><p><em>Action Execution</em>: each performer and the action it runs, from <code class="docutils literal notranslate"><span class="pre">performers_status</span></code>
 and <code class="docutils literal notranslate"><span class="pre">actions_hub</span></code>.</p></li>
 <li><p><em>Plan Monitor</em>: the plan being executed and the progress of each action, from
-<code class="docutils literal notranslate"><span class="pre">executing_plan</span></code> and <code class="docutils literal notranslate"><span class="pre">action_execution_info</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">executing_plan</span></code> and <code class="docutils literal notranslate"><span class="pre">action_execution_info</span></code>. A hierarchical (HDDL) plan is shown as its
+decomposition: each task with its method and its state, its subtasks below it.</p></li>
 <li><p><em>Performers</em>: the state of each performer.</p></li>
 <li><p><em>Knowledge</em>: instances, predicates, functions with their values, goal, metric and
-constraints, from <code class="docutils literal notranslate"><span class="pre">problem_expert/knowledge</span></code>.</p></li>
+constraints, from <code class="docutils literal notranslate"><span class="pre">problem_expert/knowledge</span></code>; the task network, in HDDL.</p></li>
 </ul>
 </li>
 <li><p><strong>Plan log</strong> (key <code class="docutils literal notranslate"><span class="pre">2</span></code>): the execution trace as sentences, one per event; <code class="docutils literal notranslate"><span class="pre">c</span></code> clears it.
 See <a class="reference internal" href="../execution_trace/index.html#execution-trace"><span class="std std-ref">Reading an execution</span></a>.</p></li>
+<li><p><strong>Behavior tree</strong> (key <code class="docutils literal notranslate"><span class="pre">3</span></code>): the behavior tree that runs, node by node. See
+<a class="reference internal" href="#tui-behavior-tree"><span class="std std-ref">Behavior tree tab</span></a>.</p></li>
 </ul>
 <p>The Plan Monitor and Knowledge panels say when the node that feeds them is not running, and keep
 their last data. The TUI does not run on Humble (see <a class="reference internal" href="../migration/index.html#migration"><span class="std std-ref">Migrating to 4.0.0</span></a>).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_tui_cli<span class="w"> </span>plansys2_tui
 </pre></div>
 </div>
+<section id="behavior-tree-tab">
+<span id="tui-behavior-tree"></span><h3>Behavior tree tab<a class="headerlink" href="#behavior-tree-tab" title="Link to this heading"></a></h3>
+<p>The tab shows a behavior tree while it runs, the same as Groot2 does in its monitor mode, without
+leaving the terminal. It takes the tree from the monitor of BehaviorTree.CPP
+(<code class="docutils literal notranslate"><span class="pre">Groot2Publisher</span></code>), so it shows any tree that publishes it:</p>
+<ul>
+<li><p><strong>The plan</strong>: the tree the executor builds from the plan, one branch per action. The executor
+publishes it when <code class="docutils literal notranslate"><span class="pre">enable_groot_monitoring</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>, on <code class="docutils literal notranslate"><span class="pre">server_port</span></code> (1800 by
+default). With the bringup launchers (<code class="docutils literal notranslate"><span class="pre">groot_port</span></code> changes the port):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_bringup<span class="w"> </span>plansys2_bringup_launch_monolithic.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>model_file:<span class="o">=</span>&lt;your<span class="w"> </span>domain&gt;<span class="w"> </span>enable_groot_monitoring:<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>A BT action</strong>: the tree of an action of <code class="docutils literal notranslate"><span class="pre">plansys2_bt_actions</span></code>, with the parameters
+<code class="docutils literal notranslate"><span class="pre">enable_groot_monitoring</span></code> and <code class="docutils literal notranslate"><span class="pre">server_port</span></code> of that performer (see <a class="reference internal" href="../tutorials/docs/bt_actions.html#bt-actions"><span class="std std-ref">Implement actions as Behavior Trees</span></a>).</p></li>
+</ul>
+<p>At the top of the tab is the address of the tree: <code class="docutils literal notranslate"><span class="pre">localhost:1800</span></code> (the executor) at first.
+Press <code class="docutils literal notranslate"><span class="pre">p</span></code> to edit it, and <code class="docutils literal notranslate"><span class="pre">Enter</span></code> to connect. It takes <code class="docutils literal notranslate"><span class="pre">1700</span></code>, <code class="docutils literal notranslate"><span class="pre">host:1700</span></code> or
+<code class="docutils literal notranslate"><span class="pre">tcp://host:1700</span></code>. The header next to it says the tree, how many nodes there are in each status,
+and whether it follows the execution.</p>
+<p>Each node shows its type, its name, and its ports:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">●</span></code> (yellow)</p></td>
+<td><p>running</p></td>
+<td><p>The node runs now.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">✔</span></code> (green)</p></td>
+<td><p>success</p></td>
+<td><p>The node ended well.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">✘</span></code> (red)</p></td>
+<td><p>failure</p></td>
+<td><p>The node failed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">–</span></code> (cyan)</p></td>
+<td><p>skipped</p></td>
+<td><p>The node was skipped (a precondition of BehaviorTree.CPP).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">○</span></code> (dim)</p></td>
+<td><p>idle</p></td>
+<td><p>The node did not run yet, or its tree was halted or reset.</p></td>
+</tr>
+</tbody>
+</table>
+<p>While it follows the execution (<code class="docutils literal notranslate"><span class="pre">f</span></code> switches it on and off), the tab opens the branches that
+run or failed and closes the ones that ended well, so a tree of a hundred nodes is still read at a
+glance. Not following, the branches stay as you leave them.</p>
+<p>When the executor starts a new plan, or replans, it publishes a new tree: the tab draws it in place
+of the old one. If nothing publishes at that address, the header says so and asks whether
+<code class="docutils literal notranslate"><span class="pre">enable_groot_monitoring</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> there; if the publisher goes, the tab keeps the last tree it
+knew.</p>
+<p>The tab needs <code class="docutils literal notranslate"><span class="pre">python3-zmq</span></code> (an <code class="docutils literal notranslate"><span class="pre">exec_depend</span></code> of <code class="docutils literal notranslate"><span class="pre">plansys2_tui_cli</span></code>, installed by
+<code class="docutils literal notranslate"><span class="pre">rosdep</span></code>).</p>
+</section>
 </section>
 <section id="command-line">
 <h2>Command line<a class="headerlink" href="#command-line" title="Link to this heading"></a></h2>

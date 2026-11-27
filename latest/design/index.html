@@ -107,6 +107,19 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#running-pn">Running PlanSys2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#messages">Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#state-updater">State updater</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rules">Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#transforms">Transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#policy">Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qos">QoS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-it-writes">How it writes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#topics-and-services">Topics and services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-mission-that-replans">A mission that replans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updater-plugins-of-your-own">Updater plugins of your own</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../migration/index.html">Migrating to 4.0.0</a><ul>
@@ -129,6 +142,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#known-limits">Known limits</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../hddl_support/index.html">HDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#hddl-mode">HDDL mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#what-klimax-plans">What Klimax plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#the-task-network">The task network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#how-a-hierarchical-plan-is-executed">How a hierarchical plan is executed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#replanning">Replanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#following-a-plan">Following a plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../execution_trace/index.html">Reading an execution</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#the-events">The events</a></li>
@@ -139,7 +162,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#terminal">Terminal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#tui">TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#tui">TUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tools/index.html#behavior-tree-tab">Behavior tree tab</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#command-line">Command line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#rqt-plugins">rqt plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#logger">Logger</a></li>
@@ -198,6 +224,32 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/state_updater.html">Keep the problem in sync with the sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/state_updater.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/state_updater.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#the-rules">1- The rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#running-pn-with-the-state-updater">2- Running PlanSys2 with the state updater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#the-sensors-speak">3- The sensors speak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#while-it-runs">4- While it runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#next">5- Next</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/hddl_example.html">Hierarchical planning with HDDL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/hddl_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/hddl_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#the-domain">1- The domain</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#from-the-terminal">2- From the terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#from-a-controller">3- From a controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#when-a-method-no-longer-applies">4- When a method no longer applies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#other-examples-in-hddl">5- Other examples in HDDL</a></li>
 </ul>
 </li>
 </ul>
@@ -268,8 +320,8 @@ and actions.</p>
 <section id="interfaces-at-a-glance">
 <h2>Interfaces at a glance<a class="headerlink" href="#interfaces-at-a-glance" title="Link to this heading"></a></h2>
 <p>Everything that enters and leaves PlanSys2. The details of each one are in the section of its node.</p>
-<table class="docutils align-default" id="id11">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">Actions</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Actions</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 30.0%" />
 <col style="width: 35.0%" />
@@ -288,8 +340,8 @@ and actions.</p>
 </tr>
 </tbody>
 </table>
-<table class="docutils align-default" id="id12">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">Topics</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Topics</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 28.0%" />
 <col style="width: 30.0%" />
@@ -523,6 +575,14 @@ values (numbers or objects), goal, metric and constraints. Every change is publi
 simulates the PDDL+ dynamics: the active processes and the continuous effects of running
 actions change the functions for the time passed, and then the events whose conditions hold
 happen.</p>
+<p>The problem can also follow the world by itself. The problem expert loads <em>updater plugins</em>
+(<code class="docutils literal notranslate"><span class="pre">plansys2::ProblemUpdater</span></code>, listed in <code class="docutils literal notranslate"><span class="pre">updater_plugins</span></code>): each one gets the node and the
+problem, and changes the problem directly, inside the problem expert, without going through its
+services. PlanSys2 comes with one, the <strong>state updater</strong>, that keeps the problem in sync with the
+sensors of the robot from rules in a YAML file: see <a class="reference internal" href="#state-updater"><span class="std std-ref">State updater</span></a>.</p>
+<p>A batch of changes (<code class="docutils literal notranslate"><span class="pre">problem_expert/apply_changes</span></code>; <code class="docutils literal notranslate"><span class="pre">applyChanges</span></code> in the C++ client,
+<code class="docutils literal notranslate"><span class="pre">apply_problem_changes</span></code> in the Python one) is made all or none, with a single notification: one
+replanning and one check of the over all conditions, not one per change.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
@@ -569,6 +629,13 @@ Started again, the node loads it when it configures, instead of <code class="doc
 comes back with the problem it had. A leading <code class="docutils literal notranslate"><span class="pre">~</span></code> is the home folder; the file is
 deleted when the node is cleaned up. Empty: not kept. The bringups set one per launch.</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">updater_plugins</span></code></p></td>
+<td><p>string[]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Names of the updater plugins to load. Each name has its class in <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.plugin</span></code> and
+its parameters under <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>. The problem expert fails to configure if one of them
+cannot be loaded or configured. See <a class="reference internal" href="#state-updater"><span class="std std-ref">State updater</span></a>.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -596,105 +663,111 @@ deleted when the node is cleaned up. Empty: not kept. The bringups set one per l
 <td><p><code class="docutils literal notranslate"><span class="pre">GetProblem</span></code></p></td>
 <td><p>The problem as PDDL text, with the time it was read.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/clear_problem_knowledge</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/apply_changes</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ApplyProblemChanges</span></code></p></td>
+<td><p>Adds and removes instances, predicates and functions (<code class="docutils literal notranslate"><span class="pre">ProblemChange</span></code>) in order, all or
+none, with a single notification. Instance removals go last. If one fails, nothing is
+changed, and <code class="docutils literal notranslate"><span class="pre">error_info</span></code> says which one and why.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/clear_problem_knowledge</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ClearProblemKnowledge</span></code></p></td>
 <td><p>Removes instances, predicates, functions, goal, metric and constraints, and the timed
 facts and continuous effects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_instance</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_instance</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectParam</span></code></p></td>
 <td><p>Adds an instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_instance</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_instance</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectParam</span></code></p></td>
 <td><p>Removes an instance, and what refers to it.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_instance</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_instance</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetProblemInstanceDetails</span></code></p></td>
 <td><p>An instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_instances</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_instances</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetProblemInstances</span></code></p></td>
 <td><p>All instances.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_predicate</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_predicate</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectNode</span></code></p></td>
 <td><p>Adds a predicate.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_predicate</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_predicate</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectNode</span></code></p></td>
 <td><p>Removes a predicate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/exist_problem_predicate</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/exist_problem_predicate</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ExistNode</span></code></p></td>
 <td><p>Whether a predicate holds.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicate</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicate</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetNodeDetails</span></code></p></td>
 <td><p>A predicate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicates</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_predicates</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetStates</span></code></p></td>
 <td><p>All predicates.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_function</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_function</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectNode</span></code></p></td>
 <td><p>Adds a function with its value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/update_problem_function</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/update_problem_function</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectNode</span></code></p></td>
 <td><p>Changes the value of a function.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_function</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_function</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AffectNode</span></code></p></td>
 <td><p>Removes a function.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/exist_problem_function</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/exist_problem_function</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ExistNode</span></code></p></td>
 <td><p>Whether a function exists.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_function</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_function</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetNodeDetails</span></code></p></td>
 <td><p>A function and its value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_functions</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_functions</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetStates</span></code></p></td>
 <td><p>All functions and their values.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_goal</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/add_problem_goal</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AddProblemGoal</span></code></p></td>
 <td><p>Sets the goal.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_goal</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_goal</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetProblemGoal</span></code></p></td>
 <td><p>The goal.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_goal</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_goal</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">RemoveProblemGoal</span></code></p></td>
 <td><p>Removes the goal.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/is_problem_goal_satisfied</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/is_problem_goal_satisfied</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">IsProblemGoalSatisfied</span></code></p></td>
 <td><p>Whether a goal holds now.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/set_problem_metric</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/set_problem_metric</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">SetProblemMetric</span></code></p></td>
 <td><p>Sets the metric.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_metric</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/get_problem_metric</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GetProblemMetric</span></code></p></td>
 <td><p>The metric.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_metric</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/remove_problem_metric</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">RemoveProblemMetric</span></code></p></td>
 <td><p>Removes the metric.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/set_continuous_effect</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/set_continuous_effect</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">SetContinuousEffect</span></code></p></td>
 <td><p>Registers or removes the continuous effects of a running action (used by the
 executor).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/update_domain</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">problem_expert/update_domain</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ChangeDomain</span></code></p></td>
 <td><p>Adapts the problem to a new domain, or rejects it (used by the domain expert).</p></td>
 </tr>
@@ -1037,12 +1110,12 @@ its planned time as the earliest.</p></td>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">enable_groot_monitoring</span></code></p></td>
 <td><p>bool</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-<td><p>Publish the behavior tree for Groot2.</p></td>
+<td><p>Publish the behavior tree for Groot2 and the TUI (see <a class="reference internal" href="../tools/index.html#tui-behavior-tree"><span class="std std-ref">Behavior tree tab</span></a>).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">server_port</span></code></p></td>
 <td><p>int</p></td>
 <td><p>1800</p></td>
-<td><p>Port for Groot2.</p></td>
+<td><p>Port for Groot2 and the TUI.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1456,6 +1529,10 @@ with the four nodes, each with an executor of its own.</p></li>
 <td><p>Where the problem expert keeps its problem; by default a file of this launch in the
 temporary folder, so a new launch does not take the problem of another. Empty: not kept.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">state_updater_config</span></code></p></td>
+<td><p>The YAML with the rules of the state updater (see <a class="reference internal" href="#state-updater"><span class="std std-ref">State updater</span></a>). Empty (the
+default): no state updater.</p></td>
+</tr>
 </tbody>
 </table>
 <p>The nodes are configured in the order planner, domain expert, problem expert, executor, and
@@ -1533,7 +1610,395 @@ problem was read), <code class="docutils literal notranslate"><span class="pre">
 completion and message.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ExecutionEvent</span></code>: an event of the execution trace (see <a class="reference internal" href="../execution_trace/index.html#execution-trace"><span class="std std-ref">Reading an execution</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ActionPerformerStatus</span></code>: the state of a performer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProblemChange</span></code>: one change of <code class="docutils literal notranslate"><span class="pre">problem_expert/apply_changes</span></code> (<code class="docutils literal notranslate"><span class="pre">ADD_INSTANCE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">REMOVE_INSTANCE</span></code>, <code class="docutils literal notranslate"><span class="pre">ADD_PREDICATE</span></code>, <code class="docutils literal notranslate"><span class="pre">REMOVE_PREDICATE</span></code>, <code class="docutils literal notranslate"><span class="pre">SET_FUNCTION</span></code>,
+<code class="docutils literal notranslate"><span class="pre">REMOVE_FUNCTION</span></code>), with its <code class="docutils literal notranslate"><span class="pre">instance</span></code> or <code class="docutils literal notranslate"><span class="pre">node</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">StateUpdate</span></code>: a change of a fact made by the state updater, and why (see
+<a class="reference internal" href="#state-updater"><span class="std std-ref">State updater</span></a>).</p></li>
 </ul>
+</section>
+<section id="state-updater">
+<span id="id11"></span><h2>State updater<a class="headerlink" href="#state-updater" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">plansys2_state_updater</span></code> keeps the problem in sync with the sensors of the robot, configured
+only by YAML. Each rule reads one field of one topic, transforms it, and writes one fact of the
+problem with a write policy: a function (<code class="docutils literal notranslate"><span class="pre">(energy)</span></code>), a predicate (<code class="docutils literal notranslate"><span class="pre">(leak_detected)</span></code>), many
+facts from a list, or the objects the messages speak of. When a fact changes, the executor
+checks the over all conditions of the running actions, and a mission can replan. There is a
+tutorial: <a class="reference internal" href="../tutorials/docs/state_updater.html#state-updater-tutorial"><span class="std std-ref">Keep the problem in sync with the sensors</span></a>.</p>
+<p>It is an updater plugin of the problem expert (<code class="docutils literal notranslate"><span class="pre">plansys2_state_updater/RulesUpdater</span></code>): it runs
+inside it and changes the problem directly. Give the bringup the rules:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_bringup<span class="w"> </span>plansys2_bringup_launch_monolithic.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>model_file:<span class="o">=</span>/path/domain.pddl<span class="w"> </span>state_updater_config:<span class="o">=</span>/path/rules.yaml
+</pre></div>
+</div>
+<p>which is the same as these parameters of the problem expert (in <code class="docutils literal notranslate"><span class="pre">params_file</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">problem_expert</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">updater_plugins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">state_updater</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">state_updater</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plansys2_state_updater/RulesUpdater</span>
+<span class="w">      </span><span class="nt">config_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/rules.yaml</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 14.0%" />
+<col style="width: 11.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name (under <code class="docutils literal notranslate"><span class="pre">state_updater.</span></code>)</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config_file</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p></td>
+<td><p>The YAML with the rules. Required.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dry_run</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Log what it would write, without touching the problem.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_domain</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Check the rules against the domain, the problem and the plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resync_period</span></code></p></td>
+<td><p>double</p></td>
+<td><p>2.0</p></td>
+<td><p>Seconds between two checks of its facts against the problem: what the problem lost, or
+someone else changed, is written again. 0: never.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">timer_period</span></code></p></td>
+<td><p>double</p></td>
+<td><p>0.1</p></td>
+<td><p>Period of <code class="docutils literal notranslate"><span class="pre">debounce</span></code>, <code class="docutils literal notranslate"><span class="pre">min_period</span></code>, <code class="docutils literal notranslate"><span class="pre">stale_after</span></code> and <code class="docutils literal notranslate"><span class="pre">expire_after</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">disabled_rules</span></code></p></td>
+<td><p>string[]</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Rules that write nothing, by name. It can be changed while it runs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">retry_after</span></code></p></td>
+<td><p>double</p></td>
+<td><p>5.0</p></td>
+<td><p>Seconds before a change the problem did not take is tried again.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="rules">
+<h3>Rules<a class="headerlink" href="#rules" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">state_updater</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">battery</span><span class="w">                          </span><span class="c1"># unique</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robot/battery</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/BatteryState</span><span class="w">     </span><span class="c1"># optional: else, seen in the graph</span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percentage</span><span class="w">                      </span><span class="c1"># also pose.pose.position.z, cells[2].voltage;</span>
+<span class="w">                                             </span><span class="c1"># without it, the whole message</span>
+<span class="w">      </span><span class="nt">transform</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">linear</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="nv">100.0</span><span class="p p-Indicator">}}</span><span class="w">    </span><span class="c1"># optional</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="s">"(energy)"</span><span class="p p-Indicator">}</span><span class="w">         </span><span class="c1"># or predicate, set, enum, instance</span>
+<span class="w">      </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="nv">correct</span><span class="p p-Indicator">,</span><span class="nt"> min_change</span><span class="p">:</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">qos</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">reliability</span><span class="p">:</span><span class="w"> </span><span class="nv">auto</span><span class="p p-Indicator">}</span><span class="w">               </span><span class="c1"># optional</span>
+</pre></div>
+</div>
+<p>The messages are read by introspection: any type works, known only by its name, with no code
+generated for it. The <code class="docutils literal notranslate"><span class="pre">target</span></code> says what the rule writes:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 78.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Target</p></th>
+<th class="head"><p>Writes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">function</span></code></p></td>
+<td><p>The value of a function: a number, or an object for an object fluent
+(<code class="docutils literal notranslate"><span class="pre">(:functions</span> <span class="pre">(location)</span> <span class="pre">-</span> <span class="pre">waypoint)</span></code>, written as <code class="docutils literal notranslate"><span class="pre">(=</span> <span class="pre">(location)</span> <span class="pre">wp2)</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">predicate</span></code></p></td>
+<td><p>A predicate, true or false. With a <code class="docutils literal notranslate"><span class="pre">[*]</span></code> field (<code class="docutils literal notranslate"><span class="pre">status[*]</span></code>) and parameters taken from
+the message (<code class="docutils literal notranslate"><span class="pre">&quot;(sensor_ok</span> <span class="pre">{name})&quot;</span></code>), it is a <strong>template</strong>: each element writes its own
+fact, with its own policy state. An element that does not come in a message is left as it
+was.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set</span></code></p></td>
+<td><p>The elements of a list are the facts that hold (<code class="docutils literal notranslate"><span class="pre">&quot;(reachable</span> <span class="pre">{})&quot;</span></code>): the new ones are
+added, the ones that leave the list are removed. With a list of structs, <code class="docutils literal notranslate"><span class="pre">{from}</span></code> is
+its field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">enum</span></code></p></td>
+<td><p>One of several facts holds at a time, the one of the value (<code class="docutils literal notranslate"><span class="pre">&quot;(mode_is</span> <span class="pre">{})&quot;</span></code>). The one
+that held goes before the new one holds, so that two never hold at once.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">instance</span></code></p></td>
+<td><p>Creates the objects the messages speak of, with some facts on them
+(<code class="docutils literal notranslate"><span class="pre">facts:</span> <span class="pre">[&quot;(contact_at</span> <span class="pre">{self}</span> <span class="pre">{waypoint})&quot;]</span></code>), and removes them when they are not seen
+for <code class="docutils literal notranslate"><span class="pre">expire_after</span></code>, or at once when the message is the whole list and they are not in
+it (<code class="docutils literal notranslate"><span class="pre">remove_when_missing</span></code>). An object that the goal or the rest of the plan uses is
+kept until they no longer use it. The type may come from the message (<code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">&quot;{class}&quot;</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+<p>The values written must be valid PDDL names of objects of the problem: only instance rules
+create objects. Each fact has a single owner: two rules cannot write the same fact, and a
+template, a set, an enum or an instance rule owns the whole predicates it writes.</p>
+<section id="transforms">
+<h4>Transforms<a class="headerlink" href="#transforms" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 45.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Transform</p></th>
+<th class="head"><p>Arguments</p></th>
+<th class="head"><p>Gives</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>(none)</p></td>
+<td></td>
+<td><p>The field as it is.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">linear</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scale</span></code> (1), <code class="docutils literal notranslate"><span class="pre">offset</span></code> (0), <code class="docutils literal notranslate"><span class="pre">round</span></code> (decimals)</p></td>
+<td><p>A number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compare</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">op</span></code> (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> <code class="docutils literal notranslate"><span class="pre">==</span></code> <code class="docutils literal notranslate"><span class="pre">!=</span></code>), <code class="docutils literal notranslate"><span class="pre">value</span></code></p></td>
+<td><p>A boolean.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">map</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">values:</span> <span class="pre">{sensor</span> <span class="pre">value:</span> <span class="pre">fact</span> <span class="pre">value}</span></code>, <code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p>What it maps to.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">range</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">limits:</span> <span class="pre">[5,</span> <span class="pre">30]</span></code>, <code class="docutils literal notranslate"><span class="pre">values:</span> <span class="pre">[shallow,</span> <span class="pre">mid,</span> <span class="pre">deep]</span></code> (one more than limits)</p></td>
+<td><p>The value of its interval.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hysteresis</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">on_below</span></code> + <code class="docutils literal notranslate"><span class="pre">off_above</span></code>, or <code class="docutils literal notranslate"><span class="pre">on_above</span></code> + <code class="docutils literal notranslate"><span class="pre">off_below</span></code></p></td>
+<td><p>A boolean.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plugin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">function:</span> <span class="pre">&quot;package/Class&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">args:</span> <span class="pre">{...}</span></code></p></td>
+<td><p>What the plugin gives.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Every transform takes <code class="docutils literal notranslate"><span class="pre">field</span></code>, a field of the value: with <code class="docutils literal notranslate"><span class="pre">status[*]</span></code>, the <code class="docutils literal notranslate"><span class="pre">level</span></code> of each
+entry. A <strong>plugin</strong> is a C++ class (<code class="docutils literal notranslate"><span class="pre">plansys2_state_updater::TransformPlugin</span></code>) of any package,
+loaded with pluginlib: for what the other transforms cannot do. It gets the value of the field and
+the <code class="docutils literal notranslate"><span class="pre">args</span></code> of the rule; the YAML is never evaluated. <code class="docutils literal notranslate"><span class="pre">plansys2_state_updater/MinOf</span></code> comes with
+the package: the lowest of a list, of a field of its elements, not below a minimum.</p>
+</section>
+<section id="policy">
+<h4>Policy<a class="headerlink" href="#policy" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 14.0%" />
+<col style="width: 68.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>For</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mode</span></code></p></td>
+<td><p>functions</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">write</span></code> (default): compares with what it wrote. <code class="docutils literal notranslate"><span class="pre">correct</span></code>: compares with the value
+in the problem, which the plan also changes (<code class="docutils literal notranslate"><span class="pre">#t</span></code>), and writes only when the sensor is
+<code class="docutils literal notranslate"><span class="pre">min_change</span></code> away from it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">min_change</span></code></p></td>
+<td><p>functions</p></td>
+<td><p>Writes only changes at least this big (default: any change).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">debounce</span></code></p></td>
+<td><p>predicates</p></td>
+<td><p>The new value must hold this many seconds before it is written: a glitch of a sensor does
+not abort an action.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">min_period</span></code></p></td>
+<td><p>all</p></td>
+<td><p>At most one write every this many seconds; the last value is written later.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stale_after</span></code></p></td>
+<td><p>all</p></td>
+<td><p>Seconds without messages to take the topic as stale.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">on_stale</span></code></p></td>
+<td><p>all but sets</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">keep</span></code> (default) the last value; a predicate such as <code class="docutils literal notranslate"><span class="pre">&quot;(sensor_stale</span> <span class="pre">battery)&quot;</span></code>, true
+while stale; <code class="docutils literal notranslate"><span class="pre">{value:</span> <span class="pre">0.0}</span></code>, a value for the fact; or both,
+<code class="docutils literal notranslate"><span class="pre">{predicate:</span> <span class="pre">...,</span> <span class="pre">value:</span> <span class="pre">...}</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sample_period</span></code></p></td>
+<td><p>all</p></td>
+<td><p>A message every this many seconds at most is read; the others are not even read (a
+100 Hz IMU, in the problem expert).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stamp</span></code></p></td>
+<td><p>all</p></td>
+<td><p>The field with the time of the reading (<code class="docutils literal notranslate"><span class="pre">header.stamp</span></code>, or seconds): stale counts from
+it, and a reading older than one already taken is not taken.</p></td>
+</tr>
+</tbody>
+</table>
+<p>An instance rule takes <code class="docutils literal notranslate"><span class="pre">expire_after</span></code>, <code class="docutils literal notranslate"><span class="pre">remove_when_missing</span></code>, <code class="docutils literal notranslate"><span class="pre">max_instances</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sample_period</span></code> and <code class="docutils literal notranslate"><span class="pre">stamp</span></code>.</p>
+<p>A function with continuous effects (<code class="docutils literal notranslate"><span class="pre">#t</span></code>) is either predicted by the model and corrected by a
+rule in mode <code class="docutils literal notranslate"><span class="pre">correct</span></code>, or listed in <code class="docutils literal notranslate"><span class="pre">measured_functions</span></code> of the problem expert and written
+by a rule in mode <code class="docutils literal notranslate"><span class="pre">write</span></code>.</p>
+</section>
+<section id="qos">
+<h4>QoS<a class="headerlink" href="#qos" title="Link to this heading"></a></h4>
+<p>How the topic of a rule is subscribed. A reading lost under load is a fact that is not updated,
+so the subscription is reliable whenever its publishers are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 45.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Values</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reliability</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">reliable</span></code>, <code class="docutils literal notranslate"><span class="pre">best_effort</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">durability</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">volatile</span></code>, <code class="docutils literal notranslate"><span class="pre">transient_local</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">volatile</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">depth</span></code></p></td>
+<td><p>Messages kept (keep last)</p></td>
+<td><p>5</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">auto</span></code> takes the most that all the publishers of the topic offer: reliable if all of them are
+reliable, best effort if one of them is not (most sensor drivers publish with
+<code class="docutils literal notranslate"><span class="pre">SensorDataQoS</span></code>, and a reliable subscription gets nothing from a best-effort publisher);
+transient local only if all of them are. The topic is subscribed once it has a publisher, and
+again when the publishers change what they offer. <code class="docutils literal notranslate"><span class="pre">BEST_AVAILABLE</span></code> of ROS 2 would not do it:
+it is resolved once, when the subscription is created, usually before the sensors start. With
+<code class="docutils literal notranslate"><span class="pre">reliable</span></code> or <code class="docutils literal notranslate"><span class="pre">best_effort</span></code> the subscription is the one given, and a publisher that does not
+match it is warned of once.</p>
+<p>A topic is subscribed once for all its rules: the rules of a topic that give <code class="docutils literal notranslate"><span class="pre">qos</span></code> must give the
+same, and the ones that do not give it take it. Each subscription logs the QoS it took:
+<code class="docutils literal notranslate"><span class="pre">Subscribed</span> <span class="pre">to</span> <span class="pre">'/robot/battery'</span> <span class="pre">(sensor_msgs/msg/BatteryState;</span> <span class="pre">reliability</span> <span class="pre">reliable,</span> <span class="pre">durability</span>
+<span class="pre">volatile,</span> <span class="pre">depth</span> <span class="pre">5)</span></code>.</p>
+</section>
+</section>
+<section id="how-it-writes">
+<h3>How it writes<a class="headerlink" href="#how-it-writes" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>Checks</dt><dd><p>On configure, the rules are checked against the domain and the problem, and the problem
+expert does not configure if one is wrong, with every error found: a predicate or function
+that is not in the domain, or has another number of parameters; an object of another type; a
+predicate that the actions of the plan change (it would fight the executor); a function they
+change, without mode <code class="docutils literal notranslate"><span class="pre">correct</span></code>. When the domain changes, the rules that no longer fit write
+nothing, and say why in their status, until a domain fits them again.</p>
+</dd>
+<dt>Batches</dt><dd><p>The changes of each cycle are made at once (<code class="docutils literal notranslate"><span class="pre">applyChanges</span></code>): all or none, with one
+notification, so one replanning. If they cannot be made at once, they are made one by one,
+and the one that fails is tried again <code class="docutils literal notranslate"><span class="pre">retry_after</span></code> seconds later.</p>
+</dd>
+<dt>Threads</dt><dd><p>The subscriptions run in a callback group of their own, and only put what they receive in an
+inbox, keeping at most <code class="docutils literal notranslate"><span class="pre">depth</span></code> messages of each topic. The rules and the writes run in the
+callback group of the problem expert, never at the same time as its services, so the problem
+is never read half changed; and a burst of readings does not make the services wait. The
+readings are taken in the order they came.</p>
+</dd>
+<dt>Resync</dt><dd><p>Every <code class="docutils literal notranslate"><span class="pre">resync_period</span></code> it checks its facts and objects against the problem, and writes again
+what it lost or someone else changed (the problem was cleared or replaced).</p>
+</dd>
+</dl>
+</section>
+<section id="topics-and-services">
+<h3>Topics and services<a class="headerlink" href="#topics-and-services" title="Link to this heading"></a></h3>
+<p>The names start with the name of the plugin in <code class="docutils literal notranslate"><span class="pre">updater_plugins</span></code> (<code class="docutils literal notranslate"><span class="pre">state_updater</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 25.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">state_updater/events</span></code> (published)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">plansys2_msgs/msg/StateUpdate</span></code>, depth 100</p></td>
+<td><p>Each write, with its rule, the fact, the new and the previous value, and the reason
+(<code class="docutils literal notranslate"><span class="pre">battery:</span> <span class="pre">95</span> <span class="pre">→</span> <span class="pre">82,</span> <span class="pre">deviation</span> <span class="pre">13</span> <span class="pre">≥</span> <span class="pre">2</span></code>). The signal for a mission to replan on: unlike
+<code class="docutils literal notranslate"><span class="pre">problem_expert/update_notify</span></code>, the PDDL+ dynamics do not publish it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">state_updater/status</span></code> (published)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std_msgs/msg/String</span></code>, once a second</p></td>
+<td><p>The state of each rule and of each of its facts and objects, as JSON: enabled, stale,
+the last value and what was written.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">state_updater/reload</span></code> (service)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std_srvs/srv/Trigger</span></code></p></td>
+<td><p>Loads the rules again from <code class="docutils literal notranslate"><span class="pre">config_file</span></code>. They are checked as on configure, and the old
+ones stay if the new ones are not valid. A rule that is the same keeps what it knew.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Disable some rules (their facts stay as they are); [] enables them all again</span>
+ros2<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>/problem_expert<span class="w"> </span>state_updater.disabled_rules<span class="w"> </span><span class="s2">"['battery', 'leak']"</span>
+ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/state_updater/reload<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+</section>
+<section id="a-mission-that-replans">
+<h3>A mission that replans<a class="headerlink" href="#a-mission-that-replans" title="Link to this heading"></a></h3>
+<p>The state updater changes the problem, and the executor cuts an action whose over all conditions
+no longer hold. What to do then is up to the mission. <code class="docutils literal notranslate"><span class="pre">replanning_mission.py</span></code> of the package
+plans for the goal of the problem, runs the plan, plans again when it fails, and when no plan
+reaches the goal, waits for the world to change (<code class="docutils literal notranslate"><span class="pre">state_updater/events</span></code>) before asking the
+planner again:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_state_updater<span class="w"> </span>replanning_mission.py
+</pre></div>
+</div>
+</section>
+<section id="updater-plugins-of-your-own">
+<h3>Updater plugins of your own<a class="headerlink" href="#updater-plugins-of-your-own" title="Link to this heading"></a></h3>
+<p>The problem expert loads any <code class="docutils literal notranslate"><span class="pre">plansys2::ProblemUpdater</span></code> listed in <code class="docutils literal notranslate"><span class="pre">updater_plugins</span></code>: a class
+of yours, exported for <code class="docutils literal notranslate"><span class="pre">plansys2_problem_expert</span></code>, gets the node, the problem and the domain,
+subscribes to what it wants and changes the problem. It is configured, activated and deactivated
+with the problem expert, and told when the domain changes. Its callbacks go in the default
+callback group of the node, never at the same time as the services of the problem expert, unless
+it creates a group of its own; then it must not touch the problem from there, as the state updater
+does. To keep the policies of the state updater and only compute a value in a way of your own, a
+transform plugin is enough.</p>
+<p>A rule reads one topic: a fact made of two sensors needs a plugin of your own, or a node that
+fuses them and publishes the result.</p>
+</section>
 </section>
 </section>
 

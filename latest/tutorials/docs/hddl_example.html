@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hierarchical planning with HDDL &mdash; ROS2 Planning System 2 latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plugins" href="../../plugins/index.html" />
+    <link rel="prev" title="Keep the problem in sync with the sensors" href="state_updater.html" />
+
+<link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ROS2 Planning System 2
+              <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#what-next">What next</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#releases-and-distributions">Releases and distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#build-from-source">Build from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#choosing-the-middleware">Choosing the middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#optional-planners">Optional planners</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#interfaces-at-a-glance">Interfaces at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#domain-expert">Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#topics">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id2">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#executor">Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#action">Action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#behavior-tree-builders">Behavior tree builders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#repairing-a-plan">Repairing a plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#constraints">Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#action-performers">Action performers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#protocol">Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id9">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id10">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#client-libraries">Client libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#c">C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#python">Python</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#running-pn">Running PlanSys2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#messages">Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#state-updater">State updater</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#rules">Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../design/index.html#transforms">Transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../design/index.html#policy">Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../design/index.html#qos">QoS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#how-it-writes">How it writes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#topics-and-services">Topics and services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#a-mission-that-replans">A mission that replans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#updater-plugins-of-your-own">Updater plugins of your own</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/index.html">Migrating to 4.0.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-clients-take-the-node-of-the-application">The clients take the node of the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#spinning-the-node-of-a-controller">Spinning the node of a controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-lifecycle-manager">The lifecycle manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-bringup">The bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#bt-builders">BT builders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#executors">Executors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#kairos-the-default-planner">Kairos, the default planner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#c-20">C++20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#humble">Humble</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pddl_support/index.html">PDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#what-pn-executes">What PlanSys2 executes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#pddl-dynamics">PDDL+ dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#what-each-planner-plans">What each planner plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../hddl_support/index.html">HDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#hddl-mode">HDDL mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#what-klimax-plans">What Klimax plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#the-task-network">The task network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#how-a-hierarchical-plan-is-executed">How a hierarchical plan is executed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#replanning">Replanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#following-a-plan">Following a plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../execution_trace/index.html">Reading an execution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#the-events">The events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#late-and-shifted">Late, and shifted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#what-to-look-for">What to look for</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#terminal">Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#tui">TUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tools/index.html#behavior-tree-tab">Behavior tree tab</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#command-line">Command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#rqt-plugins">rqt plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">3- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="simple_example.html">The first planning package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="state_updater.html">Keep the problem in sync with the sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="state_updater.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="state_updater.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="state_updater.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="state_updater.html#the-rules">1- The rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="state_updater.html#running-pn-with-the-state-updater">2- Running PlanSys2 with the state updater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="state_updater.html#the-sensors-speak">3- The sensors speak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="state_updater.html#while-it-runs">4- While it runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="state_updater.html#next">5- Next</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Hierarchical planning with HDDL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-domain">1- The domain</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#from-the-terminal">2- From the terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#from-a-controller">3- From a controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#when-a-method-no-longer-applies">4- When a method no longer applies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-examples-in-hddl">5- Other examples in HDDL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#planner-plugins">Planner plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#behavior-tree-builder-plugins">Behavior tree builder plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS2 Planning System 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/PlanSys2/PlanSys2.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/plansys2.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Hierarchical planning with HDDL</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hierarchical-planning-with-hddl">
+<span id="hddl-example"></span><h1>Hierarchical planning with HDDL<a class="headerlink" href="#hierarchical-planning-with-hddl" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>HDDL mode is in the development version of PlanSys2 (<em>latest</em>): it is not in 4.0.0.</p>
+</div>
+<p>This tutorial runs the factory of <code class="docutils literal notranslate"><span class="pre">plansys2_bt_example</span></code> (see <a class="reference internal" href="bt_actions.html#bt-actions"><span class="std std-ref">Implement actions as Behavior Trees</span></a>) in HDDL. Three
+robots, <code class="docutils literal notranslate"><span class="pre">r2d2</span></code>, <code class="docutils literal notranslate"><span class="pre">c3po</span></code> and <code class="docutils literal notranslate"><span class="pre">bb8</span></code>, bring the wheel, the body and the steering wheel of a car
+to the assembly zone, and then one of them assembles it. In PDDL the problem says what must hold
+at the end, <code class="docutils literal notranslate"><span class="pre">(car_assembled</span> <span class="pre">car_1)</span></code>. In HDDL it says what is to be done, <code class="docutils literal notranslate"><span class="pre">(build</span> <span class="pre">car_1)</span></code>, and
+the domain says how a car is built. See <a class="reference internal" href="../../hddl_support/index.html#hddl-support"><span class="std std-ref">HDDL support</span></a> for what HDDL mode is.</p>
+</section>
+<section id="tutorial-steps">
+<h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
+<section id="requisites">
+<h3>0- Requisites<a class="headerlink" href="#requisites" title="Link to this heading"></a></h3>
+<p>HDDL mode is not in the binaries yet: build PlanSys2 from source (see <a class="reference internal" href="../../build_instructions/index.html#build-instructions"><span class="std std-ref">Build and Install</span></a>),
+with the examples, in the same workspace. Klimax, the planner of HDDL mode, comes with
+<code class="docutils literal notranslate"><span class="pre">dependency_repos.repos</span></code>.</p>
+</section>
+<section id="the-domain">
+<h3>1- The domain<a class="headerlink" href="#the-domain" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pddl/bt_example.hddl</span></code> has the actions of <code class="docutils literal notranslate"><span class="pre">pddl/bt_example.pddl</span></code> (<code class="docutils literal notranslate"><span class="pre">move</span></code>, <code class="docutils literal notranslate"><span class="pre">transport</span></code>,
+<code class="docutils literal notranslate"><span class="pre">assemble</span></code>, <code class="docutils literal notranslate"><span class="pre">recharge</span></code>), the same performers run them. On top of them, tasks and methods:</p>
+<div class="highlight-lisp notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="ss">:task</span><span class="w"> </span><span class="nv">build</span><span class="w"> </span><span class="ss">:parameters</span><span class="w"> </span><span class="p">(</span><span class="nv">?c</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">car</span><span class="p">))</span>
+<span class="p">(</span><span class="ss">:task</span><span class="w"> </span><span class="nv">fetch</span><span class="w"> </span><span class="ss">:parameters</span><span class="w"> </span><span class="p">(</span><span class="nv">?p</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">piece</span><span class="w"> </span><span class="nv">?to</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">zone</span><span class="p">))</span>
+<span class="p">(</span><span class="ss">:task</span><span class="w"> </span><span class="nv">ready</span><span class="w"> </span><span class="ss">:parameters</span><span class="w"> </span><span class="p">(</span><span class="nv">?r</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="w"> </span><span class="nv">?z</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">zone</span><span class="p">))</span>
+
+<span class="p">(</span><span class="ss">:method</span><span class="w"> </span><span class="nv">build_car</span>
+<span class="w">    </span><span class="ss">:parameters</span><span class="w"> </span><span class="p">(</span><span class="nv">?c</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">car</span><span class="w"> </span><span class="nv">?z</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">zone</span><span class="w"> </span><span class="nv">?w</span><span class="w"> </span><span class="nv">?b</span><span class="w"> </span><span class="nv">?s</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">piece</span><span class="w"> </span><span class="nv">?r</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nv">robot</span><span class="p">)</span>
+<span class="w">    </span><span class="ss">:task</span><span class="w"> </span><span class="p">(</span><span class="nv">build</span><span class="w"> </span><span class="nv">?c</span><span class="p">)</span>
+<span class="w">    </span><span class="ss">:precondition</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">is_assembly_zone</span><span class="w"> </span><span class="nv">?z</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">piece_is_wheel</span><span class="w"> </span><span class="nv">?w</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nv">piece_is_body_car</span><span class="w"> </span><span class="nv">?b</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nv">piece_is_steering_wheel</span><span class="w"> </span><span class="nv">?s</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">piece_not_used</span><span class="w"> </span><span class="nv">?w</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nv">piece_not_used</span><span class="w"> </span><span class="nv">?b</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nv">piece_not_used</span><span class="w"> </span><span class="nv">?s</span><span class="p">))</span>
+<span class="w">    </span><span class="ss">:subtasks</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">t1</span><span class="w"> </span><span class="p">(</span><span class="nv">fetch</span><span class="w"> </span><span class="nv">?w</span><span class="w"> </span><span class="nv">?z</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">t2</span><span class="w"> </span><span class="p">(</span><span class="nv">fetch</span><span class="w"> </span><span class="nv">?b</span><span class="w"> </span><span class="nv">?z</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">t3</span><span class="w"> </span><span class="p">(</span><span class="nv">fetch</span><span class="w"> </span><span class="nv">?s</span><span class="w"> </span><span class="nv">?z</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">t4</span><span class="w"> </span><span class="p">(</span><span class="nv">ready</span><span class="w"> </span><span class="nv">?r</span><span class="w"> </span><span class="nv">?z</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nv">t5</span><span class="w"> </span><span class="p">(</span><span class="nv">assemble</span><span class="w"> </span><span class="nv">?r</span><span class="w"> </span><span class="nv">?z</span><span class="w"> </span><span class="nv">?w</span><span class="w"> </span><span class="nv">?b</span><span class="w"> </span><span class="nv">?s</span><span class="w"> </span><span class="nv">?c</span><span class="p">)))</span>
+<span class="w">    </span><span class="ss">:ordering</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="nv">t1</span><span class="w"> </span><span class="nv">t5</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="nv">t2</span><span class="w"> </span><span class="nv">t5</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="nv">t3</span><span class="w"> </span><span class="nv">t5</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="nv">t4</span><span class="w"> </span><span class="nv">t5</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>To build a car, its three pieces are fetched and a robot gets ready, in any order, and then it
+assembles the car. A piece is fetched by any robot: <code class="docutils literal notranslate"><span class="pre">fetch_there</span></code> if it is already where it
+must be, <code class="docutils literal notranslate"><span class="pre">fetch_carry</span></code> if the robot is where the piece is, <code class="docutils literal notranslate"><span class="pre">fetch_go</span></code> if it has to go there
+first, <code class="docutils literal notranslate"><span class="pre">fetch_recharge</span></code> if its battery must be charged before. The planner chooses the robots;
+with durative actions, it gives the work to the robot that is free first, so the three pieces
+come at once.</p>
+</section>
+<section id="from-the-terminal">
+<h3>2- From the terminal<a class="headerlink" href="#from-the-terminal" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Open a terminal and run the node that simulates EasyNav (each navigation takes 10 s):</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_bt_example<span class="w"> </span>easynav_sim_node
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>In a second terminal, run PlanSys2 in HDDL mode. The launch file loads the domain, the problem of
+<code class="docutils literal notranslate"><span class="pre">pddl/problem.hddl</span></code> (one car) and the <code class="docutils literal notranslate"><span class="pre">HTNBTBuilder</span></code>:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_bt_example<span class="w"> </span>plansys2_bt_example_hddl.launch.yaml
+</pre></div>
+</div>
+</div></blockquote>
+<p>Its log says <code class="docutils literal notranslate"><span class="pre">HDDL</span> <span class="pre">mode</span></code> and that the planner is <code class="docutils literal notranslate"><span class="pre">KLIMAX</span></code>.</p>
+</li>
+<li><p>In a third terminal, open the PlanSys2 terminal:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_terminal<span class="w"> </span>plansys2_terminal
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; get problem tasks
+&gt; get plan
+&gt; run
+</pre></div>
+</div>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">get</span> <span class="pre">plan</span></code> shows the three <code class="docutils literal notranslate"><span class="pre">transport</span></code> at time 0, each by its robot, and the assembly
+after them. <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">tasks</span></code> and <code class="docutils literal notranslate"><span class="pre">remove</span> <span class="pre">tasks</span></code> change the task network before running it.</p>
+</li>
+<li><p>To follow it by task, open the TUI in a fourth terminal (<code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">run</span> <span class="pre">plansys2_tui_cli</span>
+<span class="pre">plansys2_tui</span></code>): the <em>Plan Monitor</em> shows the decomposition, and the <em>Behavior tree</em> tab, as
+Groot2 does on port 1800, the tree of tasks that runs.</p></li>
+</ul>
+</section>
+<section id="from-a-controller">
+<h3>3- From a controller<a class="headerlink" href="#from-a-controller" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">assemble_hddl_controller_node</span></code> builds three cars, one after another. With the simulated
+EasyNav and PlanSys2 running as above, run it instead of the terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>plansys2_bt_example<span class="w"> </span>assemble_hddl_controller_node
+</pre></div>
+</div>
+<p>It sets its own problem, in place of the one the launch file loads.</p>
+<p>It is the controller of the PDDL version with a task network where that one sets a goal:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">init_knowledge</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// The problem is this controller's: none loaded by the launch is mixed in</span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">clearKnowledge</span><span class="p">();</span>
+<span class="w">  </span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">addInstance</span><span class="p">(</span><span class="n">plansys2</span><span class="o">::</span><span class="n">Instance</span><span class="p">{</span><span class="s">"r2d2"</span><span class="p">,</span><span class="w"> </span><span class="s">"robot"</span><span class="p">});</span>
+<span class="w">  </span><span class="c1">// ... the robots, zones, pieces and cars, and where everything is</span>
+
+<span class="w">  </span><span class="c1">// What is to be done: each car built, after the one before</span>
+<span class="w">  </span><span class="n">plansys2</span><span class="o">::</span><span class="n">TaskNetwork</span><span class="w"> </span><span class="n">tasks</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tasks</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"(build car_1)"</span><span class="p">);</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tasks</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"(build car_2)"</span><span class="p">,</span><span class="w"> </span><span class="n">first</span><span class="p">);</span>
+<span class="w">  </span><span class="n">tasks</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"(build car_3)"</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">problem_expert_</span><span class="o">-&gt;</span><span class="n">setTaskNetwork</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">RCLCPP_ERROR</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">"The task network was not accepted"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Planning and executing are as in PDDL: <code class="docutils literal notranslate"><span class="pre">getPlan</span></code> with the domain and the problem, and
+<code class="docutils literal notranslate"><span class="pre">start_plan_execution</span></code> with the plan. In each car the three robots bring a piece at once and
+<code class="docutils literal notranslate"><span class="pre">r2d2</span></code> assembles it: 45 s of plan for the three cars.</p>
+</section>
+<section id="when-a-method-no-longer-applies">
+<h3>4- When a method no longer applies<a class="headerlink" href="#when-a-method-no-longer-applies" title="Link to this heading"></a></h3>
+<p>The precondition of each method is checked when the plan gets there, in the state of then. If the
+world changed, the task fails before any of its actions start, and the execution trace says why.
+For instance, if a piece is moved by hand while the robots work, its <code class="docutils literal notranslate"><span class="pre">fetch</span></code> fails with the part
+of the precondition that does not hold. The controller can then ask for a replanning problem
+(<code class="docutils literal notranslate"><span class="pre">executor/get_replanning_problem</span></code>): its task network is what is left of the plan, and the new
+plan keeps the actions that go on.</p>
+</section>
+<section id="other-examples-in-hddl">
+<h3>5- Other examples in HDDL<a class="headerlink" href="#other-examples-in-hddl" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">plansys2_bt_example</span></code>: the factory with arms (<code class="docutils literal notranslate"><span class="pre">plansys2_bt_arm_example_hddl.launch.yaml</span></code>,
+<code class="docutils literal notranslate"><span class="pre">assemble_arm_hddl_controller_node</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plansys2_patrol_navigation_example</span></code>: the patrols (<code class="docutils literal notranslate"><span class="pre">patrol_example_hddl.launch.yaml</span></code>,
+<code class="docutils literal notranslate"><span class="pre">patrolling_hddl_controller_node</span></code> and <code class="docutils literal notranslate"><span class="pre">patrol_waypoints_hddl_controller_node</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plansys2_simple_example</span></code>, <code class="docutils literal notranslate"><span class="pre">plansys2_simple_example_py</span></code>, <code class="docutils literal notranslate"><span class="pre">plansys2_cascade_example</span></code> and
+<code class="docutils literal notranslate"><span class="pre">plansys2_multidomain_example</span></code>: each with its <code class="docutils literal notranslate"><span class="pre">*_hddl.launch.yaml</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plansys2_combat_example</span></code>: the orders of each round as tasks (<code class="docutils literal notranslate"><span class="pre">combat_launch.py</span></code> with <code class="docutils literal notranslate"><span class="pre">hddl:=true</span></code>).</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="plansys2-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> PlanSys2</span>
+    v: <span id="plansys2-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="plansys2-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

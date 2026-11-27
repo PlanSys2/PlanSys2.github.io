@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keep the problem in sync with the sensors &mdash; ROS2 Planning System 2 latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+    <link rel="shortcut icon" href="../../_static/plansys2_48x48.png"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hierarchical planning with HDDL" href="hddl_example.html" />
+    <link rel="prev" title="Configuring Multiple Planners" href="multi_planner.html" />
+
+<link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ROS2 Planning System 2
+              <img src="../../_static/plansys2_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#running-the-example">Running the example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/index.html#what-next">What next</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#releases-and-distributions">Releases and distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#build-from-source">Build from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#choosing-the-middleware">Choosing the middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../build_instructions/index.html#optional-planners">Optional planners</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">PlanSys2 design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#interfaces-at-a-glance">Interfaces at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#domain-expert">Domain Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#topics">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#problem-expert">Problem Expert</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id1">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id2">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id3">Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#planner">Planner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id4">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id5">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#executor">Executor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id6">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#action">Action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id7">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id8">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#behavior-tree-builders">Behavior tree builders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#repairing-a-plan">Repairing a plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#constraints">Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#action-performers">Action performers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#protocol">Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id9">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#id10">Topics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#client-libraries">Client libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#c">C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#python">Python</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#running-pn">Running PlanSys2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#messages">Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#state-updater">State updater</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#rules">Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../design/index.html#transforms">Transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../design/index.html#policy">Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../design/index.html#qos">QoS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#how-it-writes">How it writes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#topics-and-services">Topics and services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#a-mission-that-replans">A mission that replans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../design/index.html#updater-plugins-of-your-own">Updater plugins of your own</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration/index.html">Migrating to 4.0.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-clients-take-the-node-of-the-application">The clients take the node of the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#spinning-the-node-of-a-controller">Spinning the node of a controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-lifecycle-manager">The lifecycle manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#the-bringup">The bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#bt-builders">BT builders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#executors">Executors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#kairos-the-default-planner">Kairos, the default planner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#c-20">C++20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration/index.html#humble">Humble</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pddl_support/index.html">PDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#what-pn-executes">What PlanSys2 executes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#timed-execution">Timed execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#pddl-dynamics">PDDL+ dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#what-each-planner-plans">What each planner plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../hddl_support/index.html">HDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#hddl-mode">HDDL mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#what-klimax-plans">What Klimax plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#the-task-network">The task network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#how-a-hierarchical-plan-is-executed">How a hierarchical plan is executed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#replanning">Replanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#following-a-plan">Following a plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../execution_trace/index.html">Reading an execution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#the-events">The events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#late-and-shifted">Late, and shifted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#an-example">An example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_trace/index.html#what-to-look-for">What to look for</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#terminal">Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#tui">TUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tools/index.html#behavior-tree-tab">Behavior tree tab</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#command-line">Command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#rqt-plugins">rqt plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/index.html#logger">Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminal_usage.html">Terminal Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal_usage.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#launch-plansys2">1- Launch PlanSys2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#execute-plansys2-terminal">2- Execute PlanSys2 terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="terminal_usage.html#interactive-session">3- Interactive session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="simple_example.html">The first planning package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#package-structure">2- Package structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#actions-implementation">3- Actions implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html#launcher">4- Launcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_example.html">Using a planning controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#patrol-action-performer">2- Patrol action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#move-action-performer">3- Move action performer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#mission-controller">4- Mission controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="controller_example.html#running-the-example-with-easynav-and-a-simulator">5- Running the example with EasyNav and a simulator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bt_actions.html">Implement actions as Behavior Trees</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt_actions.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#running-the-example">1- Running the example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bt_actions.html#using-behavior-trees">2- Using Behavior Trees</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_planner.html">Configuring Multiple Planners</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_planner.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Keep the problem in sync with the sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-rules">1- The rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-pn-with-the-state-updater">2- Running PlanSys2 with the state updater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-sensors-speak">3- The sensors speak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#while-it-runs">4- While it runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#next">5- Next</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hddl_example.html">Hierarchical planning with HDDL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hddl_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hddl_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hddl_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hddl_example.html#the-domain">1- The domain</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hddl_example.html#from-the-terminal">2- From the terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hddl_example.html#from-a-controller">3- From a controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hddl_example.html#when-a-method-no-longer-applies">4- When a method no longer applies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hddl_example.html#other-examples-in-hddl">5- Other examples in HDDL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#planner-plugins">Planner plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.html#behavior-tree-builder-plugins">Behavior tree builder plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS2 Planning System 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/PlanSys2/PlanSys2.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/plansys2.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Keep the problem in sync with the sensors</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="keep-the-problem-in-sync-with-the-sensors">
+<span id="state-updater-tutorial"></span><h1>Keep the problem in sync with the sensors<a class="headerlink" href="#keep-the-problem-in-sync-with-the-sensors" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a></p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>In the other tutorials, the knowledge of the problem comes from the terminal or from the
+application. On a real robot, much of it is what the sensors say: the battery, a leak, the mode
+of the vehicle, the waypoints that can be reached. The state updater writes those facts in the
+problem by itself, from rules in a YAML file, with no code: each rule reads one field of one
+topic, transforms it, and writes one fact.</p>
+<p>In this tutorial we run PlanSys2 with the example of <code class="docutils literal notranslate"><span class="pre">plansys2_state_updater</span></code>, publish some sensor
+messages from the shell, and watch how the problem follows them. <a class="reference internal" href="../../design/index.html#state-updater"><span class="std std-ref">State updater</span></a> explains
+every option.</p>
+</section>
+<section id="tutorial-steps">
+<h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Link to this heading"></a></h2>
+<section id="requisites">
+<h3>0- Requisites<a class="headerlink" href="#requisites" title="Link to this heading"></a></h3>
+<p>Build PlanSys2 from source (see <a class="reference internal" href="../../getting_started/index.html#getting-started"><span class="std std-ref">Getting Started</span></a>); <code class="docutils literal notranslate"><span class="pre">plansys2_state_updater</span></code> is one of its
+packages. The example is installed with it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CFG</span><span class="o">=</span><span class="k">$(</span>ros2<span class="w"> </span>pkg<span class="w"> </span>prefix<span class="w"> </span>--share<span class="w"> </span>plansys2_state_updater<span class="k">)</span>/config
+ls<span class="w"> </span><span class="nv">$CFG</span>
+<span class="c1"># example.yaml  example_domain.pddl  example_problem.pddl</span>
+</pre></div>
+</div>
+<p>The domain has a battery (<code class="docutils literal notranslate"><span class="pre">(energy)</span></code>), a leak (<code class="docutils literal notranslate"><span class="pre">(leak_detected)</span></code>), modes (<code class="docutils literal notranslate"><span class="pre">(mode_is</span> <span class="pre">?m)</span></code>),
+waypoints (<code class="docutils literal notranslate"><span class="pre">(reachable</span> <span class="pre">?w)</span></code>, and <code class="docutils literal notranslate"><span class="pre">(location)</span></code>, an object fluent), and an action <code class="docutils literal notranslate"><span class="pre">inspect</span></code>
+that needs no leak while it runs:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(:durative-action inspect
+  :parameters ()
+  :duration (= ?duration 10)
+  :condition (and (over all (not (leak_detected))) (at start (&gt;= (energy) 20)))
+  :effect (and (decrease (energy) (* #t 0.5)))
+)
+</pre></div>
+</div>
+<p>The problem starts with <code class="docutils literal notranslate"><span class="pre">(=</span> <span class="pre">(energy)</span> <span class="pre">100)</span></code> and <code class="docutils literal notranslate"><span class="pre">(mode_is</span> <span class="pre">normal)</span></code>.</p>
+</section>
+<section id="the-rules">
+<h3>1- The rules<a class="headerlink" href="#the-rules" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">example.yaml</span></code> has one rule for each kind of fact. These are the ones we use:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">state_updater</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Function, corrected only when 2 or more away from the model (#t)</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">battery</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robot/battery</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/BatteryState</span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percentage</span>
+<span class="w">      </span><span class="nt">transform</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">linear</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="nv">100.0</span><span class="p p-Indicator">,</span><span class="nt"> round</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">}}</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="s">"(energy)"</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="nv">correct</span><span class="p p-Indicator">,</span><span class="nt"> min_change</span><span class="p">:</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="nt"> sample_period</span><span class="p">:</span><span class="w"> </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="nt"> stale_after</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span>
+<span class="nt">               on_stale</span><span class="p">:</span><span class="w"> </span><span class="s">"(sensor_stale</span><span class="nv"> </span><span class="s">battery)"</span><span class="p p-Indicator">}</span>
+
+<span class="w">    </span><span class="c1"># Predicate held 2 s before it is written: a sensor glitch does not abort the action</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">leak</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robot/leak</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">std_msgs/msg/Bool</span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">predicate</span><span class="p">:</span><span class="w"> </span><span class="s">"(leak_detected)"</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">debounce</span><span class="p">:</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="nt"> stale_after</span><span class="p">:</span><span class="w"> </span><span class="nv">5.0</span><span class="p p-Indicator">,</span><span class="nt"> on_stale</span><span class="p">:</span><span class="w"> </span><span class="s">"(sensor_stale</span><span class="nv"> </span><span class="s">leak)"</span><span class="p p-Indicator">}</span>
+
+<span class="w">    </span><span class="c1"># Set: the waypoints in the list are reachable</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reachable</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/reachable</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rcl_interfaces/msg/ParameterValue</span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string_array_value</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">set</span><span class="p">:</span><span class="w"> </span><span class="s">"(reachable</span><span class="nv"> </span><span class="s">{})"</span><span class="p p-Indicator">}</span>
+
+<span class="w">    </span><span class="c1"># Enum: one mode holds at a time; lost after 5 s of silence</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mode</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robot/mode</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">std_msgs/msg/Int32</span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data</span>
+<span class="w">      </span><span class="nt">transform</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">map</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">2</span><span class="p">:</span><span class="w"> </span><span class="nv">normal</span><span class="p p-Indicator">,</span><span class="nt"> 3</span><span class="p">:</span><span class="w"> </span><span class="nv">degraded</span><span class="p p-Indicator">},</span><span class="nt"> default</span><span class="p">:</span><span class="w"> </span><span class="nv">lost</span><span class="p p-Indicator">}}</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">enum</span><span class="p">:</span><span class="w"> </span><span class="s">"(mode_is</span><span class="nv"> </span><span class="s">{})"</span><span class="p p-Indicator">,</span><span class="nt"> values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">normal</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">degraded</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">lost</span><span class="p p-Indicator">]}</span>
+<span class="w">      </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">debounce</span><span class="p">:</span><span class="w"> </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="nt"> stale_after</span><span class="p">:</span><span class="w"> </span><span class="nv">5.0</span><span class="p p-Indicator">,</span><span class="nt"> on_stale</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="nv">lost</span><span class="p p-Indicator">}}</span>
+
+<span class="w">    </span><span class="c1"># Object fluent: (location) takes a waypoint name</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">location</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robot/waypoint</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">std_msgs/msg/String</span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data</span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="s">"(location)"</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="running-pn-with-the-state-updater">
+<h3>2- Running PlanSys2 with the state updater<a class="headerlink" href="#running-pn-with-the-state-updater" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Open a terminal and launch PlanSys2 with the domain, the problem and the rules
+(<code class="docutils literal notranslate"><span class="pre">state_updater_config</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CFG</span><span class="o">=</span><span class="k">$(</span>ros2<span class="w"> </span>pkg<span class="w"> </span>prefix<span class="w"> </span>--share<span class="w"> </span>plansys2_state_updater<span class="k">)</span>/config
+ros2<span class="w"> </span>launch<span class="w"> </span>plansys2_bringup<span class="w"> </span>plansys2_bringup_launch_monolithic.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>model_file:<span class="o">=</span><span class="nv">$CFG</span>/example_domain.pddl<span class="w"> </span>problem_file:<span class="o">=</span><span class="nv">$CFG</span>/example_problem.pddl<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>state_updater_config:<span class="o">=</span><span class="nv">$CFG</span>/example.yaml
+</pre></div>
+</div>
+<p>The rules are checked against the domain and the problem; if one is wrong, the problem expert
+does not configure, and says why. Then it waits for the publishers of each topic, to take the
+QoS they offer:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[problem_expert.state_updater]: 8 rules on 7 topics
+[problem_expert]: Updater state_updater (plansys2_state_updater/RulesUpdater) configured
+[problem_expert.state_updater]: Waiting for a publisher of '/robot/battery', to take the qos it offers
+</pre></div>
+</div>
+</li>
+<li><p>Open a second terminal and watch the writes, each one with its reason:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/state_updater/events<span class="w"> </span>plansys2_msgs/msg/StateUpdate<span class="w"> </span>--field<span class="w"> </span>reason
+</pre></div>
+</div>
+</li>
+<li><p>Open a third terminal and watch the problem: the TUI (tab <em>Overview</em>, panel <em>Knowledge</em>), or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/problem_expert/knowledge
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="the-sensors-speak">
+<h3>3- The sensors speak<a class="headerlink" href="#the-sensors-speak" title="Link to this heading"></a></h3>
+<p>Open a fourth terminal for the sensors. Each <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">topic</span> <span class="pre">pub</span></code> keeps publishing once a second
+until you stop it with <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code>.</p>
+<ul>
+<li><p><strong>The battery.</strong> The sensor says 60 %, the problem says 100: 40 away, more than
+<code class="docutils literal notranslate"><span class="pre">min_change</span></code>, so it is written.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>-r<span class="w"> </span><span class="m">1</span><span class="w"> </span>/robot/battery<span class="w"> </span>sensor_msgs/msg/BatteryState<span class="w"> </span><span class="s2">"{percentage: 0.6}"</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>battery: 100 → 60, deviation 40 ≥ 2
+</pre></div>
+</div>
+<p>The log of the launch says how it subscribed. The publisher of <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">topic</span> <span class="pre">pub</span></code> is reliable,
+so the subscription is too:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Subscribed to '/robot/battery' (sensor_msgs/msg/BatteryState; reliability reliable, durability volatile, depth 5)
+</pre></div>
+</div>
+<p>Stop it. 10 s later the battery is stale, and <code class="docutils literal notranslate"><span class="pre">(sensor_stale</span> <span class="pre">battery)</span></code> holds; publish again,
+and it goes.</p>
+</li>
+<li><p><strong>The mode.</strong> <code class="docutils literal notranslate"><span class="pre">3</span></code> maps to <code class="docutils literal notranslate"><span class="pre">degraded</span></code>: <code class="docutils literal notranslate"><span class="pre">(mode_is</span> <span class="pre">normal)</span></code> goes and
+<code class="docutils literal notranslate"><span class="pre">(mode_is</span> <span class="pre">degraded)</span></code> holds, never both at once.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>-r<span class="w"> </span><span class="m">1</span><span class="w"> </span>/robot/mode<span class="w"> </span>std_msgs/msg/Int32<span class="w"> </span><span class="s2">"{data: 3}"</span>
+</pre></div>
+</div>
+<p>Stop it: 5 s later the mode is <code class="docutils literal notranslate"><span class="pre">lost</span></code> (<code class="docutils literal notranslate"><span class="pre">on_stale:</span> <span class="pre">{value:</span> <span class="pre">lost}</span></code>).</p>
+</li>
+<li><p><strong>The reachable waypoints.</strong> The list is the set of facts that hold:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>-r<span class="w"> </span><span class="m">1</span><span class="w"> </span>/reachable<span class="w"> </span>rcl_interfaces/msg/ParameterValue<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"{type: 9, string_array_value: [wp1, wp3]}"</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">(reachable</span> <span class="pre">wp1)</span></code> and <code class="docutils literal notranslate"><span class="pre">(reachable</span> <span class="pre">wp3)</span></code> hold. Publish <code class="docutils literal notranslate"><span class="pre">[wp3]</span></code> instead, and
+<code class="docutils literal notranslate"><span class="pre">(reachable</span> <span class="pre">wp1)</span></code> goes.</p>
+</li>
+<li><p><strong>The location</strong>, an object fluent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>-r<span class="w"> </span><span class="m">1</span><span class="w"> </span>/robot/waypoint<span class="w"> </span>std_msgs/msg/String<span class="w"> </span><span class="s2">"{data: wp2}"</span>
+</pre></div>
+</div>
+<p>The problem has <code class="docutils literal notranslate"><span class="pre">(=</span> <span class="pre">(location)</span> <span class="pre">wp2)</span></code>.</p>
+</li>
+<li><p><strong>A leak.</strong> It must hold 2 s (<code class="docutils literal notranslate"><span class="pre">debounce</span></code>) before it is written. Publish <code class="docutils literal notranslate"><span class="pre">true</span></code> for less
+than 2 s and stop: nothing is written. Publish it for longer:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>-r<span class="w"> </span><span class="m">2</span><span class="w"> </span>/robot/leak<span class="w"> </span>std_msgs/msg/Bool<span class="w"> </span><span class="s2">"{data: true}"</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">(leak_detected)</span></code> holds. An <code class="docutils literal notranslate"><span class="pre">inspect</span></code> running now would be cut by the executor: its over all
+condition no longer holds.</p>
+</li>
+</ul>
+</section>
+<section id="while-it-runs">
+<h3>4- While it runs<a class="headerlink" href="#while-it-runs" title="Link to this heading"></a></h3>
+<ul>
+<li><p>The state of every rule, once a second, as JSON:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/state_updater/status<span class="w"> </span>--field<span class="w"> </span>data
+</pre></div>
+</div>
+</li>
+<li><p>Disable some rules (their facts stay as they are), and enable them again:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>/problem_expert<span class="w"> </span>state_updater.disabled_rules<span class="w"> </span><span class="s2">"['battery', 'leak']"</span>
+ros2<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>/problem_expert<span class="w"> </span>state_updater.disabled_rules<span class="w"> </span><span class="s2">"[]"</span>
+</pre></div>
+</div>
+</li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">example.yaml</span></code> (copy it somewhere first, and launch with the copy), and load it
+without stopping PlanSys2. If the new rules are not valid, the old ones stay:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/state_updater/reload<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>success=True, message='8 rules on 7 topics, 8 kept as they were'
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="next">
+<h3>5- Next<a class="headerlink" href="#next" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">run</span> <span class="pre">plansys2_state_updater</span> <span class="pre">replanning_mission.py</span></code> is a mission that plans again when
+the state updater changes the world (see <a class="reference internal" href="../../design/index.html#state-updater"><span class="std std-ref">State updater</span></a>).</p></li>
+<li><p>For your robot, write the rules of your own topics and facts. A value the transforms cannot
+compute is a transform plugin; something the rules cannot do at all is an updater plugin of
+your own.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="plansys2-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> PlanSys2</span>
+    v: <span id="plansys2-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="plansys2-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

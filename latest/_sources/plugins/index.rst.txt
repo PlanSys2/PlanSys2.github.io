@@ -47,6 +47,10 @@ A plugin that says nothing gets every task.
 | `UPF`_           | `UPFPlanSolver`_     | Unified Planning Framework               |
 |                  |                      |                                          |
 +------------------+----------------------+------------------------------------------+
+| `Klimax`_        | `KlimaxPlanSolver`_  | HDDL only (HDDL mode, see                |
+|                  |                      | :ref:`hddl_support`): hierarchical tasks,|
+|                  |                      | total and partial order, numbers, time.  |
++------------------+----------------------+------------------------------------------+
 
 
 .. _Kairos: https://github.com/PlanSys2/kairos
@@ -65,6 +69,8 @@ A plugin that says nothing gets every task.
 .. _DownwardPlanner: https://github.com/kas-lab/downward_ros
 .. _SymK: https://github.com/speckdavid/symk
 .. _SymkPlanner: https://github.com/kas-lab/symk_ros
+.. _Klimax: https://github.com/PlanSys2/klimax
+.. _KlimaxPlanSolver: https://github.com/PlanSys2/ros2_planning_system/tree/rolling/plansys2_klimax_plan_solver
 .. _UPF: https://github.com/aiplan4eu/unified-planning
 .. _UPFPlanSolver: https://github.com/JRL-CARI-CNR-UNIBS/plansys2_upf_plugin
 
@@ -79,6 +85,10 @@ The executor turns each plan into a behavior tree with the plugin of its
   what another one does at its start.
 * `SimpleBTBuilder`_. It waits for whole actions to end: simpler, less parallel.
 * `SequentialBTBuilder`_. The actions run one after the other, in the order of the plan.
+* `HTNBTBuilder`_, for hierarchical plans (HDDL mode). The tree is the decomposition of the
+  plan: a node for each task, which checks the precondition of its method before its subtasks
+  run (see :ref:`hddl_support`). It takes only plans with a decomposition, and the others only
+  plans without one.
 
 Whatever the builder, a timed plan runs each action at its time in the plan, not before: plans
 with processes, events, continuous effects, constraints with times or an end (PDDL+), or any
@@ -89,4 +99,5 @@ compare them.
 
 .. _SimpleBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/simple_bt_builder.cpp
 .. _STNBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/stn_bt_builder.cpp
+.. _HTNBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/htn_bt_builder.cpp
 .. _SequentialBTBuilder: https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/sequential_bt_builder.cpp

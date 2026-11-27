@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="About and Contact" href="../about/index.html" />
-    <link rel="prev" title="Configuring Multiple Planners" href="../tutorials/docs/multi_planner.html" />
+    <link rel="prev" title="Hierarchical planning with HDDL" href="../tutorials/docs/hddl_example.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -107,6 +107,19 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html#running-pn">Running PlanSys2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html#messages">Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#state-updater">State updater</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#rules">Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../design/index.html#transforms">Transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../design/index.html#policy">Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../design/index.html#qos">QoS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#how-it-writes">How it writes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#topics-and-services">Topics and services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#a-mission-that-replans">A mission that replans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../design/index.html#updater-plugins-of-your-own">Updater plugins of your own</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../migration/index.html">Migrating to 4.0.0</a><ul>
@@ -129,6 +142,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../pddl_support/index.html#known-limits">Known limits</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../hddl_support/index.html">HDDL support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#hddl-mode">HDDL mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#what-klimax-plans">What Klimax plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#the-task-network">The task network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#how-a-hierarchical-plan-is-executed">How a hierarchical plan is executed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#replanning">Replanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#following-a-plan">Following a plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hddl_support/index.html#known-limits">Known limits</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../execution_trace/index.html">Reading an execution</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#where-to-read-it">Where to read it</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../execution_trace/index.html#the-events">The events</a></li>
@@ -139,7 +162,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#terminal">Terminal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#tui">TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/index.html#tui">TUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tools/index.html#behavior-tree-tab">Behavior tree tab</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#command-line">Command line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#rqt-plugins">rqt plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/index.html#logger">Logger</a></li>
@@ -198,6 +224,32 @@
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#the-plan-solver-plugins-parameter">1- The <code class="docutils literal notranslate"><span class="pre">plan_solver_plugins</span></code> parameter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#running-the-same-solver-with-different-arguments">2- Running the same solver with different arguments</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/multi_planner.html#requesting-plans-from-all-configured-solvers">3- Requesting plans from all configured solvers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/state_updater.html">Keep the problem in sync with the sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/state_updater.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/state_updater.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#the-rules">1- The rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#running-pn-with-the-state-updater">2- Running PlanSys2 with the state updater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#the-sensors-speak">3- The sensors speak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#while-it-runs">4- While it runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/state_updater.html#next">5- Next</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/docs/hddl_example.html">Hierarchical planning with HDDL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/hddl_example.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/docs/hddl_example.html#tutorial-steps">Tutorial Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#requisites">0- Requisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#the-domain">1- The domain</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#from-the-terminal">2- From the terminal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#from-a-controller">3- From a controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#when-a-method-no-longer-applies">4- When a method no longer applies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/docs/hddl_example.html#other-examples-in-hddl">5- Other examples in HDDL</a></li>
 </ul>
 </li>
 </ul>
@@ -314,6 +366,12 @@ preconditions; Disjunctive preconditions</p></td>
 <td><p><a class="reference external" href="https://github.com/JRL-CARI-CNR-UNIBS/plansys2_upf_plugin">UPFPlanSolver</a></p></td>
 <td><p>Unified Planning Framework</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/PlanSys2/klimax">Klimax</a></p></td>
+<td><p><a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/tree/rolling/plansys2_klimax_plan_solver">KlimaxPlanSolver</a></p></td>
+<td><p>HDDL only (HDDL mode, see
+<a class="reference internal" href="../hddl_support/index.html#hddl-support"><span class="std std-ref">HDDL support</span></a>): hierarchical tasks,
+total and partial order, numbers, time.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -327,6 +385,10 @@ of each action: an action starts as soon as what it needs is done, also when it 
 what another one does at its start.</p></li>
 <li><p><a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/simple_bt_builder.cpp">SimpleBTBuilder</a>. It waits for whole actions to end: simpler, less parallel.</p></li>
 <li><p><a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/sequential_bt_builder.cpp">SequentialBTBuilder</a>. The actions run one after the other, in the order of the plan.</p></li>
+<li><p><a class="reference external" href="https://github.com/PlanSys2/ros2_planning_system/blob/rolling/plansys2_executor/src/plansys2_executor/bt_builder_plugins/htn_bt_builder.cpp">HTNBTBuilder</a>, for hierarchical plans (HDDL mode). The tree is the decomposition of the
+plan: a node for each task, which checks the precondition of its method before its subtasks
+run (see <a class="reference internal" href="../hddl_support/index.html#hddl-support"><span class="std std-ref">HDDL support</span></a>). It takes only plans with a decomposition, and the others only
+plans without one.</p></li>
 </ul>
 <p>Whatever the builder, a timed plan runs each action at its time in the plan, not before: plans
 with processes, events, continuous effects, constraints with times or an end (PDDL+), or any
