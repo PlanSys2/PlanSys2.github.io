@@ -26,10 +26,11 @@ TUI
   - *Action Execution*: each performer and the action it runs, from ``performers_status``
     and ``actions_hub``.
   - *Plan Monitor*: the plan being executed and the progress of each action, from
-    ``executing_plan`` and ``action_execution_info``.
+    ``executing_plan`` and ``action_execution_info``. A hierarchical (HDDL) plan is shown as its
+    decomposition: each task with its method and its state, its subtasks below it.
   - *Performers*: the state of each performer.
   - *Knowledge*: instances, predicates, functions with their values, goal, metric and
-    constraints, from ``problem_expert/knowledge``.
+    constraints, from ``problem_expert/knowledge``; the task network, in HDDL.
 
 * **Plan log** (key ``2``): the execution trace as sentences, one per event; ``c`` clears it.
   See :ref:`execution_trace`.
